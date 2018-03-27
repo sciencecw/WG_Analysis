@@ -506,7 +506,7 @@ def MakeSignalRegionPlots( sampManMuG, sampManElG ) :
     sel_base_mu = defs.get_base_selection( 'mu' )
     sel_base_el = defs.get_base_selection( 'el' )
 
-    ph_str = 'ph_n==1 && ph_IsEB[0] && ph_pt[0] > 50' 
+    ph_str = 'ph_n==1 && ph_IsEB[0] && ph_pt[0] > 50 && ph_passEleVeto[0]==1' 
 
     sel_mu_nominal = '%s * ( %s && %s )'%( weight_str, sel_base_mu, ph_str ) 
     sel_el_nominal = '%s * ( %s && %s )'%( weight_str, sel_base_el, ph_str ) 
@@ -539,6 +539,22 @@ def MakeSignalRegionPlots( sampManMuG, sampManElG ) :
         sampManElG.SaveStack( 'mt_lep_met_ph_elg_nodata' ,outdir, 'base' )
     else :
         raw_input('cont')
+
+
+
+ # kak: Z_mass
+    sampManElG.Draw( 'm_ll', sel_mu_nominal, (80, 0, 1000 ), hist_config={'xlabel' : 'Transverse Mass [GeV]', 'logy' : 1, 'ymin' : 0.01, 'ymax' : 1000000}, legend_config=legend_conf, label_config = {'labelStyle' : 'fancy13', 'extra_label':'Muon Channel', 'extra_label_loc':label_loc_conf} )
+
+    if options.outputDir is not None :
+        sampManElG.SaveStack( 'm_ll_elg_nodata' ,outdir, 'base' )
+    else :
+        raw_input('cont')
+    sampManElG.Draw( 'm_lep_ph', sel_mu_nominal, (80, 0, 1000 ), hist_config={'xlabel' : 'Transverse Mass [GeV]', 'logy' : 1, 'ymin' : 0.01, 'ymax' : 1000000}, legend_config=legend_conf, label_config = {'labelStyle' : 'fancy13', 'extra_label':'Muon Channel', 'extra_label_loc':label_loc_conf} )
+    if options.outputDir is not None :
+        sampManElG.SaveStack( 'm_lep_ph_elg_nodata' ,outdir, 'base' )
+    else :
+        raw_input('cont')
+
 
 
     sampManMuG.Draw( 'm_lep_met_ph', sel_mu_nominal, (80, 0, 4000 ), hist_config={'xlabel' : 'Transverse Mass [GeV]', 'logy' : 1, 'ymin' : 0.01, 'ymax' : 1000000}, legend_config=legend_conf, label_config = {'labelStyle' : 'fancy13', 'extra_label':'Muon Channel', 'extra_label_loc':label_loc_conf} )
@@ -585,19 +601,19 @@ def MakeSignalRegionPlots( sampManMuG, sampManElG ) :
 
     theta = math.atan(1./2.0)
 
-    sampManMuG.Draw( 'ph_pt[0] *sin( %f ) + mt_res*cos(%f)' %(theta,theta), sel_mu_nominal, (80, 0, 4000 ), hist_config={'xlabel' : 'Combined m_{T} and p_{T} [GeV]', 'logy' : 1, 'ymin' : 0.01, 'ymax' : 1000000}, legend_config=legend_conf, label_config = {'labelStyle' : 'fancy13', 'extra_label':'Muon Channel', 'extra_label_loc':label_loc_conf} )
-
-    if options.outputDir is not None :
-        sampManMuG.SaveStack( 'rotated_mug_nodata' ,outdir, 'base' )
-    else :
-        raw_input('cont')
-
-    sampManElG.Draw( 'ph_pt[0] *sin( %f ) + mt_res*cos(%f)' %(theta,theta), sel_el_nominal, (80, 0, 4000 ), hist_config={'xlabel' : 'Combined m_{T} and p_{T} [GeV]', 'logy' : 1, 'ymin' : 0.01, 'ymax' : 1000000}, legend_config=legend_conf, label_config = {'labelStyle' : 'fancy13', 'extra_label':'Electron Channel', 'extra_label_loc':label_loc_conf} )
-
-    if options.outputDir is not None :
-        sampManElG.SaveStack( 'rotated_elg_nodata' ,outdir, 'base' )
-    else :
-        raw_input('cont')
+#    sampManMuG.Draw( 'ph_pt[0] *sin( %f ) + mt_res*cos(%f)' %(theta,theta), sel_mu_nominal, (80, 0, 4000 ), hist_config={'xlabel' : 'Combined m_{T} and p_{T} [GeV]', 'logy' : 1, 'ymin' : 0.01, 'ymax' : 1000000}, legend_config=legend_conf, label_config = {'labelStyle' : 'fancy13', 'extra_label':'Muon Channel', 'extra_label_loc':label_loc_conf} )
+#
+#    if options.outputDir is not None :
+#        sampManMuG.SaveStack( 'rotated_mug_nodata' ,outdir, 'base' )
+#    else :
+#        raw_input('cont')
+#
+#    sampManElG.Draw( 'ph_pt[0] *sin( %f ) + mt_res*cos(%f)' %(theta,theta), sel_el_nominal, (80, 0, 4000 ), hist_config={'xlabel' : 'Combined m_{T} and p_{T} [GeV]', 'logy' : 1, 'ymin' : 0.01, 'ymax' : 1000000}, legend_config=legend_conf, label_config = {'labelStyle' : 'fancy13', 'extra_label':'Electron Channel', 'extra_label_loc':label_loc_conf} )
+#
+#    if options.outputDir is not None :
+#        sampManElG.SaveStack( 'rotated_elg_nodata' ,outdir, 'base' )
+#    else :
+#        raw_input('cont')
 
     sampManMuG.Draw( 'fabs(dphi_lep_ph)', sel_mu_nominal, (32, 0, 3.2 ), hist_config={'xlabel' : '#Delta #phi (l, #gamma)', 'logy' : 1, 'ymin' : 0.01, 'ymax' : 200000000}, legend_config={'legendLoc' : 'TopLeft'}, label_config = {'labelStyle' : 'fancy13', 'extra_label':'Muon Channel', 'extra_label_loc':(0.6, 0.87)} )
 

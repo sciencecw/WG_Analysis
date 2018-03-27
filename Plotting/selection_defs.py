@@ -13,7 +13,8 @@ def get_base_selection( channel ) :
 
 def get_weight_str( ) :
 
-    return ' ( NLOWeight * PUWeight + isData ) '
+    #return ' ( NLOWeight * PUWeight + isData ) '
+    return '1'
 
 def get_phid_selection( sel1, sel2='' ) :
 

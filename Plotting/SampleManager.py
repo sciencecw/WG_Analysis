@@ -2205,7 +2205,7 @@ class SampleManager :
             print '***********************************************' 
             sys.exit(-1)
 
-        print_prefix = "Reading %s (%s) " %(name, path )
+	print_prefix = "AddSample: Reading %s (%s) " %(name, path )
         print_prefix = print_prefix.ljust(60)
         if not input_files :
             print print_prefix + " [ \033[1;31mFailed\033[0m  ]"
@@ -2363,7 +2363,7 @@ class SampleManager :
             thisSample.AddFiles( self.treeNameModel, input_files )
             self.modelSamples.append(thisSample)
 
-        print_prefix = "Reading %s (%s) " %(name, path )
+	print_prefix = "AddModelSample: Reading %s (%s) " %(name, path )
         print_prefix = print_prefix.ljust(60)
         if not input_files :
             print print_prefix + " [ \033[1;31mFailed\033[0m  ]"

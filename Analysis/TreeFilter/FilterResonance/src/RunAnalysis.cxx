@@ -382,7 +382,8 @@ bool RunModule::execute( std::vector<ModuleConfig> & configs ) {
 
 }
 
-bool RunModule::ApplyModule( ModuleConfig & config ) {
+bool RunModule::ApplyModule( ModuleConfig & config ) 
+{
 
     bool keep_evt = true;
 
@@ -419,7 +420,8 @@ bool RunModule::ApplyModule( ModuleConfig & config ) {
 
 }
 
-void RunModule::FilterMuon( ModuleConfig & config ) {
+void RunModule::FilterMuon( ModuleConfig & config )
+{
 
     OUT::mu_n          = 0;
     OUT::mu_pt20_n          = 0;
