@@ -2,6 +2,7 @@ OUTPUTMAIN=~/Plots/Resonance/Plots_2018_01_22
 
 DIR_MUG=/data/users/jkunkle/Resonances/LepGamma_mug_2018_01_21
 DIR_ELG=/data/users/jkunkle/Resonances/LepGamma_elg_2018_01_21
+#DIR_ELG=/data/users/jkunkle/Resonances/LepGammaNoEleOlap_elg_2018_03_28
 DIR_MUGNoId=/data/users/jkunkle/Resonances/LepGammaNoPhId_mug_2018_01_21
 DIR_ELGNoId=/data/users/jkunkle/Resonances/LepGammaNoPhId_elg_2018_01_21
 DIR_MU=/data/users/jkunkle/Resonances/SingleLepNoPhID_mu_2018_01_21

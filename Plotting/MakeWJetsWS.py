@@ -59,38 +59,14 @@ def main() :
 
     sel_base_mu = 'mu_pt30_n==1 && mu_n==1'
     #sel_base_el = 'el_pt30_n==1 && el_n==1'
-    sel_base_el = 'ph_n==1 && el_n==1'
+    #sel_base_el = 'ph_n==1 && el_n==1'
+    sel_base_el = 'ph_n==2 && el_n>=1'
+    #sel_base_el = '1'
 
     #eta_cuts = ['EB', 'EE']
     eta_cuts = ['EB']
 
     workspaces_to_save = {}
-
-    #xmin_m = 160
-    #xmax_m = 2000
-    #bin_width_m = 20
-
-    #xmin_pt = xmin_m/2
-    #if xmin_pt < 50 :
-    #    xmin_pt = 50
-    #xmax_pt = xmax_m/2
-    #bin_width_pt = bin_width_m/2.
-
-    #binning_m = ((xmax_m-xmin_m)/bin_width_m, xmin_m, xmax_m)
-
-    #binning_pt = ( (xmax_pt - xmin_pt )/bin_width_pt, xmin_pt, xmax_pt )
-
-    #xvar_m = ROOT.RooRealVar( 'x_m', 'x_m',xmin_m , xmax_m)
-
-    #xvar_pt = ROOT.RooRealVar( 'x_pt', 'x_pt', xmin_pt, xmax_pt )
-
-    #kine_vars = { #'mt_incl_lepph_z' : { 'var' : 'mt_lep_met_ph'   , 'xvar' : xvar_m  , 'binning' : binning_m},
-    #              #'m_incl_lepph_z'  : { 'var' : 'm_lep_met_ph'    , 'xvar' : xvar_m  , 'binning' : binning_m},
-    #              ##'mt_rotated'      : { 'var' : 'mt_rotated'      , 'xvar' : xvar_m  , 'binning' : binning_m},
-    #              'mt_fulltrans'    : { 'var' : 'mt_res'          , 'xvar' : xvar_m  , 'binning' : binning_m},
-    #              #'mt_constrwmass'  : { 'var' : 'recoM_lep_nu_ph' , 'xvar' : xvar_m  , 'binning' : binning_m},
-    #              #'ph_pt'           : { 'var' : 'ph_pt[0]'        , 'xvar' : xvar_pt , 'binning' : binning_pt},
-    #            }
 
     selections = { 'base'    : { 
                                # 'mu' : {'selection' : sel_base_mu }, 
@@ -103,19 +79,7 @@ def main() :
 
     elefake            = ROOT.RooWorkspace( 'elefake' )
 
-    make_efake( sampManElG, 'Z+jets', sel_base_el,'EB', 'mt_res', suffix='efake', closure=False, workspace=elefake)
-    #for seltag, chdic in selections.iteritems() : 
-
-    #    for ch, seldic in chdic.iteritems() : 
-
-    #        for name, vardata in kine_vars.iteritems() :
-    # ###   definition: make_wjets_fit( sampMan, sample, sel_base, eta_cut, plot_var, _var, num_var, binning, xvar, suffix='', closure=False, workspace=None)                                 
-    #            make_wjets_fit( sampManMuG, 'Data', seldic['selection'], 'EB', vardata['var'], 'chIso', 'sigmaIEIE', vardata['binning'], vardata['xvar'], suffix='wjets_%s_EB_%s_%s' %(ch,name,seltag), closure=False, workspace=wjets)
-
-    #            if options.doClosure :
-
-    #                closure_res_mu = make_wjets_fit( sampManMuG, 'Wjets', seldic['selection'], 'EB', 'mt_lep_met_ph', 'chIso', 'sigmaIEIE', binning_m, xvar_m, suffix='closure_%s_EB_%s' %( ch, seltag ), closure=True )
-
+    make_efake( sampManElG, 'Z+jets', sel_base_el,'EB', 'ph_phi', suffix='OvLrm', closure=False, workspace=elefake)
 
     if options.outputDir is not None :
 
@@ -136,6 +100,7 @@ def main() :
             can.SaveAs('%s/%s.pdf' %( options.outputDir, key ) )
 
 
+
 def make_efake( sampMan, sample, sel_base, eta_cut, plot_var, suffix='', closure=False, workspace=None) :
 
 	## el_n==1 && ph_n==1 && ph_passEleVeto[0] == 1 && met_pt<40 && abs(m_lep_ph-m_Z)<30 
@@ -143,21 +108,21 @@ def make_efake( sampMan, sample, sel_base, eta_cut, plot_var, suffix='', closure
     #---------------------------------------
     # Get the base selection for each region
     #---------------------------------------
-    ph_selection_sr    = 'met_pt>40 && ph_passEleVeto[0]==1' #'%s==1' %defs.get_phid_selection('medium')
-    ph_selection_B   = 'met_pt<40 && ph_passEleVeto[0]==0' #'%s==1'%defs.get_phid_selection( num_var, _var )
+    ph_selection_sr    = 'met_pt>40 && ph_passEleVeto[1]==1' #'%s==1' %defs.get_phid_selection('medium')
+    ph_selection_B   = 'met_pt<40 && ph_passEleVeto[1]==0' #'%s==1'%defs.get_phid_selection( num_var, _var )
     #'el_n==1 && ph_n==1 && ph_passEleVeto[0] == 1 && met_pt<40 &&ph_pt[0]>160'
-    ph_selection_A   = 'met_pt<40 && ph_passEleVeto[0]==1' #'%s==1' %defs.get_phid_selection( num_var )
-    ph_selection_D = 'met_pt>40 && ph_passEleVeto[0]==0'#'%s==1' %defs.get_phid_selection( _var )
+    ph_selection_A   = 'met_pt<40 && ph_passEleVeto[1]==1' #'%s==1' %defs.get_phid_selection( num_var )
+    ph_selection_D = 'met_pt>40 && ph_passEleVeto[1]==0'#'%s==1' %defs.get_phid_selection( _var )
 
     full_sel_D = ' && '.join( [sel_base, ph_selection_D, ] )
     full_sel_A   = ' && '.join( [sel_base, ph_selection_A,] )
     full_sel_B   = ' && '.join( [sel_base, ph_selection_B,] )
     full_sel_sr    = ' && '.join( [sel_base, ph_selection_sr,] )
 
-    label_D = 'D_%s' %suffix
-    label_A   = 'A_%s' %suffix
-    label_B   = 'B_%s' %suffix
-    label_sr    = 'sr_%s' %suffix
+    label_D = 'd_%s_' %suffix
+    label_A   = 'a_%s_' %suffix
+    label_B   = 'b_%s_' %suffix
+    label_S    = 's_%s_' %suffix
 
     if workspace is None :
         ws = ROOT.RooWorkspace( 'ws') 
@@ -167,26 +132,54 @@ def make_efake( sampMan, sample, sel_base, eta_cut, plot_var, suffix='', closure
     #---------------------------------------
     # draw the histograms
     #---------------------------------------
-    binning = (200,0,200)
-    hist_D = clone_sample_and_draw( sampMan, sample, 'm_lep_ph', full_sel_D, binning )
-    hist_A   = clone_sample_and_draw( sampMan, sample, 'm_lep_ph', full_sel_A  , binning )
-    hist_B   = clone_sample_and_draw( sampMan, sample, 'm_lep_ph', full_sel_B  , binning )
-    hist_sr     = clone_sample_and_draw( sampMan, sample, 'm_lep_ph', full_sel_sr  , binning )
+    binning = (200,-5,5)
+    hist_D   = clone_sample_and_draw( sampMan, sample, plot_var , full_sel_D, binning )
     print hist_D
+    hist_A   = clone_sample_and_draw( sampMan, sample, plot_var , full_sel_A  , binning )
+    hist_B   = clone_sample_and_draw( sampMan, sample, plot_var , full_sel_B  , binning )
+    hist_sr  = clone_sample_and_draw( sampMan, sample, plot_var , full_sel_sr  , binning )
     c1  = ROOT.TCanvas('c1','c1')
     hist_A.Draw()
-    c1.SaveAs("hist_a.pdf","pdf")
+    c1.SaveAs("hist"+label_A+plot_var+".pdf","pdf")
     hist_B.Draw()
-    c1.SaveAs("hist_b.pdf","pdf")
+    c1.SaveAs("hist"+label_B+plot_var+".pdf","pdf")
     hist_sr.Draw()
-    c1.SaveAs("hist_sr.pdf","pdf")
+    c1.SaveAs("hist"+label_S+plot_var+".pdf","pdf")
     hist_D.Draw()
-    c1.SaveAs("hist_d.pdf","pdf")
+    c1.SaveAs("hist"+label_D+plot_var+".pdf","pdf")
+    zones(hist_A,hist_B,hist_sr,hist_D,suffix+"_"+plot_var)
+
 
     print  "Region A: ", hist_A.Integral(80,100)
     print  "Region B: ", hist_B.Integral(80,100)
+    print  "full range:"
+    print  "Region A: ", hist_A.Integral()
+    print  "Region B: ", hist_B.Integral()
     print  "Region Signal: ", hist_sr.Integral()
     print  "Region D: ", hist_D.Integral()
+
+
+def make_efake2( sampMan, sample, sel_base, eta_cut, plot_var, suffix='', closure=False, workspace=None) :
+
+	#only single plot
+    #---------------------------------------
+    # Get the base selection for each region
+    #---------------------------------------
+    ph_selection_A   = 'met_pt<40 && ph_passEleVeto[0]==1' #'%s==1' %defs.get_phid_selection( num_var )
+    full_sel_A   = ' && '.join( [sel_base, ph_selection_A,] )
+    label_A   = 'a_%s_' %suffix
+
+    #---------------------------------------
+    # draw the histograms
+    #---------------------------------------
+    binning = (200,-5,5)
+    hist_A   = clone_sample_and_draw( sampMan, sample, plot_var , full_sel_A  , binning )
+    c1  = ROOT.TCanvas('c1','c1')
+    hist_A.Draw()
+    c1.SaveAs("hist"+label_A+plot_var+".pdf","pdf")
+
+    print  "bin 80 -100: ", hist_A.Integral(80,100)
+    print  "full integral: ", hist_A.Integral()
 
 
 
@@ -194,7 +187,30 @@ def clone_sample_and_draw( sampMan, samp, var, sel, binning ) :
 
     newSamp = sampMan.clone_sample( oldname=samp, newname=samp+str(uuid.uuid4()), temporary=True ) 
     sampMan.create_hist( newSamp, var, sel, binning )
+    return newSamp.hist
 
+def zones(h1,h3,h2,h4,suffix): 
+   c1 = ROOT.TCanvas("c2","multipads",900,700)
+   ROOT.gStyle.SetOptStat(0)
+   c1.Divide(2,2,0,0)
+
+   c1.cd(1)
+   ROOT.gPad.SetTickx(2)
+   h1.Draw()
+
+   c1.cd(2)
+   ROOT.gPad.SetTickx(2)
+   ROOT.gPad.SetTicky(2)
+   h2.GetYaxis().SetLabelOffset(0.01)
+   h2.Draw()
+
+   c1.cd(3)
+   h3.Draw()
+
+   c1.cd(4)
+   ROOT.gPad.SetTicky(2)
+   h4.Draw()
+   c1.SaveAs("hist_multi_"+suffix+".pdf")
 
 main()
 
