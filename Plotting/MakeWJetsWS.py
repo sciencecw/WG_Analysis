@@ -60,8 +60,8 @@ def main() :
     sel_base_mu = 'mu_pt30_n==1 && mu_n==1'
     #sel_base_el = 'el_pt30_n==1 && el_n==1'
     #sel_base_el = 'ph_n==1 && el_n==1'
-    sel_base_el = 'ph_n==2 && el_n>=1'
-    #sel_base_el = '1'
+    #sel_base_el = 'ph_n>=1 && el_n>=1'
+    sel_base_el = '1'
 
     #eta_cuts = ['EB', 'EE']
     eta_cuts = ['EB']
@@ -72,19 +72,17 @@ def main() :
                                # 'mu' : {'selection' : sel_base_mu }, 
                                 'el' : { 'selection' : sel_base_el }, 
                                },
-                   #'jetVeto' : { 'mu' : {'selection' : sel_jetveto_mu }, 
-                   #              'el' : { 'selection' : sel_jetveto_el } ,
-                   #            },
-                 }
+                  #'jetVeto' : { 'mu' : {'selection' : sel_jetveto_mu }, 
+                  #              'el' : { 'selection' : sel_jetveto_el } ,
+                  #            },
+                  }
 
     elefake            = ROOT.RooWorkspace( 'elefake' )
 
-    make_efake( sampManElG, 'Z+jets', sel_base_el,'EB', 'ph_phi', suffix='OvLrm', closure=False, workspace=elefake)
+    make_efake( sampManElG, 'Z+jets', sel_base_el,'EB', 'ph_eta', suffix='OvLrmPassCSEV', closure=False, workspace=elefake)
 
     if options.outputDir is not None :
-
         elefake.writeToFile( '%s/%s.root' %( options.outputDir,elefake.GetName() ) )
-
         for fileid, ws_list in workspaces_to_save.iteritems() :
             for idx, ws in enumerate(ws_list) :
                 if idx == 0 :
@@ -93,7 +91,6 @@ def main() :
                     recreate = False
 
                 ws.writeToFile( '%s/workspace_%s.root' %( options.outputDir, fileid ), recreate )
-
         for key, can in sampManMuG.outputs.iteritems() :
             can.SaveAs('%s/%s.pdf' %( options.outputDir, key ) )
         for key, can in sampManElG.outputs.iteritems() :
@@ -108,16 +105,18 @@ def make_efake( sampMan, sample, sel_base, eta_cut, plot_var, suffix='', closure
     #---------------------------------------
     # Get the base selection for each region
     #---------------------------------------
-    ph_selection_sr    = 'met_pt>40 && ph_passEleVeto[1]==1' #'%s==1' %defs.get_phid_selection('medium')
-    ph_selection_B   = 'met_pt<40 && ph_passEleVeto[1]==0' #'%s==1'%defs.get_phid_selection( num_var, _var )
-    #'el_n==1 && ph_n==1 && ph_passEleVeto[0] == 1 && met_pt<40 &&ph_pt[0]>160'
-    ph_selection_A   = 'met_pt<40 && ph_passEleVeto[1]==1' #'%s==1' %defs.get_phid_selection( num_var )
-    ph_selection_D = 'met_pt>40 && ph_passEleVeto[1]==0'#'%s==1' %defs.get_phid_selection( _var )
+    ph_selection_sr  = 'met_pt>40 && ph_mediumPassEleOlapPassCSEV_n>=1' #'%s==1' %defs.get_phid_selection('medium')
+    ph_selection_B   = 'met_pt<40 && ph_mediumPassEleOlapFailCSEV_n>=1' #'%s==1'%defs.get_phid_selection( num_var, _var )
+    ph_selection_A   = 'met_pt<40 && ph_mediumPassEleOlapPassCSEV_n>=1' #'%s==1' %defs.get_phid_selection( num_var )
+    ph_selection_D   = 'met_pt>40 && ph_mediumPassEleOlapFailCSEV_n>=1'#'%s==1' %defs.get_phid_selection( _var )
 
     full_sel_D = ' && '.join( [sel_base, ph_selection_D, ] )
     full_sel_A   = ' && '.join( [sel_base, ph_selection_A,] )
     full_sel_B   = ' && '.join( [sel_base, ph_selection_B,] )
     full_sel_sr    = ' && '.join( [sel_base, ph_selection_sr,] )
+
+    varfail = '[ptSorted_ph_mediumPassEleOlapFailCSEV_idx[0]]'
+    varpass = '[ptSorted_ph_mediumPassEleOlapPassCSEV_idx[0]]'
 
     label_D = 'd_%s_' %suffix
     label_A   = 'a_%s_' %suffix
@@ -133,11 +132,11 @@ def make_efake( sampMan, sample, sel_base, eta_cut, plot_var, suffix='', closure
     # draw the histograms
     #---------------------------------------
     binning = (200,-5,5)
-    hist_D   = clone_sample_and_draw( sampMan, sample, plot_var , full_sel_D, binning )
+    hist_D   = clone_sample_and_draw( sampMan, sample, plot_var+varfail , full_sel_D, binning )
     print hist_D
-    hist_A   = clone_sample_and_draw( sampMan, sample, plot_var , full_sel_A  , binning )
-    hist_B   = clone_sample_and_draw( sampMan, sample, plot_var , full_sel_B  , binning )
-    hist_sr  = clone_sample_and_draw( sampMan, sample, plot_var , full_sel_sr  , binning )
+    hist_A   = clone_sample_and_draw( sampMan, sample, plot_var+varpass , full_sel_A  , binning )
+    hist_B   = clone_sample_and_draw( sampMan, sample, plot_var+varfail , full_sel_B  , binning )
+    hist_sr  = clone_sample_and_draw( sampMan, sample, plot_var+varpass , full_sel_sr  , binning )
     c1  = ROOT.TCanvas('c1','c1')
     hist_A.Draw()
     c1.SaveAs("hist"+label_A+plot_var+".pdf","pdf")
