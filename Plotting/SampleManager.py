@@ -1900,8 +1900,8 @@ class SampleManager :
             else :
                 filenamestrip = filenamesplit[0]
 
-            histnameeps = outputDir + '/' + filenamestrip+'.eps'
-            #histnameeps = outputDir + '/' + filenamestrip+'.C'
+            #histnameeps = outputDir + '/' + filenamestrip+'.eps'
+            histnameeps = outputDir + '/' + filenamestrip+'.C'
             if not (filename.count( '.pdf' ) or filename.count('.png') ):
                 histnamepdf = outputDir + '/' + filenamestrip+'.pdf'
             else :

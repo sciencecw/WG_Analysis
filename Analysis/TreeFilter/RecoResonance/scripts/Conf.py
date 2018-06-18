@@ -45,7 +45,7 @@ def get_keep_filter(tag=None) :
                    'lumiSection', 'eventNumber', 'runNumber', 'bxNumber', 'isData', 'EventWeights']
 
 
-    branches_tight = mu_basic + el_basic + ph_basic + met_basic + jet_basic + event_basic
+    branches_tight = mu_basic + el_basic + ph_basic + met_basic + jet_basic + event_basic + ["gen_.*"]
 
     if tag == 'tight' : 
         return branches_tight

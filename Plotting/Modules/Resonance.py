@@ -7,7 +7,7 @@ def config_samples(samples) :
 
     samples.AddSample('DYJetsToLL_M-50', 
                       #path='DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8PhOlap', 
-                      path='DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
+		      path='DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8', 
                       isActive=False, useXSFile=True )
 
     samples.AddSample('ZGTo2LG', 
@@ -281,11 +281,6 @@ def config_samples(samples) :
                            isActive=False,
                           )
 
-#    samples.AddSampleGroup( 'TTG', legend_name='t#bar{t}#gamma',
-#                           input_samples = ['TTGJets'],
-#                           plotColor = ROOT.kAzure+1,
-#                          )
-#
     samples.AddSampleGroup(  'Wjets', legend_name='W+Jets',
                            #input_samples = ['WJetsToLNu-madgraphMLM'],
                            input_samples = [
@@ -300,37 +295,42 @@ def config_samples(samples) :
                            ],
                            plotColor = ROOT.kBlue-2,
                           )
+##>>
+    samples.AddSampleGroup( 'TTG', legend_name='t#bar{t}#gamma',
+                           input_samples = ['TTGJets'],
+                           plotColor = ROOT.kAzure+1,
+                          )
 
-#    samples.AddSampleGroup( 'GJets', legend_name='#gamma + jets',
-#                           input_samples = [
-#                                           'GJets_HT-100To200',
-#                                           'GJets_HT-200To400',
-#                                           'GJets_HT-400To600',
-#                                           'GJets_HT-40To100' ,
-#                                           'GJets_HT-600ToInf',
-#                           ],
-#                           plotColor = ROOT.kOrange,
-#                          )
-#
-#    samples.AddSampleGroup( 'GammaGamma', legend_name='#gamma#gamma',
-#                           input_samples = [
-#                                           'DiPhoton',
-#                           ],
-#                           plotColor = ROOT.kYellow,
-#                          )
-#
-#
-#
-#    samples.AddSampleGroup( 'TTbar_DiLep', legend_name='t#bar{t} dileptonic',
-#                           input_samples = ['TTJets_DiLept'],
-#                           plotColor = ROOT.kMagenta+2,
-#                          )
-#
-#    samples.AddSampleGroup( 'TTbar_SingleLep', legend_name='t#bar{t} semileptonic',
-#                           input_samples = ['TTJets_SingleLeptFromTbar', 'TTJets_SingleLeptFromT'],
-#                           plotColor = ROOT.kGreen+2,
-#                          )
+    samples.AddSampleGroup( 'GJets', legend_name='#gamma + jets',
+                           input_samples = [
+                                           'GJets_HT-100To200',
+                                           'GJets_HT-200To400',
+                                           'GJets_HT-400To600',
+                                           'GJets_HT-40To100' ,
+                                           'GJets_HT-600ToInf',
+                           ],
+                           plotColor = ROOT.kOrange,
+                          )
 
+    samples.AddSampleGroup( 'GammaGamma', legend_name='#gamma#gamma',
+                           input_samples = [
+                                           'DiPhoton',
+                           ],
+                           plotColor = ROOT.kYellow,
+                          )
+
+
+
+    samples.AddSampleGroup( 'TTbar_DiLep', legend_name='t#bar{t} dileptonic',
+                           input_samples = ['TTJets_DiLept'],
+                           plotColor = ROOT.kMagenta+2,
+                          )
+
+    samples.AddSampleGroup( 'TTbar_SingleLep', legend_name='t#bar{t} semileptonic',
+                           input_samples = ['TTJets_SingleLeptFromTbar', 'TTJets_SingleLeptFromT'],
+                           plotColor = ROOT.kGreen+2,
+                          )
+#<<#
 
     samples.AddSampleGroup( 'AllTop', legend_name='AllTop',
                            input_samples = ['TTbar_DiLep', 'TTbar_SingleLep'],
