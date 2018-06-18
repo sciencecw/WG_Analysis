@@ -1,0 +1,1177 @@
+******************************************************************************
+*Tree    :EventTree : EventTree                                              *
+*Entries :   640154 : Total =      2006587890 bytes  File  Size =  563894885 *
+*        :          : Tree compression factor =   3.56                       *
+******************************************************************************
+*Br    0 :isData    : isData/O                                               *
+*Entries :   640154 : Total  Size=     644268 bytes  File Size  =       6869 *
+*Baskets :       39 : Basket Size=      32768 bytes  Compression=  93.64     *
+*............................................................................*
+*Br    1 :eventNumber : eventNumber/i                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =    1181321 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   2.17     *
+*............................................................................*
+*Br    2 :lumiSection : lumiSection/i                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =     286465 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   8.95     *
+*............................................................................*
+*Br    3 :runNumber : runNumber/i                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =      15207 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression= 168.51     *
+*............................................................................*
+*Br    4 :bxNumber  : bxNumber/i                                             *
+*Entries :   640154 : Total  Size=    2563322 bytes  File Size  =      13846 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression= 185.07     *
+*............................................................................*
+*Br    5 :vtx_n     : vtx_n/I                                                *
+*Entries :   640154 : Total  Size=    2563238 bytes  File Size  =     715143 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.58     *
+*............................................................................*
+*Br    6 :pu_n      : pu_n/I                                                 *
+*Entries :   640154 : Total  Size=    2563210 bytes  File Size  =     757164 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.38     *
+*............................................................................*
+*Br    7 :rho       : rho/F                                                  *
+*Entries :   640154 : Total  Size=    2563182 bytes  File Size  =    2264173 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.13     *
+*............................................................................*
+*Br    8 :truepu_n  : truepu_n/I                                             *
+*Entries :   640154 : Total  Size=    2563322 bytes  File Size  =     729304 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.51     *
+*............................................................................*
+*Br    9 :pdf_id1   : pdf_id1/F                                              *
+*Entries :   640154 : Total  Size=    2563294 bytes  File Size  =     654394 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.92     *
+*............................................................................*
+*Br   10 :pdf_id2   : pdf_id2/F                                              *
+*Entries :   640154 : Total  Size=    2563294 bytes  File Size  =     653883 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.92     *
+*............................................................................*
+*Br   11 :pdf_x1    : pdf_x1/F                                               *
+*Entries :   640154 : Total  Size=    2563266 bytes  File Size  =    2352291 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.09     *
+*............................................................................*
+*Br   12 :pdf_x2    : pdf_x2/F                                               *
+*Entries :   640154 : Total  Size=    2563266 bytes  File Size  =    2352558 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.09     *
+*............................................................................*
+*Br   13 :pdf_scale : pdf_scale/F                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =    2158757 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.19     *
+*............................................................................*
+*Br   14 :EventWeights : vector<double>                                      *
+*Entries :   640154 : Total  Size=    8968754 bytes  File Size  =     945931 *
+*Baskets :       56 : Basket Size=     464896 bytes  Compression=   9.48     *
+*............................................................................*
+*Br   15 :el_n      : el_n/I                                                 *
+*Entries :   640154 : Total  Size=    2563210 bytes  File Size  =     260641 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.83     *
+*............................................................................*
+*Br   16 :el_pt     : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12945812 bytes  File Size  =    5656604 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   2.29     *
+*............................................................................*
+*Br   17 :el_eta    : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12945878 bytes  File Size  =    6024882 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   2.15     *
+*............................................................................*
+*Br   18 :el_phi    : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12945878 bytes  File Size  =    6046457 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   2.14     *
+*............................................................................*
+*Br   19 :el_e      : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12945746 bytes  File Size  =    5787093 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   2.24     *
+*............................................................................*
+*Br   20 :el_ptOrig : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12946076 bytes  File Size  =    5657396 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   2.29     *
+*............................................................................*
+*Br   21 :el_etaOrig : vector<float>                                         *
+*Entries :   640154 : Total  Size=   12946142 bytes  File Size  =    6025305 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   2.15     *
+*............................................................................*
+*Br   22 :el_phiOrig : vector<float>                                         *
+*Entries :   640154 : Total  Size=   12946142 bytes  File Size  =    6046862 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   2.14     *
+*............................................................................*
+*Br   23 :el_eOrig  : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12946010 bytes  File Size  =    5787038 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   2.24     *
+*............................................................................*
+*Br   24 :el_passVIDVeryLoose : vector<bool>                                 *
+*Entries :   640154 : Total  Size=    9963624 bytes  File Size  =    1738540 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   5.73     *
+*............................................................................*
+*Br   25 :el_passVIDLoose : vector<bool>                                     *
+*Entries :   640154 : Total  Size=    9963376 bytes  File Size  =    1738144 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   5.73     *
+*............................................................................*
+*Br   26 :el_passVIDMedium : vector<bool>                                    *
+*Entries :   640154 : Total  Size=    9963438 bytes  File Size  =    1738401 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   5.73     *
+*............................................................................*
+*Br   27 :el_passVIDTight : vector<bool>                                     *
+*Entries :   640154 : Total  Size=    9963376 bytes  File Size  =    1935232 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   5.15     *
+*............................................................................*
+*Br   28 :el_passVIDHEEP : vector<bool>                                      *
+*Entries :   640154 : Total  Size=    9963314 bytes  File Size  =    2088984 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   4.77     *
+*............................................................................*
+*Br   29 :el_passVIDHLT : vector<bool>                                       *
+*Entries :   640154 : Total  Size=    9963252 bytes  File Size  =    1944982 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   5.12     *
+*............................................................................*
+*Br   30 :el_passConvVeto : vector<bool>                                     *
+*Entries :   640154 : Total  Size=    9963376 bytes  File Size  =    1738144 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   5.73     *
+*............................................................................*
+*Br   31 :el_charge : vector<int>                                            *
+*Entries :   640154 : Total  Size=   12946076 bytes  File Size  =    2124776 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   6.09     *
+*............................................................................*
+*Br   32 :el_sc_eta : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12946076 bytes  File Size  =    6027767 *
+*Baskets :       62 : Basket Size=     671232 bytes  Compression=   2.15     *
+*............................................................................*
+*Br   33 :mu_n      : mu_n/I                                                 *
+*Entries :   640154 : Total  Size=    2563210 bytes  File Size  =      31805 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  80.57     *
+*............................................................................*
+*Br   34 :mu_pt     : vector<float>                                          *
+*Entries :   640154 : Total  Size=    8987774 bytes  File Size  =    1038564 *
+*Baskets :       56 : Basket Size=     465920 bytes  Compression=   8.65     *
+*............................................................................*
+*Br   35 :mu_eta    : vector<float>                                          *
+*Entries :   640154 : Total  Size=    8987834 bytes  File Size  =    1040330 *
+*Baskets :       56 : Basket Size=     465920 bytes  Compression=   8.64     *
+*............................................................................*
+*Br   36 :mu_phi    : vector<float>                                          *
+*Entries :   640154 : Total  Size=    8987834 bytes  File Size  =    1040407 *
+*Baskets :       56 : Basket Size=     465920 bytes  Compression=   8.64     *
+*............................................................................*
+*Br   37 :mu_e      : vector<float>                                          *
+*Entries :   640154 : Total  Size=    8987714 bytes  File Size  =    1038284 *
+*Baskets :       56 : Basket Size=     465920 bytes  Compression=   8.65     *
+*............................................................................*
+*Br   38 :mu_charge : vector<int>                                            *
+*Entries :   640154 : Total  Size=    8988014 bytes  File Size  =    1005912 *
+*Baskets :       56 : Basket Size=     465920 bytes  Compression=   8.93     *
+*............................................................................*
+*Br   39 :ph_n      : ph_n/I                                                 *
+*Entries :   640154 : Total  Size=    2563210 bytes  File Size  =     262238 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.77     *
+*............................................................................*
+*Br   40 :ph_pt     : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974316 bytes  File Size  =    5711236 *
+*Baskets :       62 : Basket Size=     672768 bytes  Compression=   2.27     *
+*............................................................................*
+*Br   41 :ph_eta    : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974382 bytes  File Size  =    6070535 *
+*Baskets :       62 : Basket Size=     672768 bytes  Compression=   2.14     *
+*............................................................................*
+*Br   42 :ph_phi    : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974382 bytes  File Size  =    6080981 *
+*Baskets :       62 : Basket Size=     672768 bytes  Compression=   2.13     *
+*............................................................................*
+*Br   43 :ph_e      : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974250 bytes  File Size  =    5822901 *
+*Baskets :       62 : Basket Size=     672768 bytes  Compression=   2.23     *
+*............................................................................*
+*Br   44 :ph_ptOrig : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974689 bytes  File Size  =    5711366 *
+*Baskets :       63 : Basket Size=     672768 bytes  Compression=   2.27     *
+*............................................................................*
+*Br   45 :ph_etaOrig : vector<float>                                         *
+*Entries :   640154 : Total  Size=   12974756 bytes  File Size  =    6070777 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.14     *
+*............................................................................*
+*Br   46 :ph_phiOrig : vector<float>                                         *
+*Entries :   640154 : Total  Size=   12974756 bytes  File Size  =    6081209 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.13     *
+*............................................................................*
+*Br   47 :ph_eOrig  : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974622 bytes  File Size  =    5822887 *
+*Baskets :       63 : Basket Size=     672768 bytes  Compression=   2.23     *
+*............................................................................*
+*Br   48 :ph_passVIDLoose : vector<bool>                                     *
+*Entries :   640154 : Total  Size=    9970502 bytes  File Size  =    1843950 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.41     *
+*............................................................................*
+*Br   49 :ph_passVIDMedium : vector<bool>                                    *
+*Entries :   640154 : Total  Size=    9970564 bytes  File Size  =    1843955 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.41     *
+*............................................................................*
+*Br   50 :ph_passVIDTight : vector<bool>                                     *
+*Entries :   640154 : Total  Size=    9970502 bytes  File Size  =    2035803 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   4.90     *
+*............................................................................*
+*Br   51 :ph_chIso  : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974622 bytes  File Size  =    2809865 *
+*Baskets :       63 : Basket Size=     672768 bytes  Compression=   4.62     *
+*............................................................................*
+*Br   52 :ph_neuIso : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974689 bytes  File Size  =    3191881 *
+*Baskets :       63 : Basket Size=     672768 bytes  Compression=   4.06     *
+*............................................................................*
+*Br   53 :ph_phoIso : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974689 bytes  File Size  =    4383685 *
+*Baskets :       63 : Basket Size=     672768 bytes  Compression=   2.96     *
+*............................................................................*
+*Br   54 :ph_sc_eta : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974689 bytes  File Size  =    6075154 *
+*Baskets :       63 : Basket Size=     672768 bytes  Compression=   2.14     *
+*............................................................................*
+*Br   55 :ph_sc_phi : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974689 bytes  File Size  =    6085611 *
+*Baskets :       63 : Basket Size=     672768 bytes  Compression=   2.13     *
+*............................................................................*
+*Br   56 :ph_hOverE : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974689 bytes  File Size  =    2387952 *
+*Baskets :       63 : Basket Size=     672768 bytes  Compression=   5.43     *
+*............................................................................*
+*Br   57 :ph_sigmaIEIE : vector<float>                                       *
+*Entries :   640154 : Total  Size=   12974890 bytes  File Size  =    5614504 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.31     *
+*............................................................................*
+*Br   58 :ph_sigmaIEIEFull5x5 : vector<float>                                *
+*Entries :   640154 : Total  Size=   12975359 bytes  File Size  =    5662283 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.29     *
+*............................................................................*
+*Br   59 :ph_r9     : vector<float>                                          *
+*Entries :   640154 : Total  Size=   12974316 bytes  File Size  =    5599289 *
+*Baskets :       62 : Basket Size=     672768 bytes  Compression=   2.32     *
+*............................................................................*
+*Br   60 :ph_r9Full5x5 : vector<float>                                       *
+*Entries :   640154 : Total  Size=   12974890 bytes  File Size  =    5581990 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.32     *
+*............................................................................*
+*Br   61 :ph_etaWidth : vector<float>                                        *
+*Entries :   640154 : Total  Size=   12974823 bytes  File Size  =    5818858 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.23     *
+*............................................................................*
+*Br   62 :ph_phiWidth : vector<float>                                        *
+*Entries :   640154 : Total  Size=   12974823 bytes  File Size  =    5844965 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.22     *
+*............................................................................*
+*Br   63 :ph_passEleVeto : vector<bool>                                      *
+*Entries :   640154 : Total  Size=    9970440 bytes  File Size  =    2008887 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   4.96     *
+*............................................................................*
+*Br   64 :ph_hasPixSeed : vector<bool>                                       *
+*Entries :   640154 : Total  Size=    9970378 bytes  File Size  =    1868966 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.33     *
+*............................................................................*
+*Br   65 :jet_n     : jet_n/I                                                *
+*Entries :   640154 : Total  Size=    2563238 bytes  File Size  =     361654 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   7.09     *
+*............................................................................*
+*Br   66 :jet_pt    : vector<float>                                          *
+*Entries :   640154 : Total  Size=   10787024 bytes  File Size  =    3800337 *
+*Baskets :       59 : Basket Size=     558592 bytes  Compression=   2.84     *
+*............................................................................*
+*Br   67 :jet_eta   : vector<float>                                          *
+*Entries :   640154 : Total  Size=   10787087 bytes  File Size  =    3998059 *
+*Baskets :       59 : Basket Size=     558592 bytes  Compression=   2.70     *
+*............................................................................*
+*Br   68 :jet_phi   : vector<float>                                          *
+*Entries :   640154 : Total  Size=   10787087 bytes  File Size  =    3991279 *
+*Baskets :       59 : Basket Size=     558592 bytes  Compression=   2.70     *
+*............................................................................*
+*Br   69 :jet_e     : vector<float>                                          *
+*Entries :   640154 : Total  Size=   10786961 bytes  File Size  =    3900240 *
+*Baskets :       59 : Basket Size=     558592 bytes  Compression=   2.77     *
+*............................................................................*
+*Br   70 :met_pt    : met_pt/F                                               *
+*Entries :   640154 : Total  Size=    2563266 bytes  File Size  =    2299489 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   71 :met_phi   : met_phi/F                                              *
+*Entries :   640154 : Total  Size=    2563294 bytes  File Size  =    2366407 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   72 :met_JetResUp_pt : met_JetResUp_pt/F                                *
+*Entries :   640154 : Total  Size=    2563518 bytes  File Size  =    2299705 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   73 :met_JetResUp_phi : met_JetResUp_phi/F                              *
+*Entries :   640154 : Total  Size=    2563546 bytes  File Size  =    2366677 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   74 :met_JetResDown_pt : met_JetResDown_pt/F                            *
+*Entries :   640154 : Total  Size=    2563574 bytes  File Size  =    2299751 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   75 :met_JetResDown_phi : met_JetResDown_phi/F                          *
+*Entries :   640154 : Total  Size=    2563602 bytes  File Size  =    2366725 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   76 :met_JetEnUp_pt : met_JetEnUp_pt/F                                  *
+*Entries :   640154 : Total  Size=    2563490 bytes  File Size  =    2299946 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   77 :met_JetEnUp_phi : met_JetEnUp_phi/F                                *
+*Entries :   640154 : Total  Size=    2563518 bytes  File Size  =    2366819 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   78 :met_JetEnDown_pt : met_JetEnDown_pt/F                              *
+*Entries :   640154 : Total  Size=    2563546 bytes  File Size  =    2299316 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   79 :met_JetEnDown_phi : met_JetEnDown_phi/F                            *
+*Entries :   640154 : Total  Size=    2563574 bytes  File Size  =    2366437 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   80 :met_MuonEnUp_pt : met_MuonEnUp_pt/F                                *
+*Entries :   640154 : Total  Size=    2563518 bytes  File Size  =    2299816 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   81 :met_MuonEnUp_phi : met_MuonEnUp_phi/F                              *
+*Entries :   640154 : Total  Size=    2563546 bytes  File Size  =    2366510 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   82 :met_MuonEnDown_pt : met_MuonEnDown_pt/F                            *
+*Entries :   640154 : Total  Size=    2563574 bytes  File Size  =    2299773 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   83 :met_MuonEnDown_phi : met_MuonEnDown_phi/F                          *
+*Entries :   640154 : Total  Size=    2563602 bytes  File Size  =    2366560 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   84 :met_ElectronEnUp_pt : met_ElectronEnUp_pt/F                        *
+*Entries :   640154 : Total  Size=    2563630 bytes  File Size  =    2299674 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   85 :met_ElectronEnUp_phi : met_ElectronEnUp_phi/F                      *
+*Entries :   640154 : Total  Size=    2563658 bytes  File Size  =    2366565 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   86 :met_ElectronEnDown_pt : met_ElectronEnDown_pt/F                    *
+*Entries :   640154 : Total  Size=    2563686 bytes  File Size  =    2299590 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   87 :met_ElectronEnDown_phi : met_ElectronEnDown_phi/F                  *
+*Entries :   640154 : Total  Size=    2563714 bytes  File Size  =    2366709 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   88 :met_PhotonEnUp_pt : met_PhotonEnUp_pt/F                            *
+*Entries :   640154 : Total  Size=    2563574 bytes  File Size  =    2299525 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   89 :met_PhotonEnUp_phi : met_PhotonEnUp_phi/F                          *
+*Entries :   640154 : Total  Size=    2563602 bytes  File Size  =    2366515 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   90 :met_PhotonEnDown_pt : met_PhotonEnDown_pt/F                        *
+*Entries :   640154 : Total  Size=    2563630 bytes  File Size  =    2299672 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   91 :met_PhotonEnDown_phi : met_PhotonEnDown_phi/F                      *
+*Entries :   640154 : Total  Size=    2563658 bytes  File Size  =    2366725 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   92 :met_UnclusteredEnUp_pt : met_UnclusteredEnUp_pt/F                  *
+*Entries :   640154 : Total  Size=    2563714 bytes  File Size  =    2299460 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   93 :met_UnclusteredEnUp_phi : met_UnclusteredEnUp_phi/F                *
+*Entries :   640154 : Total  Size=    2563742 bytes  File Size  =    2367377 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   94 :met_UnclusteredEnDown_pt : met_UnclusteredEnDown_pt/F              *
+*Entries :   640154 : Total  Size=    2563770 bytes  File Size  =    2300302 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br   95 :met_UnclusteredEnDown_phi : met_UnclusteredEnDown_phi/F            *
+*Entries :   640154 : Total  Size=    2563798 bytes  File Size  =    2366451 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br   96 :mu_pt20_n : mu_pt20_n/I                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =      22352 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression= 114.65     *
+*............................................................................*
+*Br   97 :mu_pt30_n : mu_pt30_n/I                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =      18452 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression= 138.88     *
+*............................................................................*
+*Br   98 :mu_passTight : vector<bool>                                        *
+*Entries :   640154 : Total  Size=    8973614 bytes  File Size  =    1135665 *
+*Baskets :       56 : Basket Size=     465408 bytes  Compression=   7.90     *
+*............................................................................*
+*Br   99 :mu_passMedium : vector<bool>                                       *
+*Entries :   640154 : Total  Size=    8968814 bytes  File Size  =     945423 *
+*Baskets :       56 : Basket Size=     464896 bytes  Compression=   9.49     *
+*............................................................................*
+*Br  100 :mu_passLoose : vector<bool>                                        *
+*Entries :   640154 : Total  Size=    8973614 bytes  File Size  =    1135665 *
+*Baskets :       56 : Basket Size=     465408 bytes  Compression=   7.90     *
+*............................................................................*
+*Br  101 :mu_hasTruthMatchMu : vector<bool>                                  *
+*Entries :   640154 : Total  Size=    8973974 bytes  File Size  =    1137757 *
+*Baskets :       56 : Basket Size=     465408 bytes  Compression=   7.89     *
+*............................................................................*
+*Br  102 :mu_truthMatchMu_dr : vector<float>                                 *
+*Entries :   640154 : Total  Size=    8988554 bytes  File Size  =    1015808 *
+*Baskets :       56 : Basket Size=     465920 bytes  Compression=   8.85     *
+*............................................................................*
+*Br  103 :mu_truthMatchMu_pt : vector<float>                                 *
+*Entries :   640154 : Total  Size=    8988554 bytes  File Size  =    1015420 *
+*Baskets :       56 : Basket Size=     465920 bytes  Compression=   8.85     *
+*............................................................................*
+*Br  104 :mu_hasTrigMatch : vector<float>                                    *
+*Entries :   640154 : Total  Size=    8988374 bytes  File Size  =    1005152 *
+*Baskets :       56 : Basket Size=     465920 bytes  Compression=   8.94     *
+*............................................................................*
+*Br  105 :mu_trigMatch_dr : vector<float>                                    *
+*Entries :   640154 : Total  Size=    8988374 bytes  File Size  =    1007834 *
+*Baskets :       56 : Basket Size=     465920 bytes  Compression=   8.92     *
+*............................................................................*
+*Br  106 :el_pt30_n : el_pt30_n/I                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =     259791 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.86     *
+*............................................................................*
+*Br  107 :el_passVeryLoose : vector<bool>                                    *
+*Entries :   640154 : Total  Size=    9963438 bytes  File Size  =    1825157 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   5.46     *
+*............................................................................*
+*Br  108 :el_passLoose : vector<bool>                                        *
+*Entries :   640154 : Total  Size=    9963190 bytes  File Size  =    2030290 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   4.91     *
+*............................................................................*
+*Br  109 :el_passMedium : vector<bool>                                       *
+*Entries :   640154 : Total  Size=    9963252 bytes  File Size  =    2105058 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   4.73     *
+*............................................................................*
+*Br  110 :el_passTight : vector<bool>                                        *
+*Entries :   640154 : Total  Size=    9963190 bytes  File Size  =    2140538 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   4.65     *
+*............................................................................*
+*Br  111 :el_hasTrigMatch : vector<bool>                                     *
+*Entries :   640154 : Total  Size=    9963376 bytes  File Size  =    2032543 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   4.90     *
+*............................................................................*
+*Br  112 :el_trigMatch_dr : vector<float>                                    *
+*Entries :   640154 : Total  Size=   12946472 bytes  File Size  =    5888723 *
+*Baskets :       62 : Basket Size=     671744 bytes  Compression=   2.20     *
+*............................................................................*
+*Br  113 :el_hasTruthMatchEl : vector<bool>                                  *
+*Entries :   640154 : Total  Size=    9963562 bytes  File Size  =    1977511 *
+*Baskets :       58 : Basket Size=     516608 bytes  Compression=   5.04     *
+*............................................................................*
+*Br  114 :el_truthMatchEl_dr : vector<float>                                 *
+*Entries :   640154 : Total  Size=   12946670 bytes  File Size  =    5059461 *
+*Baskets :       62 : Basket Size=     671744 bytes  Compression=   2.56     *
+*............................................................................*
+*Br  115 :el_truthMatchEl_pt : vector<float>                                 *
+*Entries :   640154 : Total  Size=   12946670 bytes  File Size  =    5076028 *
+*Baskets :       62 : Basket Size=     671744 bytes  Compression=   2.55     *
+*............................................................................*
+*Br  116 :ph_chIsoCorr : vector<float>                                       *
+*Entries :   640154 : Total  Size=   12974890 bytes  File Size  =    2556464 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   5.07     *
+*............................................................................*
+*Br  117 :ph_neuIsoCorr : vector<float>                                      *
+*Entries :   640154 : Total  Size=   12974957 bytes  File Size  =    5862646 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.21     *
+*............................................................................*
+*Br  118 :ph_phoIsoCorr : vector<float>                                      *
+*Entries :   640154 : Total  Size=   12974957 bytes  File Size  =    5864698 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.21     *
+*............................................................................*
+*Br  119 :ph_min_el_dr : vector<float>                                       *
+*Entries :   640154 : Total  Size=   12974890 bytes  File Size  =    5835943 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   2.22     *
+*............................................................................*
+*Br  120 :ph_IsEB   : vector<bool>                                           *
+*Entries :   640154 : Total  Size=    9970006 bytes  File Size  =    2125575 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   4.69     *
+*............................................................................*
+*Br  121 :ph_IsEE   : vector<bool>                                           *
+*Entries :   640154 : Total  Size=    9970006 bytes  File Size  =    2119655 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   4.70     *
+*............................................................................*
+*Br  122 :ph_passTight : vector<bool>                                        *
+*Entries :   640154 : Total  Size=    9970316 bytes  File Size  =    2006675 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   4.97     *
+*............................................................................*
+*Br  123 :ph_passMedium : vector<bool>                                       *
+*Entries :   640154 : Total  Size=    9970378 bytes  File Size  =    1741772 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  124 :ph_passLoose : vector<bool>                                        *
+*Entries :   640154 : Total  Size=    9970316 bytes  File Size  =    1741757 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  125 :ph_passLooseNoSIEIE : vector<bool>                                 *
+*Entries :   640154 : Total  Size=    9970750 bytes  File Size  =    1742555 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  126 :ph_passHOverELoose : vector<bool>                                  *
+*Entries :   640154 : Total  Size=    9970688 bytes  File Size  =    1742451 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  127 :ph_passHOverEMedium : vector<bool>                                 *
+*Entries :   640154 : Total  Size=    9970750 bytes  File Size  =    1742555 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  128 :ph_passHOverETight : vector<bool>                                  *
+*Entries :   640154 : Total  Size=    9970688 bytes  File Size  =    1764347 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.65     *
+*............................................................................*
+*Br  129 :ph_passSIEIELoose : vector<bool>                                   *
+*Entries :   640154 : Total  Size=    9970626 bytes  File Size  =    1742247 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  130 :ph_passSIEIEMedium : vector<bool>                                  *
+*Entries :   640154 : Total  Size=    9970688 bytes  File Size  =    1742451 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  131 :ph_passSIEIETight : vector<bool>                                   *
+*Entries :   640154 : Total  Size=    9970626 bytes  File Size  =    1783124 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.59     *
+*............................................................................*
+*Br  132 :ph_passChIsoCorrLoose : vector<bool>                               *
+*Entries :   640154 : Total  Size=    9970874 bytes  File Size  =    1742672 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  133 :ph_passChIsoCorrMedium : vector<bool>                              *
+*Entries :   640154 : Total  Size=    9970936 bytes  File Size  =    1742814 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  134 :ph_passChIsoCorrTight : vector<bool>                               *
+*Entries :   640154 : Total  Size=    9970874 bytes  File Size  =    1907531 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.23     *
+*............................................................................*
+*Br  135 :ph_passNeuIsoCorrLoose : vector<bool>                              *
+*Entries :   640154 : Total  Size=    9970936 bytes  File Size  =    1742814 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  136 :ph_passNeuIsoCorrMedium : vector<bool>                             *
+*Entries :   640154 : Total  Size=    9970998 bytes  File Size  =    1742795 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  137 :ph_passNeuIsoCorrTight : vector<bool>                              *
+*Entries :   640154 : Total  Size=    9970936 bytes  File Size  =    1909649 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.22     *
+*............................................................................*
+*Br  138 :ph_passPhoIsoCorrLoose : vector<bool>                              *
+*Entries :   640154 : Total  Size=    9970936 bytes  File Size  =    1742814 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  139 :ph_passPhoIsoCorrMedium : vector<bool>                             *
+*Entries :   640154 : Total  Size=    9970998 bytes  File Size  =    1742795 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.72     *
+*............................................................................*
+*Br  140 :ph_passPhoIsoCorrTight : vector<bool>                              *
+*Entries :   640154 : Total  Size=    9970936 bytes  File Size  =    1760937 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.66     *
+*............................................................................*
+*Br  141 :ph_hasTruthMatchPh : vector<bool>                                  *
+*Entries :   640154 : Total  Size=    9970688 bytes  File Size  =    1899072 *
+*Baskets :       58 : Basket Size=     517120 bytes  Compression=   5.25     *
+*............................................................................*
+*Br  142 :ph_truthMatchPh_dr : vector<float>                                 *
+*Entries :   640154 : Total  Size=   12975292 bytes  File Size  =    2423990 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   5.35     *
+*............................................................................*
+*Br  143 :ph_truthMatchPh_pt : vector<float>                                 *
+*Entries :   640154 : Total  Size=   12975292 bytes  File Size  =    2337511 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   5.55     *
+*............................................................................*
+*Br  144 :jet_CSVLoose_n : jet_CSVLoose_n/I                                  *
+*Entries :   640154 : Total  Size=    2563490 bytes  File Size  =     130939 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  19.57     *
+*............................................................................*
+*Br  145 :jet_CSVMedium_n : jet_CSVMedium_n/I                                *
+*Entries :   640154 : Total  Size=    2563518 bytes  File Size  =      45948 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  55.77     *
+*............................................................................*
+*Br  146 :jet_CSVTight_n : jet_CSVTight_n/I                                  *
+*Entries :   640154 : Total  Size=    2563490 bytes  File Size  =      29061 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  88.18     *
+*............................................................................*
+*Br  147 :jet_IdLoose : vector<bool>                                         *
+*Entries :   640154 : Total  Size=    9423383 bytes  File Size  =    1851360 *
+*Baskets :       57 : Basket Size=     488448 bytes  Compression=   5.09     *
+*............................................................................*
+*Br  148 :jet_IdTight : vector<bool>                                         *
+*Entries :   640154 : Total  Size=    9423383 bytes  File Size  =    1863814 *
+*Baskets :       57 : Basket Size=     488448 bytes  Compression=   5.06     *
+*............................................................................*
+*Br  149 :jet_IdTightLep : vector<bool>                                      *
+*Entries :   640154 : Total  Size=    9423566 bytes  File Size  =    1949397 *
+*Baskets :       57 : Basket Size=     488448 bytes  Compression=   4.83     *
+*............................................................................*
+*Br  150 :m_lep_ph  : m_lep_ph/F                                             *
+*Entries :   640154 : Total  Size=    2563322 bytes  File Size  =    2280801 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.12     *
+*............................................................................*
+*Br  151 :m_lep_met_ph : m_lep_met_ph/F                                      *
+*Entries :   640154 : Total  Size=    2563434 bytes  File Size  =    2290964 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.12     *
+*............................................................................*
+*Br  152 :m_mt_lep_met_ph : m_mtlep_met_ph/F                                 *
+*Entries :   640154 : Total  Size=    2563515 bytes  File Size  =    2295855 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.12     *
+*............................................................................*
+*Br  153 :m_mt_lep_met_ph_forcewmass : m_mt_lep_met_ph_forcewmass/F          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =    2201255 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.16     *
+*............................................................................*
+*Br  154 :mt_w      : mt_w/F                                                 *
+*Entries :   640154 : Total  Size=    2563210 bytes  File Size  =    2304114 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br  155 :mt_res    : mt_res/F                                               *
+*Entries :   640154 : Total  Size=    2563266 bytes  File Size  =    2301289 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br  156 :mt_lep_ph : mt_lep_ph/F                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =    2286181 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.12     *
+*............................................................................*
+*Br  157 :dphi_lep_ph : dphi_lep_ph/F                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =    2164505 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.18     *
+*............................................................................*
+*Br  158 :dr_lep_ph : dr_lep_ph/F                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =    2289426 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.12     *
+*............................................................................*
+*Br  159 :mt_lep_met : mt_lep_met/F                                          *
+*Entries :   640154 : Total  Size=    2563378 bytes  File Size  =    2304261 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br  160 :m_lep_met : m_lep_met/F                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =    2282130 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.12     *
+*............................................................................*
+*Br  161 :pt_lep_met : pt_lep_met/F                                          *
+*Entries :   640154 : Total  Size=    2563378 bytes  File Size  =    2273366 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.13     *
+*............................................................................*
+*Br  162 :dphi_lep_met : dphi_lep_met/F                                      *
+*Entries :   640154 : Total  Size=    2563434 bytes  File Size  =    2370222 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br  163 :mt_lep_met_ph : mt_lep_met_ph/F                                    *
+*Entries :   640154 : Total  Size=    2563462 bytes  File Size  =    2334357 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.10     *
+*............................................................................*
+*Br  164 :mt_lep_met_ph_inv : mt_lep_met_ph_inv/F                            *
+*Entries :   640154 : Total  Size=    2563574 bytes  File Size  =    2312522 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.11     *
+*............................................................................*
+*Br  165 :dphi_ph_w : dphi_ph_w/F                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =    2408091 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.06     *
+*............................................................................*
+*Br  166 :pt_lep_met_ph : pt_lep_met_ph/F                                    *
+*Entries :   640154 : Total  Size=    2563462 bytes  File Size  =    2283552 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.12     *
+*............................................................................*
+*Br  167 :RecoWMass : RecoWMass/F                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =     750348 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.42     *
+*............................................................................*
+*Br  168 :recoM_lep_nu_ph : recoM_lep_nu_ph/F                                *
+*Entries :   640154 : Total  Size=    2563518 bytes  File Size  =    2114573 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.21     *
+*............................................................................*
+*Br  169 :recoMet_eta : recoMet_eta/F                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =    2269928 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.13     *
+*............................................................................*
+*Br  170 :recoW_pt  : recoW_pt/F                                             *
+*Entries :   640154 : Total  Size=    2563322 bytes  File Size  =    2266454 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.13     *
+*............................................................................*
+*Br  171 :recoW_eta : recoW_eta/F                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =    2377974 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br  172 :recoW_phi : recoW_phi/F                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =    2373319 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.08     *
+*............................................................................*
+*Br  173 :m_ll      : m_ll/F                                                 *
+*Entries :   640154 : Total  Size=    2563210 bytes  File Size  =    1508566 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.70     *
+*............................................................................*
+*Br  174 :nu_z_solution_success : nu_z_solution_success/O                    *
+*Entries :   640154 : Total  Size=     642879 bytes  File Size  =      95104 *
+*Baskets :       21 : Basket Size=      33280 bytes  Compression=   6.75     *
+*............................................................................*
+*Br  175 :leadjet_pt : leadjet_pt/F                                          *
+*Entries :   640154 : Total  Size=    2563378 bytes  File Size  =    1474677 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   1.74     *
+*............................................................................*
+*Br  176 :subljet_pt : subljet_pt/F                                          *
+*Entries :   640154 : Total  Size=    2563378 bytes  File Size  =     523317 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   4.90     *
+*............................................................................*
+*Br  177 :leaddijet_m : leaddijet_m/F                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =     531484 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   4.82     *
+*............................................................................*
+*Br  178 :leaddijet_pt : leaddijet_pt/F                                      *
+*Entries :   640154 : Total  Size=    2563434 bytes  File Size  =     527737 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   4.86     *
+*............................................................................*
+*Br  179 :massdijet_m : massdijet_m/F                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =     529547 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   4.84     *
+*............................................................................*
+*Br  180 :massdijet_pt : massdijet_pt/F                                      *
+*Entries :   640154 : Total  Size=    2563434 bytes  File Size  =     528122 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   4.85     *
+*............................................................................*
+*Br  181 :isBlinded : isBlinded/O                                            *
+*Entries :   640154 : Total  Size=     644397 bytes  File Size  =      53179 *
+*Baskets :       39 : Basket Size=      32768 bytes  Compression=  12.10     *
+*............................................................................*
+*Br  182 :SampleWeight : SampleWeight/F                                      *
+*Entries :   640154 : Total  Size=    2563434 bytes  File Size  =      13943 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression= 183.79     *
+*............................................................................*
+*Br  183 :ph_loose_n : ph_loose_n/I                                          *
+*Entries :   640154 : Total  Size=    2563378 bytes  File Size  =     262382 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.77     *
+*............................................................................*
+*Br  184 :ph_medium_n : ph_medium_n/I                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =     262406 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.77     *
+*............................................................................*
+*Br  185 :ph_tight_n : ph_tight_n/I                                          *
+*Entries :   640154 : Total  Size=    2563378 bytes  File Size  =     307628 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   8.33     *
+*............................................................................*
+*Br  186 :ph_mediumPassPSV_n : ph_mediumPassPSV_n/I                          *
+*Entries :   640154 : Total  Size=    2563602 bytes  File Size  =     121189 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  21.15     *
+*............................................................................*
+*Br  187 :ph_mediumFailPSV_n : ph_mediumFailPSV_n/I                          *
+*Entries :   640154 : Total  Size=    2563602 bytes  File Size  =     274753 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.33     *
+*............................................................................*
+*Br  188 :ph_mediumPassCSEV_n : ph_mediumPassCSEV_n/I                        *
+*Entries :   640154 : Total  Size=    2563630 bytes  File Size  =     234776 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  10.92     *
+*............................................................................*
+*Br  189 :ph_mediumFailCSEV_n : ph_mediumFailCSEV_n/I                        *
+*Entries :   640154 : Total  Size=    2563630 bytes  File Size  =     300513 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   8.53     *
+*............................................................................*
+*Br  190 :ph_mediumPassEleOlap_n : ph_mediumPassEleOlap_n/I                  *
+*Entries :   640154 : Total  Size=    2563714 bytes  File Size  =     205763 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  12.46     *
+*............................................................................*
+*Br  191 :ph_mediumPassEleOlapPassCSEV_n : ph_mediumPassEleOlapPassCSEV_n/I  *
+*Entries :   640154 : Total  Size=    2563938 bytes  File Size  =     164624 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  15.57     *
+*............................................................................*
+*Br  192 :ph_mediumPassEleOlapFailCSEV_n : ph_mediumPassEleOlapFailCSEV_n/I  *
+*Entries :   640154 : Total  Size=    2563938 bytes  File Size  =     115371 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  22.22     *
+*............................................................................*
+*Br  193 :ph_mediumNoSIEIE_n : ph_mediumNoSIEIE_n/I                          *
+*Entries :   640154 : Total  Size=    2563602 bytes  File Size  =     262573 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.76     *
+*............................................................................*
+*Br  194 :ph_mediumNoChIso_n : ph_mediumNoChIso_n/I                          *
+*Entries :   640154 : Total  Size=    2563602 bytes  File Size  =     262573 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.76     *
+*............................................................................*
+*Br  195 :ph_mediumNoNeuIso_n : ph_mediumNoNeuIso_n/I                        *
+*Entries :   640154 : Total  Size=    2563630 bytes  File Size  =     262597 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.76     *
+*............................................................................*
+*Br  196 :ph_mediumNoPhoIso_n : ph_mediumNoPhoIso_n/I                        *
+*Entries :   640154 : Total  Size=    2563630 bytes  File Size  =     262597 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.76     *
+*............................................................................*
+*Br  197 :ph_mediumNoSIEIENoChIso_n : ph_mediumNoSIEIENoChIso_n/I            *
+*Entries :   640154 : Total  Size=    2563798 bytes  File Size  =     262744 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.75     *
+*............................................................................*
+*Br  198 :ph_mediumNoSIEIENoNeuIso_n : ph_mediumNoSIEIENoNeuIso_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     262768 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.75     *
+*............................................................................*
+*Br  199 :ph_mediumNoSIEIENoPhoIso_n : ph_mediumNoSIEIENoPhoIso_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     262768 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.75     *
+*............................................................................*
+*Br  200 :ph_mediumNoChIsoNoPhoIso_n : ph_mediumNoChIsoNoPhoIso_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     262768 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.75     *
+*............................................................................*
+*Br  201 :ph_mediumNoChIsoNoNeuIso_n : ph_mediumNoChIsoNoNeuIso_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     262768 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.75     *
+*............................................................................*
+*Br  202 :ph_mediumNoPhoIsoNoNeuIso_n : ph_mediumNoPhoIsoNoNeuIso_n/I        *
+*Entries :   640154 : Total  Size=    2563854 bytes  File Size  =     262792 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.75     *
+*............................................................................*
+*Br  203 :ph_mediumNoSIEIEPassPSV_n : ph_mediumNoSIEIEPassPSV_n/I            *
+*Entries :   640154 : Total  Size=    2563798 bytes  File Size  =     121357 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  21.12     *
+*............................................................................*
+*Br  204 :ph_mediumNoChIsoPassPSV_n : ph_mediumNoChIsoPassPSV_n/I            *
+*Entries :   640154 : Total  Size=    2563798 bytes  File Size  =     121357 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  21.12     *
+*............................................................................*
+*Br  205 :ph_mediumNoNeuIsoPassPSV_n : ph_mediumNoNeuIsoPassPSV_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     121381 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  21.12     *
+*............................................................................*
+*Br  206 :ph_mediumNoPhoIsoPassPSV_n : ph_mediumNoPhoIsoPassPSV_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     121381 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  21.12     *
+*............................................................................*
+*Br  207 :ph_mediumNoSIEIEFailPSV_n : ph_mediumNoSIEIEFailPSV_n/I            *
+*Entries :   640154 : Total  Size=    2563798 bytes  File Size  =     274924 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.32     *
+*............................................................................*
+*Br  208 :ph_mediumNoChIsoFailPSV_n : ph_mediumNoChIsoFailPSV_n/I            *
+*Entries :   640154 : Total  Size=    2563798 bytes  File Size  =     274924 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.32     *
+*............................................................................*
+*Br  209 :ph_mediumNoNeuIsoFailPSV_n : ph_mediumNoNeuIsoFailPSV_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     274948 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.32     *
+*............................................................................*
+*Br  210 :ph_mediumNoPhoIsoFailPSV_n : ph_mediumNoPhoIsoFailPSV_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     274948 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.32     *
+*............................................................................*
+*Br  211 :ph_mediumNoSIEIEPassCSEV_n : ph_mediumNoSIEIEPassCSEV_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     234948 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  10.91     *
+*............................................................................*
+*Br  212 :ph_mediumNoChIsoPassCSEV_n : ph_mediumNoChIsoPassCSEV_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     234948 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  10.91     *
+*............................................................................*
+*Br  213 :ph_mediumNoNeuIsoPassCSEV_n : ph_mediumNoNeuIsoPassCSEV_n/I        *
+*Entries :   640154 : Total  Size=    2563854 bytes  File Size  =     234972 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  10.91     *
+*............................................................................*
+*Br  214 :ph_mediumNoPhoIsoPassCSEV_n : ph_mediumNoPhoIsoPassCSEV_n/I        *
+*Entries :   640154 : Total  Size=    2563854 bytes  File Size  =     234972 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  10.91     *
+*............................................................................*
+*Br  215 :ph_mediumNoSIEIEFailCSEV_n : ph_mediumNoSIEIEFailCSEV_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     300688 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   8.52     *
+*............................................................................*
+*Br  216 :ph_mediumNoChIsoFailCSEV_n : ph_mediumNoChIsoFailCSEV_n/I          *
+*Entries :   640154 : Total  Size=    2563826 bytes  File Size  =     300688 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   8.52     *
+*............................................................................*
+*Br  217 :ph_mediumNoNeuIsoFailCSEV_n : ph_mediumNoNeuIsoFailCSEV_n/I        *
+*Entries :   640154 : Total  Size=    2563854 bytes  File Size  =     300712 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   8.52     *
+*............................................................................*
+*Br  218 :ph_mediumNoPhoIsoFailCSEV_n : ph_mediumNoPhoIsoFailCSEV_n/I        *
+*Entries :   640154 : Total  Size=    2563854 bytes  File Size  =     300712 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   8.52     *
+*............................................................................*
+*Br  219 :ptSorted_ph_loose_idx : vector<int>                                *
+*Entries :   640154 : Total  Size=   12975493 bytes  File Size  =    1757343 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   7.38     *
+*............................................................................*
+*Br  220 :ptSorted_ph_medium_idx : vector<int>                               *
+*Entries :   640154 : Total  Size=   12975560 bytes  File Size  =    1753550 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   7.40     *
+*............................................................................*
+*Br  221 :ptSorted_ph_tight_idx : vector<int>                                *
+*Entries :   640154 : Total  Size=   12404664 bytes  File Size  =    1939545 *
+*Baskets :       62 : Basket Size=     644096 bytes  Compression=   6.39     *
+*............................................................................*
+*Br  222 :ptSorted_ph_mediumPassPSV_idx : vector<int>                        *
+*Entries :   640154 : Total  Size=    9136926 bytes  File Size  =    1378295 *
+*Baskets :       56 : Basket Size=     474112 bytes  Compression=   6.63     *
+*............................................................................*
+*Br  223 :ptSorted_ph_mediumFailPSV_idx : vector<int>                        *
+*Entries :   640154 : Total  Size=   12808748 bytes  File Size  =    1804972 *
+*Baskets :       62 : Basket Size=     664576 bytes  Compression=   7.10     *
+*............................................................................*
+*Br  224 :ptSorted_ph_mediumPassCSEV_idx : vector<int>                       *
+*Entries :   640154 : Total  Size=    9538272 bytes  File Size  =    1673669 *
+*Baskets :       57 : Basket Size=     495104 bytes  Compression=   5.70     *
+*............................................................................*
+*Br  225 :ptSorted_ph_mediumFailCSEV_idx : vector<int>                       *
+*Entries :   640154 : Total  Size=   12407658 bytes  File Size  =    1916839 *
+*Baskets :       62 : Basket Size=     644096 bytes  Compression=   6.47     *
+*............................................................................*
+*Br  226 :ptSorted_ph_mediumPassEleOlap_idx : vector<int>                    *
+*Entries :   640154 : Total  Size=    9402875 bytes  File Size  =    1621898 *
+*Baskets :       57 : Basket Size=     487936 bytes  Compression=   5.80     *
+*............................................................................*
+*Br  227 :ptSorted_ph_mediumPassEleOlapPassCSEV_idx : vector<int>            *
+*Entries :   640154 : Total  Size=    9248399 bytes  File Size  =    1504796 *
+*Baskets :       57 : Basket Size=     480256 bytes  Compression=   6.14     *
+*............................................................................*
+*Br  228 :ptSorted_ph_mediumPassEleOlapFailCSEV_idx : vector<int>            *
+*Entries :   640154 : Total  Size=    9125458 bytes  File Size  =    1358512 *
+*Baskets :       56 : Basket Size=     473600 bytes  Compression=   6.72     *
+*............................................................................*
+*Br  229 :ptSorted_ph_mediumNoSIEIE_idx : vector<int>                        *
+*Entries :   640154 : Total  Size=   12976029 bytes  File Size  =    1757984 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   7.38     *
+*............................................................................*
+*Br  230 :ptSorted_ph_mediumNoChIso_idx : vector<int>                        *
+*Entries :   640154 : Total  Size=   12976029 bytes  File Size  =    1757984 *
+*Baskets :       63 : Basket Size=     673280 bytes  Compression=   7.38     *
+*............................................................................*
+*Br  231 :ptSorted_ph_mediumNoNeuIso_idx : vector<int>                       *
+*Entries :   640154 : Total  Size=   12976096 bytes  File Size  =    1753759 *
+*Baskets :       63 : Basket Size=     673792 bytes  Compression=   7.40     *
+*............................................................................*
+*Br  232 :ptSorted_ph_mediumNoPhoIso_idx : vector<int>                       *
+*Entries :   640154 : Total  Size=   12976096 bytes  File Size  =    1753759 *
+*Baskets :       63 : Basket Size=     673792 bytes  Compression=   7.40     *
+*............................................................................*
+*Br  233 :ptSorted_ph_mediumNoSIEIENoChIso_idx : vector<int>                 *
+*Entries :   640154 : Total  Size=   12976498 bytes  File Size  =    1753950 *
+*Baskets :       63 : Basket Size=     673792 bytes  Compression=   7.40     *
+*............................................................................*
+*Br  234 :ptSorted_ph_mediumNoSIEIENoNeuIso_idx : vector<int>                *
+*Entries :   640154 : Total  Size=   12976565 bytes  File Size  =    1758271 *
+*Baskets :       63 : Basket Size=     673792 bytes  Compression=   7.38     *
+*............................................................................*
+*Br  235 :ptSorted_ph_mediumNoSIEIENoPhoIso_idx : vector<int>                *
+*Entries :   640154 : Total  Size=   12976565 bytes  File Size  =    1758271 *
+*Baskets :       63 : Basket Size=     673792 bytes  Compression=   7.38     *
+*............................................................................*
+*Br  236 :ptSorted_ph_mediumNoChIsoNoPhoIso_idx : vector<int>                *
+*Entries :   640154 : Total  Size=   12976565 bytes  File Size  =    1758271 *
+*Baskets :       63 : Basket Size=     673792 bytes  Compression=   7.38     *
+*............................................................................*
+*Br  237 :ptSorted_ph_mediumNoChIsoNoNeuIso_idx : vector<int>                *
+*Entries :   640154 : Total  Size=   12976565 bytes  File Size  =    1758271 *
+*Baskets :       63 : Basket Size=     673792 bytes  Compression=   7.38     *
+*............................................................................*
+*Br  238 :ptSorted_ph_mediumNoPhoIsoNoNeuIso_idx : vector<int>               *
+*Entries :   640154 : Total  Size=   12976632 bytes  File Size  =    1754176 *
+*Baskets :       63 : Basket Size=     673792 bytes  Compression=   7.40     *
+*............................................................................*
+*Br  239 :ptSorted_ph_mediumNoSIEIEPassPSV_idx : vector<int>                 *
+*Entries :   640154 : Total  Size=    9137346 bytes  File Size  =    1373671 *
+*Baskets :       56 : Basket Size=     474112 bytes  Compression=   6.65     *
+*............................................................................*
+*Br  240 :ptSorted_ph_mediumNoChIsoPassPSV_idx : vector<int>                 *
+*Entries :   640154 : Total  Size=    9137346 bytes  File Size  =    1373671 *
+*Baskets :       56 : Basket Size=     474112 bytes  Compression=   6.65     *
+*............................................................................*
+*Br  241 :ptSorted_ph_mediumNoNeuIsoPassPSV_idx : vector<int>                *
+*Entries :   640154 : Total  Size=    9137406 bytes  File Size  =    1378766 *
+*Baskets :       56 : Basket Size=     474112 bytes  Compression=   6.63     *
+*............................................................................*
+*Br  242 :ptSorted_ph_mediumNoPhoIsoPassPSV_idx : vector<int>                *
+*Entries :   640154 : Total  Size=    9137406 bytes  File Size  =    1378766 *
+*Baskets :       56 : Basket Size=     474112 bytes  Compression=   6.63     *
+*............................................................................*
+*Br  243 :ptSorted_ph_mediumNoSIEIEFailPSV_idx : vector<int>                 *
+*Entries :   640154 : Total  Size=   12809210 bytes  File Size  =    1800851 *
+*Baskets :       62 : Basket Size=     665088 bytes  Compression=   7.11     *
+*............................................................................*
+*Br  244 :ptSorted_ph_mediumNoChIsoFailPSV_idx : vector<int>                 *
+*Entries :   640154 : Total  Size=   12809210 bytes  File Size  =    1800851 *
+*Baskets :       62 : Basket Size=     665088 bytes  Compression=   7.11     *
+*............................................................................*
+*Br  245 :ptSorted_ph_mediumNoNeuIsoFailPSV_idx : vector<int>                *
+*Entries :   640154 : Total  Size=   12809276 bytes  File Size  =    1804897 *
+*Baskets :       62 : Basket Size=     665088 bytes  Compression=   7.10     *
+*............................................................................*
+*Br  246 :ptSorted_ph_mediumNoPhoIsoFailPSV_idx : vector<int>                *
+*Entries :   640154 : Total  Size=   12809276 bytes  File Size  =    1804897 *
+*Baskets :       62 : Basket Size=     665088 bytes  Compression=   7.10     *
+*............................................................................*
+*Br  247 :ptSorted_ph_mediumNoSIEIEPassCSEV_idx : vector<int>                *
+*Entries :   640154 : Total  Size=    9538699 bytes  File Size  =    1677688 *
+*Baskets :       57 : Basket Size=     495104 bytes  Compression=   5.68     *
+*............................................................................*
+*Br  248 :ptSorted_ph_mediumNoChIsoPassCSEV_idx : vector<int>                *
+*Entries :   640154 : Total  Size=    9538699 bytes  File Size  =    1677688 *
+*Baskets :       57 : Basket Size=     495104 bytes  Compression=   5.68     *
+*............................................................................*
+*Br  249 :ptSorted_ph_mediumNoNeuIsoPassCSEV_idx : vector<int>               *
+*Entries :   640154 : Total  Size=    9538760 bytes  File Size  =    1674376 *
+*Baskets :       57 : Basket Size=     495104 bytes  Compression=   5.70     *
+*............................................................................*
+*Br  250 :ptSorted_ph_mediumNoPhoIsoPassCSEV_idx : vector<int>               *
+*Entries :   640154 : Total  Size=    9538760 bytes  File Size  =    1674376 *
+*Baskets :       57 : Basket Size=     495104 bytes  Compression=   5.70     *
+*............................................................................*
+*Br  251 :ptSorted_ph_mediumNoSIEIEFailCSEV_idx : vector<int>                *
+*Entries :   640154 : Total  Size=   12408120 bytes  File Size  =    1921100 *
+*Baskets :       62 : Basket Size=     644096 bytes  Compression=   6.46     *
+*............................................................................*
+*Br  252 :ptSorted_ph_mediumNoChIsoFailCSEV_idx : vector<int>                *
+*Entries :   640154 : Total  Size=   12408120 bytes  File Size  =    1921100 *
+*Baskets :       62 : Basket Size=     644096 bytes  Compression=   6.46     *
+*............................................................................*
+*Br  253 :ptSorted_ph_mediumNoNeuIsoFailCSEV_idx : vector<int>               *
+*Entries :   640154 : Total  Size=   12408186 bytes  File Size  =    1917333 *
+*Baskets :       62 : Basket Size=     644096 bytes  Compression=   6.47     *
+*............................................................................*
+*Br  254 :ptSorted_ph_mediumNoPhoIsoFailCSEV_idx : vector<int>               *
+*Entries :   640154 : Total  Size=   12408186 bytes  File Size  =    1917333 *
+*Baskets :       62 : Basket Size=     644096 bytes  Compression=   6.47     *
+*............................................................................*
+*Br  255 :trueph_n  : trueph_n/I                                             *
+*Entries :   640154 : Total  Size=    2563322 bytes  File Size  =     177093 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  14.47     *
+*............................................................................*
+*Br  256 :trueph_pt : vector<float>                                          *
+*Entries :   640154 : Total  Size=    9285983 bytes  File Size  =    1845963 *
+*Baskets :       57 : Basket Size=     481792 bytes  Compression=   5.03     *
+*............................................................................*
+*Br  257 :trueph_eta : vector<float>                                         *
+*Entries :   640154 : Total  Size=    9286044 bytes  File Size  =    1872483 *
+*Baskets :       57 : Basket Size=     481792 bytes  Compression=   4.96     *
+*............................................................................*
+*Br  258 :trueph_phi : vector<float>                                         *
+*Entries :   640154 : Total  Size=    9286044 bytes  File Size  =    1873204 *
+*Baskets :       57 : Basket Size=     481792 bytes  Compression=   4.96     *
+*............................................................................*
+*Br  259 :trueph_motherPID : vector<int>                                     *
+*Entries :   640154 : Total  Size=    9286410 bytes  File Size  =    1528266 *
+*Baskets :       57 : Basket Size=     481792 bytes  Compression=   6.08     *
+*............................................................................*
+*Br  260 :trueph_status : vector<int>                                        *
+*Entries :   640154 : Total  Size=    9286227 bytes  File Size  =    1469420 *
+*Baskets :       57 : Basket Size=     481792 bytes  Compression=   6.32     *
+*............................................................................*
+*Br  261 :truelep_n : truelep_n/I                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =     366488 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   6.99     *
+*............................................................................*
+*Br  262 :truelep_pt : vector<float>                                         *
+*Entries :   640154 : Total  Size=   13235700 bytes  File Size  =    6175480 *
+*Baskets :       63 : Basket Size=     686080 bytes  Compression=   2.14     *
+*............................................................................*
+*Br  263 :truelep_eta : vector<float>                                        *
+*Entries :   640154 : Total  Size=   13235767 bytes  File Size  =    6385212 *
+*Baskets :       63 : Basket Size=     686080 bytes  Compression=   2.07     *
+*............................................................................*
+*Br  264 :truelep_phi : vector<float>                                        *
+*Entries :   640154 : Total  Size=   13235767 bytes  File Size  =    6375899 *
+*Baskets :       63 : Basket Size=     686080 bytes  Compression=   2.08     *
+*............................................................................*
+*Br  265 :truelep_e : vector<float>                                          *
+*Entries :   640154 : Total  Size=   13235633 bytes  File Size  =    6282823 *
+*Baskets :       63 : Basket Size=     686080 bytes  Compression=   2.11     *
+*............................................................................*
+*Br  266 :truelep_motherPID : vector<int>                                    *
+*Entries :   640154 : Total  Size=   13236169 bytes  File Size  =    2436404 *
+*Baskets :       63 : Basket Size=     686592 bytes  Compression=   5.43     *
+*............................................................................*
+*Br  267 :truelep_status : vector<int>                                       *
+*Entries :   640154 : Total  Size=   13235968 bytes  File Size  =    2178121 *
+*Baskets :       63 : Basket Size=     686080 bytes  Compression=   6.08     *
+*............................................................................*
+*Br  268 :truelep_PID : vector<int>                                          *
+*Entries :   640154 : Total  Size=   13235767 bytes  File Size  =    2423771 *
+*Baskets :       63 : Basket Size=     686080 bytes  Compression=   5.46     *
+*............................................................................*
+*Br  269 :truenu_n  : truenu_n/I                                             *
+*Entries :   640154 : Total  Size=    2563322 bytes  File Size  =      83206 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  30.80     *
+*............................................................................*
+*Br  270 :truelepnu_m : truelepnu_m/F                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =      84916 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  30.18     *
+*............................................................................*
+*Br  271 :truelepnuph_m : truelepnuph_m/F                                    *
+*Entries :   640154 : Total  Size=    2563462 bytes  File Size  =      28436 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  90.12     *
+*............................................................................*
+*Br  272 :truelepph_dr : truelepph_dr/F                                      *
+*Entries :   640154 : Total  Size=    2563434 bytes  File Size  =      28480 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  89.98     *
+*............................................................................*
+*Br  273 :truemt_lep_met_ph : truemt_lep_met_ph/F                            *
+*Entries :   640154 : Total  Size=    2563574 bytes  File Size  =      26368 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  97.19     *
+*............................................................................*
+*Br  274 :truemt_res : truemt_res/F                                          *
+*Entries :   640154 : Total  Size=    2563378 bytes  File Size  =     463854 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   5.52     *
+*............................................................................*
+*Br  275 :truemt_res_l23 : truemt_res_l23/F                                  *
+*Entries :   640154 : Total  Size=    2563490 bytes  File Size  =      75532 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=  33.93     *
+*............................................................................*
+*Br  276 :truemt_res_lO : truemt_res_lO/F                                    *
+*Entries :   640154 : Total  Size=    2563462 bytes  File Size  =     283454 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   9.04     *
+*............................................................................*
+*Br  277 :trueht    : trueht/F                                               *
+*Entries :   640154 : Total  Size=    2563266 bytes  File Size  =    1161487 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   2.21     *
+*............................................................................*
+*Br  278 :isWMuDecay : isWMuDecay/O                                          *
+*Entries :   640154 : Total  Size=     644440 bytes  File Size  =       7025 *
+*Baskets :       39 : Basket Size=      32768 bytes  Compression=  91.58     *
+*............................................................................*
+*Br  279 :isWElDecay : isWElDecay/O                                          *
+*Entries :   640154 : Total  Size=     644440 bytes  File Size  =       7025 *
+*Baskets :       39 : Basket Size=      32768 bytes  Compression=  91.58     *
+*............................................................................*
+*Br  280 :isWTauDecay : isWTauDecay/O                                        *
+*Entries :   640154 : Total  Size=     644483 bytes  File Size  =       7064 *
+*Baskets :       39 : Basket Size=      32768 bytes  Compression=  91.08     *
+*............................................................................*
+*Br  281 :isWTauElDecay : isWTauElDecay/O                                    *
+*Entries :   640154 : Total  Size=     642679 bytes  File Size  =       5252 *
+*Baskets :       21 : Basket Size=      33280 bytes  Compression= 122.23     *
+*............................................................................*
+*Br  282 :isWTauMuDecay : isWTauMuDecay/O                                    *
+*Entries :   640154 : Total  Size=     642679 bytes  File Size  =       5252 *
+*Baskets :       21 : Basket Size=      33280 bytes  Compression= 122.23     *
+*............................................................................*
+*Br  283 :WIDStep   : WIDStep/I                                              *
+*Entries :   640154 : Total  Size=    2563294 bytes  File Size  =      15161 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression= 169.02     *
+*............................................................................*
+*Br  284 :NLOWeight : NLOWeight/F                                            *
+*Entries :   640154 : Total  Size=    2563350 bytes  File Size  =      15255 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression= 167.98     *
+*............................................................................*
+*Br  285 :PUWeight  : PUWeight/F                                             *
+*Entries :   640154 : Total  Size=    2563322 bytes  File Size  =     833900 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.07     *
+*............................................................................*
+*Br  286 :PUWeightUP5 : PUWeightUP5/F                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =     806225 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.18     *
+*............................................................................*
+*Br  287 :PUWeightUP10 : PUWeightUP10/F                                      *
+*Entries :   640154 : Total  Size=    2563434 bytes  File Size  =     798461 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.21     *
+*............................................................................*
+*Br  288 :PUWeightDN5 : PUWeightDN5/F                                        *
+*Entries :   640154 : Total  Size=    2563406 bytes  File Size  =     774606 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.31     *
+*............................................................................*
+*Br  289 :PUWeightDN10 : PUWeightDN10/F                                      *
+*Entries :   640154 : Total  Size=    2563434 bytes  File Size  =     779173 *
+*Baskets :       24 : Basket Size=     132608 bytes  Compression=   3.29     *
+*............................................................................*
+*Br  290 :HLT_IsoMu24 : HLT_IsoMu24/O                                        *
+*Entries :   640154 : Total  Size=     644483 bytes  File Size  =       8993 *
+*Baskets :       39 : Basket Size=      32768 bytes  Compression=  71.54     *
+*............................................................................*
+*Br  291 :HLT_IsoTkMu24 : HLT_IsoTkMu24/O                                    *
+*Entries :   640154 : Total  Size=     642679 bytes  File Size  =       7113 *
+*Baskets :       21 : Basket Size=      33280 bytes  Compression=  90.25     *
+*............................................................................*
+*Br  292 :HLT_Ele27_eta2p1_WPTight_Gsf : HLT_Ele27_eta2p1_WPTight_Gsf/O      *
+*Entries :   640154 : Total  Size=     643054 bytes  File Size  =       5586 *
+*Baskets :       21 : Basket Size=      33280 bytes  Compression= 114.98     *
+*............................................................................*
