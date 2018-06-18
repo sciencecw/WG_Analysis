@@ -22,6 +22,7 @@ namespace CutType {
         LESS_THAN = 2,
         GREATER_THAN_OR_EQUAL_TO = 3,
         LESS_THAN_OR_EQUAL_TO = 4,
+        NOT_EQUAL_TO = 5,
         OTHER = 100
     
     };

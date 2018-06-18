@@ -839,6 +839,7 @@ def get_out_branches( include_name, branches, alg_list ) :
 
     in_defines = []
     remove_strings = ['extern', 'unsigned', 'int', 'bool', 'float', 'string', 'std::string', 'Int_t', 'Bool_t', 'Float_t', 'Double_t', '}', '', '*', ';' ]
+    in_mulitline_comment = False
     for line in ofile :
 
         linestr = line
@@ -853,10 +854,22 @@ def get_out_branches( include_name, branches, alg_list ) :
             else :
                 continue
 
-        # ignore comments
+        # ignore single line comments
         if line.count('//') :
-            linestr = line[line.find('//')+2:]
             continue
+
+        if line.count('*/') : 
+            linestr = line[line.find('*/')+2:]
+            in_multiline_comment = False
+
+        if in_mulitline_comment :
+            continue
+
+        #ignore multline comments
+        if line.count('/*') : 
+            in_mulitline_comment = True
+            linestr = line[:line.find('/*')]
+
 
         # find OUT namespace 
         if linestr.count('namespace') and linestr.count('OUT') :

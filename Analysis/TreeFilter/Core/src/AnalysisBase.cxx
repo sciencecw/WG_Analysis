@@ -282,6 +282,7 @@ void Cut::Print() const{
     if( op == CutType::LESS_THAN) op_str = "LESS_THAN";
     if( op == CutType::GREATER_THAN_OR_EQUAL_TO) op_str = "GREATER_THAN_OR_EQUAL_TO";
     if( op == CutType::LESS_THAN_OR_EQUAL_TO) op_str = "LESS_THAN_OR_EQUAL_TO";
+    if( op == CutType::NOT_EQUAL_TO ) op_str = "NOT_EQUAL_TO";
     if( op == CutType::OTHER) op_str = "OTHER";
 
     std::string type_str = "UNKNOWN";
@@ -375,12 +376,22 @@ CutConfig::CutConfig( const std::string &cut_str ) {
         // check if it is a boolean cut first
         if( val.find("true") != std::string::npos ) {
             cut_type = CutType::BOOL;
-            cut_op   = CutType::EQUAL_TO;
+            if( val.find( "!=" ) != std::string::npos ) {
+                cut_op = CutType::NOT_EQUAL_TO;
+            }
+            else {
+                cut_op   = CutType::EQUAL_TO;
+            }
             cut_val_bool = true;
         }
         else if( val.find("false") != std::string::npos ) {
             cut_type = CutType::BOOL;
-            cut_op   = CutType::EQUAL_TO;
+            if( val.find( "!=" ) != std::string::npos ) {
+                cut_op = CutType::NOT_EQUAL_TO;
+            }
+            else {
+                cut_op   = CutType::EQUAL_TO;
+            }
             cut_val_bool = false;
         }
         else {
@@ -426,6 +437,10 @@ CutType::Op CutConfig::attempt_logicalop_parse( const std::string & val, CutType
     else if( (pos = val.find( "<" ) ) != std::string::npos ) {
         cut_op = CutType::LESS_THAN;
         mod_val = val.substr( pos+1 );
+    }
+    else if( (pos = val.find( "!=" ) ) != std::string::npos ) {
+        cut_op = CutType::NOT_EQUAL_TO;
+        mod_val = val.substr( pos + 2 );
     }
     // grab single = but warn
     else if( (pos = val.find( "=" ) ) != std::string::npos ) {
@@ -494,6 +509,10 @@ bool CutConfig::PassFloat(const std::string &name, const float cutval ) const {
           if( (cutval == cut.val_float) ) n_pass++;
           std::cout << "CutConfig::PassFloat - WARNING : EQUAL_TO operator used for float comparison for cut " << name << std::endl;
         }
+        if( cut.op == CutType::NOT_EQUAL_TO ) {
+          if( (cutval != cut.val_float) ) n_pass++;
+          std::cout << "CutConfig::PassFloat - WARNING : NOT_EQUAL_TO operator used for float comparison for cut " << name << std::endl;
+        }
 
     }
 
@@ -544,6 +563,9 @@ bool CutConfig::PassInt(const std::string &name, const int cutval ) const {
         if( cut.op == CutType::EQUAL_TO ) {
           if( (cutval == cut.val_int) ) n_pass++;
         }
+        if( cut.op == CutType::NOT_EQUAL_TO ) {
+          if( (cutval != cut.val_int) ) n_pass++;
+        }
     }
 
     // Handle AND vs OR
@@ -580,6 +602,9 @@ bool CutConfig::PassBool(const std::string &name, const bool cutval ) const {
 
         if( cut.op == CutType::EQUAL_TO ) {
             if( (cutval == cut.val_bool) ) n_pass++;
+        }
+        if( cut.op == CutType::NOT_EQUAL_TO ) {
+            if( (cutval != cut.val_bool) ) n_pass++;
         }
     }
 

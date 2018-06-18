@@ -124,6 +124,7 @@ namespace OUT {
     std::vector<float> *ph_chIsoCorr;
     std::vector<float> *ph_neuIsoCorr;
     std::vector<float> *ph_phoIsoCorr;
+    std::vector<float> *ph_min_el_dr;
     std::vector<Bool_t> *ph_IsEB;
     std::vector<Bool_t> *ph_IsEE;
     std::vector<Bool_t> *ph_passTight;
@@ -158,6 +159,8 @@ namespace OUT {
     std::vector<Bool_t>  *jet_IdTightLep;
     
     float m_lep_ph;
+    std::vector<float> *m_lep_ph_comb_leadLep;
+    std::vector<float> *m_lep_ph_comb_sublLep;
     float m_lep_met_ph;
     float m_mt_lep_met_ph;
     float m_mt_lep_met_ph_forcewmass;
@@ -202,6 +205,10 @@ namespace OUT {
     Int_t ph_mediumPassCSEV_n;
     Int_t ph_mediumFailCSEV_n;
 
+    Int_t ph_mediumPassEleOlap_n;
+    Int_t ph_mediumPassEleOlapPassCSEV_n;
+    Int_t ph_mediumPassEleOlapFailCSEV_n;
+
     Int_t ph_mediumNoSIEIE_n;
     Int_t ph_mediumNoChIso_n;
     Int_t ph_mediumNoNeuIso_n;
@@ -242,6 +249,10 @@ namespace OUT {
     std::vector<Int_t> *ptSorted_ph_mediumFailPSV_idx;
     std::vector<Int_t> *ptSorted_ph_mediumPassCSEV_idx;
     std::vector<Int_t> *ptSorted_ph_mediumFailCSEV_idx;
+
+    std::vector<Int_t> *ptSorted_ph_mediumPassEleOlap_idx;
+    std::vector<Int_t> *ptSorted_ph_mediumPassEleOlapPassCSEV_idx;
+    std::vector<Int_t> *ptSorted_ph_mediumPassEleOlapFailCSEV_idx;
 
     std::vector<Int_t> *ptSorted_ph_mediumNoSIEIE_idx;
     std::vector<Int_t> *ptSorted_ph_mediumNoChIso_idx;
@@ -300,6 +311,8 @@ namespace OUT {
     float truelepph_dr;
     float truemt_lep_met_ph;
     float truemt_res;
+    float truemt_res_l23;
+    float truemt_res_lO;
 
     float trueht;
 

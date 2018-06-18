@@ -24,7 +24,7 @@ def get_keep_filter(tag=None) :
     el_addtl = ['el_phiOrig', 'el_sc_eta', 'el_etaOrig', 'el_eOrig', 'el_ptOrig', 
                 'el_passVIDHEEP', 'el_passVIDHLT', 'el_passVIDTight', 'el_passVIDVeryLoose', 
                 'el_passVIDLoose', 'el_passConvVeto', 'el_passVIDMedium']
-    ph_basic = ['ph_n', 'ph_phi', 'ph_eta', 'ph_pt','ph_e','ph_hasPixSeed', 'ph_passEleVeto', ]
+    ph_basic = ['ph_n', 'ph_phi', 'ph_eta', 'ph_pt','ph_e','ph_hasPixSeed', 'ph_passEleVeto.*', ]
     ph_addtl = ['ph_passVIDLoose', 'ph_passVIDMedium', 'ph_passVIDTight', 
                 'ph_sc_phi', 'ph_sc_eta', 'ph_neuIsoCorr', 'ph_phiOrig', 'ph_etaOrig', 'ph_phiWidth', 'ph_ptOrig', 
                 'ph_sigmaIEIEFull5x5', 'ph_r9', 'ph_etaWidth', 'ph_eOrig', 'ph_r9Full5x5', 'ph_sigmaIEIE', 
@@ -195,12 +195,13 @@ def make_final_elg( alg_list, args) :
     sec_lep_veto = args.get( 'sec_lep_veto', 'True' )
     unblind = args.get( 'unblind', 'False' )
     eleVeto = args.get('eleVeto', 'None' )
+    eleOlap = args.get('eleOlap', 'True' )
 
 
     # order should be muon, electron, photon, jet
     alg_list.append( filter_muon(mu_pt ) )
     alg_list.append( filter_electron(el_pt ) )
-    alg_list.append( filter_photon( ph_pt, id_cut=phot_id, ieta_cut=ph_eta,ele_veto=eleVeto  ) )
+    alg_list.append( filter_photon( ph_pt, id_cut=phot_id, ieta_cut=ph_eta,ele_veto=eleVeto, ele_olap=eleOlap  ) )
     alg_list.append( filter_jet( ) )
 
     filter_trig = filter_trigger()
@@ -209,11 +210,15 @@ def make_final_elg( alg_list, args) :
 
 
     filter_event = Filter('FilterEvent')
-    filter_event.cut_el_pt30_n = ' == 1 '
-    filter_event.cut_ph_n = ' > 0 '
-    if sec_lep_veto != 'False' :
-        filter_event.cut_el_n = ' == 1 '
-        filter_event.cut_mu_n = ' == 0 '
+    if eleOlap == 'False' :
+        filter_event.cut_el_pt30_n = ' > 0 '
+        filter_event.cut_ph_n = ' > 0 '
+    else :
+        filter_event.cut_el_pt30_n = ' == 1 '
+        filter_event.cut_ph_n = ' > 0 '
+        if sec_lep_veto != 'False' :
+            filter_event.cut_el_n = ' == 1 '
+            filter_event.cut_mu_n = ' == 0 '
 
     alg_list.append( filter_event )
 
@@ -331,17 +336,17 @@ def make_final_mug( alg_list, args) :
 #    filter_blind.add_var( 'isData', args.get('isData', ' == False' ) )
 #    alg_list.append( filter_blind )
 #
-#def make_nofilt( alg_list, args ) :
-#
-#    pass_lepton = args.get('pass_lepton', 'False')
-#    if pass_lepton == 'True' :
-#        alg_list.append( filter_muon( mu_pt = ' > 0 ' ) )
-#        alg_list.append( filter_electron( el_pt = ' > 0 ' ) )
-#
-#    alg_list.append( filter_photon( ph_pt = ' > 0 ', id_cut = 'medium'   )  )
-#                           
-#    alg_list.append( Filter( 'BuildEventVars' ) )
-#    alg_list.append( Filter( 'BuildTruth' ) )
+def make_nofilt( alg_list, args ) :
+
+    pass_lepton = args.get('pass_lepton', 'False')
+    if pass_lepton == 'True' :
+        alg_list.append( filter_muon( mu_pt = ' > 0 ' ) )
+        alg_list.append( filter_electron( el_pt = ' > 0 ' ) )
+
+    alg_list.append( filter_photon( ph_pt = ' > 0 ', id_cut = 'medium'   )  )
+                           
+    alg_list.append( Filter( 'BuildEventVars' ) )
+    alg_list.append( Filter( 'BuildTruth' ) )
 
 
 def filter_trigger() : 
@@ -534,7 +539,7 @@ def filter_electron( el_pt = ' > 25 ', do_cutflow=False, do_hists=False, apply_c
 
     return filt
 
-def filter_photon( ph_pt = ' > 15 ', id_cut='medium', ieta_cut=None, ele_veto='None', do_cutflow=False, do_hists=False, evalPID='medium' ) :
+def filter_photon( ph_pt = ' > 15 ', id_cut='medium', ieta_cut=None, ele_veto='None', ele_olap='True', do_cutflow=False, do_hists=False, evalPID='medium' ) :
 
     filt = Filter('FilterPhoton')
 
@@ -544,7 +549,8 @@ def filter_photon( ph_pt = ' > 15 ', id_cut='medium', ieta_cut=None, ele_veto='N
     filt.invert('cut_abseta_crack')
 
     filt.cut_muon_dr    = ' > 0.4 '
-    filt.cut_electron_dr    = ' > 0.4 '
+    if ele_olap == 'True' :
+        filt.cut_electron_dr    = ' > 0.4 '
 
     if ieta_cut is not None :
         if ieta_cut == 'EB' :
@@ -686,6 +692,7 @@ def build_truth( args ) :
     truth_filt = Filter('BuildTruth') 
 
     truth_filt.cut_lep_mother = ' == 24 || == -24 ||  == 11 || == -11 || == 12 || == -12 || == 13 || == -13 || == 14 || == -14 || == 15 || == -15 || == 16 || == -16 '
+    #truth_filt.cut_lep_status = ' != 23 '
 
     truth_filt.cut_ph_pt = ' > 5 '
     truth_filt.cut_ph_IsPromptFinalState = ' == True '
@@ -708,7 +715,7 @@ def weight_event( args ) :
 
         workarea = os.getenv('WorkArea')
         filt.add_var( 'sample_file', args['sampleFile'])
-        filt.add_var( 'data_file', '%s/TreeFilter/RecoPhoton15/data/MyDataPileupHistogram.root' %workarea )
+        filt.add_var( 'data_file', '%s/TreeFilter/RecoResonance/data/DataPileupHistogram2016.root' %workarea )
         filt.add_var( 'sample_hist', 'pileup_true' )
         filt.add_var('data_hist', 'pileup')
     else :

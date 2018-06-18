@@ -72,6 +72,7 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     OUT::ph_chIsoCorr                           = 0;
     OUT::ph_neuIsoCorr                          = 0;
     OUT::ph_phoIsoCorr                          = 0;
+    OUT::ph_min_el_dr                          = 0;
     OUT::ph_IsEB                                = 0;
     OUT::ph_IsEE                                = 0;
     OUT::ph_passTight                           = 0;
@@ -105,6 +106,8 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     OUT::jet_IdTightLep                         = 0;
     
     OUT::m_lep_ph                               = 0;
+    OUT::m_lep_ph_comb_leadLep                  = 0;
+    OUT::m_lep_ph_comb_sublLep                  = 0;
     OUT::m_lep_met_ph                           = 0;
     OUT::m_mt_lep_met_ph = 0;
     OUT::m_mt_lep_met_ph_forcewmass = 0;
@@ -149,6 +152,10 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     OUT::ph_mediumPassCSEV_n                    = 0;
     OUT::ph_mediumFailCSEV_n                    = 0;
 
+    OUT::ph_mediumPassEleOlap_n                 = 0;
+    OUT::ph_mediumPassEleOlapPassCSEV_n         = 0;
+    OUT::ph_mediumPassEleOlapFailCSEV_n         = 0;
+
     OUT::ph_mediumNoSIEIE_n                     = 0;
     OUT::ph_mediumNoChIso_n                     = 0;
     OUT::ph_mediumNoNeuIso_n                    = 0;
@@ -189,6 +196,10 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     OUT::ptSorted_ph_mediumFailPSV_idx          = 0;
     OUT::ptSorted_ph_mediumPassCSEV_idx         = 0;
     OUT::ptSorted_ph_mediumFailCSEV_idx         = 0;
+
+    OUT::ptSorted_ph_mediumPassEleOlap_idx         = 0;
+    OUT::ptSorted_ph_mediumPassEleOlapPassCSEV_idx = 0;
+    OUT::ptSorted_ph_mediumPassEleOlapFailCSEV_idx = 0;
 
     OUT::ptSorted_ph_mediumNoSIEIE_idx          = 0;
     OUT::ptSorted_ph_mediumNoChIso_idx          = 0;
@@ -245,6 +256,8 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     OUT::truelepph_dr                           = 0;
     OUT::truemt_lep_met_ph                      = 0;
     OUT::truemt_res                             = 0;
+    OUT::truemt_res_l23                             = 0;
+    OUT::truemt_res_lO                             = 0;
     OUT::trueht                                 = 0;
 
     OUT::isWMuDecay                             = 0;
@@ -256,11 +269,11 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
 
     OUT::NLOWeight                              = 1;
 
-    OUT::PUWeight                               = 0;
-    OUT::PUWeightUP5                            = 0;
-    OUT::PUWeightUP10                           = 0;
-    OUT::PUWeightDN5                            = 0;
-    OUT::PUWeightDN10                           = 0;
+    OUT::PUWeight                               = 1;
+    OUT::PUWeightUP5                            = 1;
+    OUT::PUWeightUP10                           = 1;
+    OUT::PUWeightDN5                            = 1;
+    OUT::PUWeightDN10                           = 1;
 
     // *************************
     // Declare Branches
@@ -295,6 +308,7 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     outtree->Branch("ph_chIsoCorr", &OUT::ph_chIsoCorr);
     outtree->Branch("ph_neuIsoCorr", &OUT::ph_neuIsoCorr);
     outtree->Branch("ph_phoIsoCorr", &OUT::ph_phoIsoCorr);
+    outtree->Branch("ph_min_el_dr", &OUT::ph_min_el_dr);
     outtree->Branch("ph_IsEB", &OUT::ph_IsEB );
     outtree->Branch("ph_IsEE", &OUT::ph_IsEE );
     outtree->Branch("ph_passTight", &OUT::ph_passTight );
@@ -329,6 +343,8 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     outtree->Branch("jet_IdTightLep", &OUT::jet_IdTightLep );
 
     outtree->Branch("m_lep_ph"        , &OUT::m_lep_ph        , "m_lep_ph/F"  );
+    outtree->Branch("m_lep_ph_comb_sublLep"        , &OUT::m_lep_ph_comb_sublLep);
+    outtree->Branch("m_lep_ph_comb_leadLep"        , &OUT::m_lep_ph_comb_leadLep);
     outtree->Branch("m_lep_met_ph"        , &OUT::m_lep_met_ph        , "m_lep_met_ph/F"  );
     outtree->Branch("m_mt_lep_met_ph"        , &OUT::m_mt_lep_met_ph        , "m_mtlep_met_ph/F"  );
     outtree->Branch("m_mt_lep_met_ph_forcewmass"        , &OUT::m_mt_lep_met_ph_forcewmass        , "m_mt_lep_met_ph_forcewmass/F"  );
@@ -376,6 +392,10 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     outtree->Branch("ph_mediumPassCSEV_n"          , &OUT::ph_mediumPassCSEV_n          , "ph_mediumPassCSEV_n/I"          );
     outtree->Branch("ph_mediumFailCSEV_n"          , &OUT::ph_mediumFailCSEV_n          , "ph_mediumFailCSEV_n/I"          );
 
+    outtree->Branch("ph_mediumPassEleOlap_n"          , &OUT::ph_mediumPassEleOlap_n, "ph_mediumPassEleOlap_n/I"          );
+    outtree->Branch("ph_mediumPassEleOlapPassCSEV_n"          , &OUT::ph_mediumPassEleOlapPassCSEV_n, "ph_mediumPassEleOlapPassCSEV_n/I"          );
+    outtree->Branch("ph_mediumPassEleOlapFailCSEV_n"          , &OUT::ph_mediumPassEleOlapFailCSEV_n, "ph_mediumPassEleOlapFailCSEV_n/I"          );
+
     outtree->Branch("ph_mediumNoSIEIE_n"           , &OUT::ph_mediumNoSIEIE_n           , "ph_mediumNoSIEIE_n/I"           );
     outtree->Branch("ph_mediumNoChIso_n"           , &OUT::ph_mediumNoChIso_n           , "ph_mediumNoChIso_n/I"           );
     outtree->Branch("ph_mediumNoNeuIso_n"          , &OUT::ph_mediumNoNeuIso_n          , "ph_mediumNoNeuIso_n/I"          );
@@ -417,6 +437,10 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     outtree->Branch("ptSorted_ph_mediumFailPSV_idx"   , &OUT::ptSorted_ph_mediumFailPSV_idx );
     outtree->Branch("ptSorted_ph_mediumPassCSEV_idx"  , &OUT::ptSorted_ph_mediumPassCSEV_idx );
     outtree->Branch("ptSorted_ph_mediumFailCSEV_idx"  , &OUT::ptSorted_ph_mediumFailCSEV_idx );
+
+    outtree->Branch("ptSorted_ph_mediumPassEleOlap_idx"  , &OUT::ptSorted_ph_mediumPassEleOlap_idx);
+    outtree->Branch("ptSorted_ph_mediumPassEleOlapPassCSEV_idx"  , &OUT::ptSorted_ph_mediumPassEleOlapPassCSEV_idx);
+    outtree->Branch("ptSorted_ph_mediumPassEleOlapFailCSEV_idx"  , &OUT::ptSorted_ph_mediumPassEleOlapFailCSEV_idx);
 
     outtree->Branch("ptSorted_ph_mediumNoSIEIE_idx"   , &OUT::ptSorted_ph_mediumNoSIEIE_idx );
     outtree->Branch("ptSorted_ph_mediumNoChIso_idx"   , &OUT::ptSorted_ph_mediumNoChIso_idx );
@@ -476,6 +500,8 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
         outtree->Branch("truelepph_dr"        , &OUT::truelepph_dr, "truelepph_dr/F"   );
         outtree->Branch("truemt_lep_met_ph" , &OUT::truemt_lep_met_ph, "truemt_lep_met_ph/F");
         outtree->Branch("truemt_res" , &OUT::truemt_res, "truemt_res/F");
+        outtree->Branch("truemt_res_l23" , &OUT::truemt_res_l23, "truemt_res_l23/F");
+        outtree->Branch("truemt_res_lO" , &OUT::truemt_res_lO, "truemt_res_lO/F");
         outtree->Branch("trueht" , &OUT::trueht, "trueht/F");
 
         outtree->Branch("isWMuDecay"          , &OUT::isWMuDecay, "isWMuDecay/O"       );
@@ -1419,6 +1445,7 @@ void RunModule::FilterPhoton( ModuleConfig & config ) {
     OUT::ph_chIsoCorr            -> clear();
     OUT::ph_neuIsoCorr           -> clear();
     OUT::ph_phoIsoCorr           -> clear();
+    OUT::ph_min_el_dr           -> clear();
     OUT::ph_IsEB                 -> clear();
     OUT::ph_IsEE                 -> clear();
     OUT::ph_passTight            -> clear();
@@ -1767,6 +1794,8 @@ void RunModule::FilterPhoton( ModuleConfig & config ) {
         OUT::ph_neuIsoCorr           -> push_back(pfNeuIsoPtRhoCorr);
         OUT::ph_phoIsoCorr           -> push_back(pfPhoIsoPtRhoCorr);
 
+        OUT::ph_min_el_dr            -> push_back( min_el_dr );
+
         OUT::ph_passTight            -> push_back(pass_tight);
         OUT::ph_passMedium           -> push_back(pass_medium);
         OUT::ph_passLoose            -> push_back(pass_loose);
@@ -2076,6 +2105,8 @@ void RunModule::BuildEventVars( ModuleConfig & config ) const {
 
 
     OUT::m_lep_ph = 0;
+    OUT::m_lep_ph_comb_leadLep->clear();
+    OUT::m_lep_ph_comb_sublLep->clear();
     OUT::m_lep_met_ph = 0;
     OUT::m_mt_lep_met_ph = 0;
     OUT::m_mt_lep_met_ph_forcewmass = 0;
@@ -2200,8 +2231,24 @@ void RunModule::BuildEventVars( ModuleConfig & config ) const {
 
             OUT::mt_res = ( lep_trans + ph_trans + metlvOrig ).M();
             OUT::mt_lep_ph = ( lep_trans + ph_trans ).M();
-            
 
+            for( std::vector<TLorentzVector>::const_iterator phitr = photons.begin();
+                    phitr != photons.end(); ++phitr ) {
+
+                float mass = ( *phitr + leptons[0] ).M();
+
+                OUT::m_lep_ph_comb_leadLep->push_back( mass );
+            }
+
+            if( leptons.size() == 2 ) {
+                for( std::vector<TLorentzVector>::const_iterator phitr = photons.begin();
+                        phitr != photons.end(); ++phitr ) {
+
+                    float mass = ( *phitr + leptons[1] ).M();
+
+                    OUT::m_lep_ph_comb_sublLep->push_back( mass );
+                }
+            }
         }
     }
 
@@ -2269,6 +2316,10 @@ void RunModule::MakePhotonCountVars( ModuleConfig & config ) const {
     OUT::ph_mediumPassCSEV_n = 0;
     OUT::ph_mediumFailCSEV_n = 0;
 
+    OUT::ph_mediumPassEleOlap_n = 0;
+    OUT::ph_mediumPassEleOlapPassCSEV_n = 0;
+    OUT::ph_mediumPassEleOlapFailCSEV_n = 0;
+
     OUT::ph_mediumNoSIEIE_n = 0;
     OUT::ph_mediumNoChIso_n = 0;
     OUT::ph_mediumNoNeuIso_n = 0;
@@ -2309,6 +2360,10 @@ void RunModule::MakePhotonCountVars( ModuleConfig & config ) const {
     OUT::ptSorted_ph_mediumFailPSV_idx->clear();
     OUT::ptSorted_ph_mediumPassCSEV_idx->clear();
     OUT::ptSorted_ph_mediumFailCSEV_idx->clear();
+
+    OUT::ptSorted_ph_mediumPassEleOlap_idx->clear();
+    OUT::ptSorted_ph_mediumPassEleOlapPassCSEV_idx->clear();
+    OUT::ptSorted_ph_mediumPassEleOlapFailCSEV_idx->clear();
 
     OUT::ptSorted_ph_mediumNoSIEIE_idx->clear();
     OUT::ptSorted_ph_mediumNoChIso_idx->clear();
@@ -2351,6 +2406,10 @@ void RunModule::MakePhotonCountVars( ModuleConfig & config ) const {
     std::vector<std::pair<float, int> > sorted_ph_mediumFailPSV;
     std::vector<std::pair<float, int> > sorted_ph_mediumPassCSEV;
     std::vector<std::pair<float, int> > sorted_ph_mediumFailCSEV;
+
+    std::vector<std::pair<float, int> > sorted_ph_mediumPassEleOlap;
+    std::vector<std::pair<float, int> > sorted_ph_mediumPassEleOlapPassCSEV;
+    std::vector<std::pair<float, int> > sorted_ph_mediumPassEleOlapFailCSEV;
 
     std::vector<std::pair<float, int> > sorted_ph_mediumNoSIEIE;
     std::vector<std::pair<float, int> > sorted_ph_mediumNoChIso;
@@ -2405,7 +2464,9 @@ void RunModule::MakePhotonCountVars( ModuleConfig & config ) const {
         bool passChIsoMedium  = OUT::ph_passChIsoCorrMedium->at(idx);
         bool passNeuIsoMedium = OUT::ph_passNeuIsoCorrMedium->at(idx);
         bool passPhoIsoMedium = OUT::ph_passPhoIsoCorrMedium->at(idx);
+        bool passEleOlap      = (OUT::ph_min_el_dr->at(idx) > 0.4);
         bool passLoose        = OUT::ph_passLoose->at(idx);
+        bool passMedium        = OUT::ph_passMedium->at(idx);
         bool passTight        = OUT::ph_passTight->at(idx);
 
         bool eleVeto          = OUT::ph_passEleVeto->at(idx);
@@ -2522,6 +2583,17 @@ void RunModule::MakePhotonCountVars( ModuleConfig & config ) const {
         if( passLoose )  {
             sorted_ph_loose.push_back( sort_pair );
         }
+        if( passMedium )  {
+            if( passEleOlap ) {
+                sorted_ph_mediumPassEleOlap.push_back( sort_pair );
+                if( eleVeto ) {
+                    sorted_ph_mediumPassEleOlapPassCSEV.push_back( sort_pair );
+                }
+                else {
+                    sorted_ph_mediumPassEleOlapFailCSEV.push_back( sort_pair );
+                }
+            }
+        }
         if( passTight )  {
             sorted_ph_tight.push_back( sort_pair );
         }
@@ -2535,6 +2607,11 @@ void RunModule::MakePhotonCountVars( ModuleConfig & config ) const {
     std::sort(sorted_ph_mediumFailPSV.rbegin(),sorted_ph_mediumFailPSV.rend()) ;
     std::sort(sorted_ph_mediumPassCSEV.rbegin(),sorted_ph_mediumPassCSEV.rend()) ;
     std::sort(sorted_ph_mediumFailCSEV.rbegin(),sorted_ph_mediumFailCSEV.rend()) ;
+
+    std::sort(sorted_ph_mediumPassEleOlap.rbegin(),sorted_ph_mediumPassEleOlap.rend());
+    std::sort(sorted_ph_mediumPassEleOlapPassCSEV.rbegin(),sorted_ph_mediumPassEleOlapPassCSEV.rend());
+    std::sort(sorted_ph_mediumPassEleOlapFailCSEV.rbegin(),sorted_ph_mediumPassEleOlapFailCSEV.rend());
+
 
     std::sort(sorted_ph_mediumNoSIEIE.rbegin(),sorted_ph_mediumNoSIEIE.rend()) ;
     std::sort(sorted_ph_mediumNoChIso.rbegin(),sorted_ph_mediumNoChIso.rend()) ;
@@ -2597,6 +2674,21 @@ void RunModule::MakePhotonCountVars( ModuleConfig & config ) const {
         OUT::ptSorted_ph_mediumFailCSEV_idx->push_back( itr->second );
         OUT::ph_mediumFailCSEV_n++;
     }
+
+    for( std::vector<std::pair<float, int> >::const_iterator itr = sorted_ph_mediumPassEleOlap.begin(); itr != sorted_ph_mediumPassEleOlap.end(); ++itr ) {
+        OUT::ptSorted_ph_mediumPassEleOlap_idx->push_back( itr->second );
+        OUT::ph_mediumPassEleOlap_n++;
+    }
+    for( std::vector<std::pair<float, int> >::const_iterator itr = sorted_ph_mediumPassEleOlapPassCSEV.begin(); itr != sorted_ph_mediumPassEleOlapPassCSEV.end(); ++itr ) {
+        OUT::ptSorted_ph_mediumPassEleOlapPassCSEV_idx->push_back( itr->second );
+        OUT::ph_mediumPassEleOlapPassCSEV_n++;
+    }
+    for( std::vector<std::pair<float, int> >::const_iterator itr = sorted_ph_mediumPassEleOlapFailCSEV.begin(); itr != sorted_ph_mediumPassEleOlapFailCSEV.end(); ++itr ) {
+        OUT::ptSorted_ph_mediumPassEleOlapFailCSEV_idx->push_back( itr->second );
+        OUT::ph_mediumPassEleOlapFailCSEV_n++;
+    }
+
+
     for( std::vector<std::pair<float, int> >::const_iterator itr = sorted_ph_mediumNoSIEIE.begin(); itr != sorted_ph_mediumNoSIEIE.end(); ++itr ) {
         OUT::ptSorted_ph_mediumNoSIEIE_idx->push_back( itr->second );
         OUT::ph_mediumNoSIEIE_n++;
@@ -2732,6 +2824,8 @@ void RunModule::BuildTruth( ModuleConfig & config ) const {
     OUT::truelepph_dr = 0.0;
     OUT::truemt_lep_met_ph = 0;
     OUT::truemt_res = 0;
+    OUT::truemt_res_l23 = 0;
+    OUT::truemt_res_lO = 0;
 
     OUT::trueht = 0;
 
@@ -2773,7 +2867,7 @@ void RunModule::BuildTruth( ModuleConfig & config ) const {
             OUT::trueht += IN::gen_pt->at(gidx);
         }
 
-        if( absid == 11 || absid == 13 || absid == 15 ) {
+        if( absid >= 11 && absid <= 16) {
 
             // keep all leptons at this point
             // so they can be used later
@@ -2824,8 +2918,12 @@ void RunModule::BuildTruth( ModuleConfig & config ) const {
 
         unsigned lidx = litr->second;
 
-        if( !config.PassInt( "cut_lep_mother", IN::gen_motherPID->at(lidx) ) ) continue;
+        int pid = IN::gen_PID->at(lidx);
+        // should be an electron or muon
+        if( !( abs(pid) == 11 || abs(pid) == 13 ) ) continue;
 
+        if( !config.PassInt( "cut_lep_mother", IN::gen_motherPID->at(lidx) ) ) continue;
+        if( !config.PassInt( "cut_lep_status", IN::gen_status->at(lidx) ) ) continue;
 
         OUT::truelep_n++;
         OUT::truelep_pt->push_back( IN::gen_pt->at( lidx ) );
@@ -2998,6 +3096,25 @@ void RunModule::BuildTruth( ModuleConfig & config ) const {
         OUT::truemt_res = ( lep_trans + ph_trans + metlv ).M();
         //std::cout << "Truelep pt = " << trueleps[0].Pt() << " nu pt = " << nu_sum.Pt() << std::endl;
         OUT::truemt_lep_met_ph = Utils::calc_mt( trueleps[0], nu_sum);
+
+        if( trueleps.size() == 2  ) { 
+
+            TLorentzVector l23_trans;
+            TLorentzVector lO_trans;
+            for( int lidx = 0; lidx != OUT::truelep_n ; ++lidx ) {
+
+                TLorentzVector leplv = trueleps[lidx];
+
+                if( OUT::truelep_status->at(lidx) == 23 ) {
+                    l23_trans.SetPtEtaPhiM( leplv.Pt(), 0.0, leplv.Phi(), leplv.M() );
+                }
+                else {
+                    lO_trans.SetPtEtaPhiM( leplv.Pt(), 0.0, leplv.Phi(), leplv.M() );
+                }
+            }
+            OUT::truemt_res_l23 = ( l23_trans + ph_trans + metlv ).M();
+            OUT::truemt_res_lO = ( lO_trans + ph_trans + metlv ).M();
+        }
     }
 
 
@@ -3032,20 +3149,20 @@ void RunModule::BuildTruth( ModuleConfig & config ) const {
     for( std::vector<std::pair<float, unsigned> >::const_iterator litr = 
             sorted_tleps.begin(); litr != sorted_tleps.end(); ++litr ) {
 
-        if( fabs(IN::gen_motherPID->at(litr->second)) != 24 ) continue;
+        if( abs(IN::gen_motherPID->at(litr->second)) != 24 ) continue;
         if( IN::gen_status->at(litr->second) != 3 ) continue;
 
         found_w_mother = true;
 
         int lep_id = IN::gen_PID->at(litr->second);
 
-        if( fabs(lep_id) == 11 || fabs(lep_id) == 12 ) {
+        if( abs(lep_id) == 11 || abs(lep_id) == 12 ) {
             OUT::isWElDecay=true;
         }
-        if( fabs(lep_id) == 13 || fabs(lep_id) == 14 ) {
+        if( abs(lep_id) == 13 || abs(lep_id) == 14 ) {
             OUT::isWMuDecay=true;
         }
-        if( fabs(lep_id) == 15 || fabs(lep_id) == 16 ) {
+        if( abs(lep_id) == 15 || abs(lep_id) == 16 ) {
             OUT::isWTauDecay=true;
         }
     }
@@ -3055,19 +3172,67 @@ void RunModule::BuildTruth( ModuleConfig & config ) const {
         for( std::vector<std::pair<float, unsigned> >::const_iterator litr = 
                 sorted_tleps.begin(); litr != sorted_tleps.end(); ++litr ) {
 
-            if( fabs(IN::gen_motherPID->at(litr->second)) != 24 ) continue;
+            if( abs(IN::gen_motherPID->at(litr->second)) != 24 ) continue;
+            if( IN::gen_status->at(litr->second) != 23 ) continue;
+
+            found_w_mother = true;
+
+            int lep_id = IN::gen_PID->at(litr->second);
+
+            if( abs(lep_id) == 11 || abs(lep_id) == 12 ) {
+                OUT::isWElDecay=true;
+            }
+            if( abs(lep_id) == 13 || abs(lep_id) == 14 ) {
+                OUT::isWMuDecay=true;
+            }
+            if( abs(lep_id) == 15 || abs(lep_id) == 16 ) {
+                OUT::isWTauDecay=true;
+            }
+        }
+    }
+
+    if( !found_w_mother ) {
+        OUT::WIDStep++;
+        for( std::vector<std::pair<float, unsigned> >::const_iterator litr = 
+                sorted_tleps.begin(); litr != sorted_tleps.end(); ++litr ) {
+
+            if( abs(IN::gen_motherPID->at(litr->second)) != 24 ) continue;
+            if( IN::gen_status->at(litr->second) != 2 ) continue;
+
+            found_w_mother = true;
+
+            int lep_id = IN::gen_PID->at(litr->second);
+
+            if( abs(lep_id) == 11 || abs(lep_id) == 12 ) {
+                OUT::isWElDecay=true;
+            }
+            if( abs(lep_id) == 13 || abs(lep_id) == 14 ) {
+                OUT::isWMuDecay=true;
+            }
+            if( abs(lep_id) == 15 || abs(lep_id) == 16 ) {
+                OUT::isWTauDecay=true;
+            }
+        }
+    }
+
+    if( !found_w_mother ) {
+        OUT::WIDStep++;
+        for( std::vector<std::pair<float, unsigned> >::const_iterator litr = 
+                sorted_tleps.begin(); litr != sorted_tleps.end(); ++litr ) {
+
+            if( abs(IN::gen_motherPID->at(litr->second)) != 24 ) continue;
             if( IN::gen_status->at(litr->second) != 1 ) continue;
 
             found_w_mother = true;
 
-            int lep_id = IN::gen_pt->at(litr->second);
-            if( fabs(lep_id) == 11 || fabs(lep_id) == 12 ) {
+            int lep_id = IN::gen_PID->at(litr->second);
+            if( abs(lep_id) == 11 || abs(lep_id) == 12 ) {
                 OUT::isWElDecay=true;
             }
-            if( fabs(lep_id) == 13 || fabs(lep_id) == 14 ) {
+            if( abs(lep_id) == 13 || abs(lep_id) == 14 ) {
                 OUT::isWMuDecay=true;
             }
-            if( fabs(lep_id) == 15 || fabs(lep_id) == 16 ) {
+            if( abs(lep_id) == 15 || abs(lep_id) == 16 ) {
                 OUT::isWTauDecay=true;
             }
         }
