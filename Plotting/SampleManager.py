@@ -233,6 +233,9 @@ class DrawConfig :
     def doRatio(self) :
         return self.hist_config.get('doratio', False)
 
+    def reverseRatio(self) :
+        return self.hist_config.get('reverseratio', False)
+
     def get_ylabel(self ) :
         #FIX
         ylabel = self.hist_config.get('ylabel', None) 
@@ -933,7 +936,7 @@ class SampleManager :
         return newsample
 
     #--------------------------------
-    def create_ratio_sample( self, name, num_sample, den_sample, color=ROOT.kBlack ) :
+    def create_ratio_sample( self, name, num_sample, den_sample, color=ROOT.kBlack, reverseratio=False ) :
 
         if name in self.get_sample_names() :
             print 'Sample %s already exists!  Will not create!' %name
@@ -953,8 +956,13 @@ class SampleManager :
                 return None
             den_sample = den_sample_list[0]
 
-        ratio_hist = num_sample.hist.Clone( name )
-        ratio_hist.Divide( den_sample.hist )
+        if reverseratio:
+           ratio_hist = den_sample.hist.Clone( name )
+           ratio_hist.Divide( num_sample.hist )
+        else:
+           ratio_hist = num_sample.hist.Clone( name )
+           ratio_hist.Divide( den_sample.hist )
+
 
         ratio_hist.SetMarkerStyle(20)
         ratio_hist.SetMarkerSize(1.1)
@@ -2907,7 +2915,8 @@ class SampleManager :
                         rname = 'ratio%s_%d' %(samp, i)
                         if rname not in self.get_sample_names() :
                             break
-                rsamp = self.create_ratio_sample( rname, num_sample = draw_config.hist_configs.keys()[0], den_sample=hist_name, color=rcolor)
+                reverseratio = draw_config.reverseRatio()
+                rsamp = self.create_ratio_sample( rname, num_sample = draw_config.hist_configs.keys()[0], den_sample=hist_name, color=rcolor, reverseratio=reverseratio)
                 rsamp.legend_entry = hist_config.get('legend_entry', None )
 
         return created_samples

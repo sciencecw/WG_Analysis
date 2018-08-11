@@ -62,7 +62,8 @@ def main() :
 	#sel_base_el = 'ph_n==1 && el_n==1'
 	#sel_base_el = 'ph_n>=1 && el_n>=1'
 	sel_base_el = '1'
-	sel_base_el = 'ph_n>=1 && el_n==1 &&el_pt[0]>30'
+	sel_base_el = 'ph_n>=1 && el_n==1 &&ph_pt[0]>50'
+	sel_base_el = 'ph_n>=1 && el_n==1 '
 
 	#eta_cuts = ['EB', 'EE']
 	eta_cuts = ['EB']
@@ -85,9 +86,9 @@ def main() :
 	#undo scaling by cross section
 	#print "scale ", sampManElG.get_samples(name="DYJetsToLL_M-50")[0].scale
 #	sampManElG.get_samples(name="DYJetsToLL_M-50")[0].scale=1.
-#	 closure( sampManElG, 'Z+jets', sel_base_el,'EB', plot_var = 'm_lep_ph',var = "ph_eta",varbins=np.linspace(-2.5,2.5,51),xtitle="photon #eta")
-	closure( sampManElG, 'Z+jets', sel_base_el,'EB', plot_var = 'm_lep_ph',varbins=[0,15,30,50,75,100,125,150,250])
-	#closure( sampManElG, 'Z+jets', sel_base_el,'EB', plot_var = 'm_lep_ph',varbins=[0,50,250])
+	 #closure( sampManElG, 'Z+jets', sel_base_el,'EB', plot_var = 'm_lep_ph',var = "ph_eta",varbins=np.linspace(-2.5,2.5,51),xtitle="photon #eta")
+#	closure( sampManElG, 'Z+jets', sel_base_el,'EB', plot_var = 'm_lep_ph',varbins=[-2.4,-1.8,-1.4,-1,-0.6,-0.3,0,0.3,0.6,1,1.4,1.8,2.4], var="ph_eta")
+	closure( sampManElG, 'Z+jets', sel_base_el,'EB', plot_var = 'm_lep_ph',varbins=range(0,200,20))
 #	closure( sampManElG, 'Wgamma', sel_base_el,'EB', plot_var = 'm_lep_ph',varbins=[0,50,250])
 
 	#elefake.writeToFile( '%s/%s.root' %( options.outputDir,elefake.GetName() ) )
@@ -145,7 +146,7 @@ def make_efake( sampMan, sample, sel_base, eta_cut, plot_var, suffix='', workspa
 	hist_sr  = clone_sample_and_draw( sampMan, sample, plot_var+varpass , full_sel_sr  , binning )
 	c1	= ROOT.TCanvas('c1','c1')
 	c1.SetGridx()
-	c1.SetLogy()
+	#c1.SetLogy()
 	hist_A.Draw()
 	c1.SaveAs("hist"+label_A+plot_var+".pdf","pdf")
 	hist_B.Draw()
@@ -227,6 +228,8 @@ def zones(h1,h3,h2,h4,suffix):
 
 
 	#make_efake( sampManElG, 'Z+jets', sel_base_el,'EB', 'ph_eta', suffix='noOvLrm', workspace=elefake, overlaprm=0)
+
+
 def closure( sampMan, sample, sel_base, eta_cut, var="ph_pt", varbins = range(0,200,25),xtitle="photon p_{T}", plot_var='m_lep_ph', suffix='', workspace=None, overlaprm=1) :
 	bins = np.array(varbins,'f')
 	h_sr_est= ROOT.TH1F("h_sr_est","",len(varbins)-1,bins)
@@ -234,8 +237,10 @@ def closure( sampMan, sample, sel_base, eta_cut, var="ph_pt", varbins = range(0,
 	for i in range(len(varbins)-1):
 		sel_base1= sel_base + "&& %s[0]>%3f && %s[0]<=%3f" %(var,varbins[i],var,varbins[i+1])
 		filename=var+"%s_sel_%s_%i_%i_%i_" %(plot_var,var,i,varbins[i],varbins[i+1])
-		sr_est, sr_est_e, sr_sum = closureBin(sampMan, sample, sel_base1, eta_cut, plot_var, overlaprm,filename) 
+		sr_est, sr_est_e, sr_sum, sr_sum_e = closureBin(sampMan, sample, sel_base1, eta_cut, plot_var, overlaprm,filename) 
+		#sr_est, sr_est_e, sr_sum = closureBin(sampMan, sample, sel_base1, eta_cut, plot_var, overlaprm,filename) 
 		h_sr_sum.SetBinContent(i+1,sr_sum)
+		h_sr_sum.SetBinError(i+1,sr_sum_e)
 		h_sr_est.SetBinContent(i+1,sr_est)
 		h_sr_est.SetBinError(i+1,sr_est_e)
 	# draw graph and formatting
@@ -252,7 +257,7 @@ def closure( sampMan, sample, sel_base, eta_cut, var="ph_pt", varbins = range(0,
 	botpad.SetRightMargin(0.05)
 	c2.cd()
 	toppad.Draw()
-	toppad.SetLogy(1)
+	#toppad.SetLogy(1)
 	botpad.Draw()
 	toppad.cd()
 	hratio = doratio(h_sr_sum,h_sr_est)
@@ -260,7 +265,7 @@ def closure( sampMan, sample, sel_base, eta_cut, var="ph_pt", varbins = range(0,
 	hformat(h_sr_sum,ROOT.kRed)
 	h_sr_sum.Draw("e")
 	h_sr_est.Draw("e same")
-	tl = ROOT.TLegend(0.6,0.72,0.8,0.88,"","brNDC")
+	tl = ROOT.TLegend(0.7,0.72,0.88,0.88,"","brNDC")
 	tl.AddEntry("h_sr_sum","signal","PL")
 	tl.AddEntry("h_sr_est","A/B*D","PL")
 	tl.Draw()
@@ -283,10 +288,10 @@ def closureBin( sampMan, sample, sel_base, eta_cut, plot_var='m_lep_ph', overlap
 	varpass = '[ptSorted_ph_mediumPassEleOlapPassCSEV_idx[0]]'
 
 	if overlaprm:
-		ph_selection_sr  = 'met_pt>40 && ph_passEleVeto[0]==1'
-		ph_selection_B	 = 'met_pt<40 && ph_passEleVeto[0]==0'
-		ph_selection_A	 = 'met_pt<40 && ph_passEleVeto[0]==1'
-		ph_selection_D	 = 'met_pt>40 && ph_passEleVeto[0]==0'
+		ph_selection_sr  = 'met_pt>25 && ph_passEleVeto[0]==1'
+		ph_selection_B	 = 'met_pt<25 && ph_passEleVeto[0]==0'
+		ph_selection_A	 = 'met_pt<25 && ph_passEleVeto[0]==1'
+		ph_selection_D	 = 'met_pt>25 && ph_passEleVeto[0]==0'
 		varfail=varpass=''
 
 	full_sel_D = ' && '.join( [sel_base, ph_selection_D, ] )
@@ -312,7 +317,7 @@ def closureBin( sampMan, sample, sel_base, eta_cut, plot_var='m_lep_ph', overlap
 	sampMan.outputs[filename+"B"] = hist_B
 	sampMan.outputs[filename+"S"] = hist_sr
 	sampMan.outputs[filename+"D"] = hist_D
-	intrange = [50,100]
+	intrange = [80,100]
 	a_sum = hist_A.Integral(*intrange)
 	b_sum = hist_B.Integral(*intrange)
 	sr_sum = hist_sr.Integral(*intrange)
@@ -322,10 +327,20 @@ def closureBin( sampMan, sample, sel_base, eta_cut, plot_var='m_lep_ph', overlap
 	print  "Region signal: ", sr_sum
 	print  "Region D: ", d_sum
 	if b_sum>0: sr_est = a_sum/b_sum*d_sum
-	else: return 0,0,sr_sum
+	else: return 0,0,sr_sum,0
 	if (sr_est>0): sr_err = sr_est*math.sqrt(1/a_sum+ 1/b_sum+1/d_sum)
 	else: sr_err =0
-	return sr_est, sr_err, sr_sum  
+	return sr_est, sr_err, sr_sum ,math.sqrt(sr_sum)
+
+#	if b_sum>0: r_est = a_sum/b_sum
+#	else: r_est = 0 
+#	if d_sum>0: r_sr = sr_sum/d_sum
+#	else: r_sr = 0 
+#	if (r_est>0): r_err_est = math.sqrt(a_sum *b_sum)/(a_sum+b_sum)    # r_est*math.sqrt(1/a_sum+ 1/b_sum)
+#	else: r_err_est =0
+#	if (r_sr>0):  r_err_sr  = math.sqrt(sr_sum*d_sum)/(sr_sum+d_sum)  # r_sr*math.sqrt(1/sr_sum+ 1/d_sum)
+#	else: r_err_sr =0
+#	return r_est, r_err_est, r_sr, r_err_sr 
 
 def doratio(h1,h2):
 	hratio = h1.Clone("hratio")

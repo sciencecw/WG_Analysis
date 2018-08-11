@@ -46,7 +46,7 @@ class RunModule : public virtual RunModuleBase {
         // return values, or inputs to these functions, but
         // you must of course handle them in the source file
         // Examples :
-        void BuildPhoton         ( ModuleConfig & config ) const;
+        bool BuildPhoton         ( ModuleConfig & config ) const;
         bool FilterEvent         ( ModuleConfig & config ) const;
 
 };

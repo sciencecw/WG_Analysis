@@ -52,24 +52,24 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     // Set defaults for added output variables
     // *************************
     // Examples :
-    OUT::ph_n              = 0;
+/*      OUT::ph_n              = 0;
     OUT::ph_pt             = 0;
     OUT::ph_eta            = 0;
     OUT::ph_phi            = 0;
     OUT::ph_e              = 0;
-
+*/
     // *************************
     // Declare Branches
     // *************************
 
     // Examples :
-    outtree->Branch("ph_n"        , &OUT::ph_n        );
+/*    outtree->Branch("ph_n"        , &OUT::ph_n        );
     outtree->Branch("ph_pt"       , &OUT::ph_pt       );
     outtree->Branch("ph_eta"      , &OUT::ph_eta      );
     outtree->Branch("ph_phi"      , &OUT::ph_phi      );
     outtree->Branch("ph_e"        , &OUT::ph_e        );
     outtree->Branch("ph_sigmaIEIE", &OUT::ph_sigmaIEIE);
-
+*/
 	hout = new TH1F("hout","m_lep_ph",100,0,200);
 }
 
@@ -106,7 +106,7 @@ bool RunModule::ApplyModule( ModuleConfig & config ) const {
     //
     // Example :
     if( config.GetName() == "BuildPhoton" ) {
-        BuildPhoton( config );
+        keep_evt &= BuildPhoton( config );
     }
 
     // If the module applies a filter the filter decision
@@ -115,9 +115,9 @@ bool RunModule::ApplyModule( ModuleConfig & config ) const {
     // if you want the filter to work you need to do this
     //
     // Example :
-    if( config.GetName() == "FilterEvent" ) {
-        keep_evt &= FilterEvent( config );
-    }
+   // if( config.GetName() == "FilterEvent" ) {
+   //     keep_evt &= FilterEvent( config );
+   // }
 
     return keep_evt;
 
@@ -132,15 +132,15 @@ bool RunModule::ApplyModule( ModuleConfig & config ) const {
 //
 // Examples :
 
-void RunModule::BuildPhoton( ModuleConfig & config ) const {
+bool RunModule::BuildPhoton( ModuleConfig & config ) const {
 
-    OUT::ph_pt         -> clear();
+/*      OUT::ph_pt         -> clear();
     OUT::ph_eta        -> clear();
     OUT::ph_phi        -> clear();
     OUT::ph_e          -> clear();
     OUT::ph_sigmaIEIE  -> clear();
     OUT::ph_n          = 0;
-
+*/
     // Check for preprocessor defined variables 
     // (set in the generated c++ code) to avoid
     // compilation failures if a certain branch
@@ -154,11 +154,12 @@ void RunModule::BuildPhoton( ModuleConfig & config ) const {
 	if  (IN::ph_mediumPassCSEV_n>=1 && IN::el_n>=1 && fabs(IN::ph_eta[0][IN::ptSorted_ph_mediumPassCSEV_idx[0][0]])<2 && IN::ph_pt[0][IN::ptSorted_ph_mediumPassCSEV_idx[0][0]]<30){
 		hout->Fill(IN::m_lep_ph);
 	} 
-	return;
-	if ( !(IN::ph_mediumPassCSEV_n>=1 && IN::el_n>=1 && fabs(IN::m_lep_ph-60)<5 && IN::ph_pt[0][IN::ptSorted_ph_mediumPassCSEV_idx[0][0]]<30&& fabs(IN::ph_eta[0][IN::ptSorted_ph_mediumPassCSEV_idx[0][0]])<2)) return;
+	//return;
+	if ( !(IN::ph_mediumPassCSEV_n>=1 && IN::el_n>=1 && fabs(IN::m_lep_ph-60)<5 && IN::ph_pt[0][IN::ptSorted_ph_mediumPassCSEV_idx[0][0]]<30&& fabs(IN::ph_eta[0][IN::ptSorted_ph_mediumPassCSEV_idx[0][0]])<2)) return false;
 
-	std::cout<<IN::eventNumber<<" ph_pt0" <<(*IN::ph_pt)[0]<<std::endl; 
+	std::cout<<IN::eventNumber<<" ph_n "<<IN::ph_n<<" ph_pt0 " <<(*IN::ph_pt)[0]<<std::endl; 
 	//ele 
+	if (IN::eventNumber%10==0){
 	std::cout<< "ele pt: ";
 	for (float pt: (*IN::el_pt)) std::cout<< pt<<" "; 
 	std::cout<< std::endl; 
@@ -169,8 +170,8 @@ void RunModule::BuildPhoton( ModuleConfig & config ) const {
 	for (float pt: (*IN::el_phi)) std::cout<< pt<<" "; 
 	std::cout<< std::endl; 
 	// list index passing eOlap && eVeto 
-	for (int idx: (*IN::ptSorted_ph_mediumPassCSEV_idx)) std::cout<< idx<< " ";
-	std::cout<< std::endl; 
+	//for (int idx: (*IN::ptSorted_ph_mediumPassCSEV_idx)) std::cout<< idx<< " ";
+   //	std::cout<< std::endl; 
 
 	std::cout<< "ph pt: ";
 	//photon info
@@ -188,7 +189,8 @@ void RunModule::BuildPhoton( ModuleConfig & config ) const {
 			std::cout<< (*IN::ph_phi)[i] <<" ";  
 	}
 	std::cout<< std::endl; 
-
+    }
+	 return true;
 }
 
 // This is an example of a module that applies an
