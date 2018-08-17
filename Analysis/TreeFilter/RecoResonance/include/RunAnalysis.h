@@ -3,7 +3,7 @@
 
 #include "AnalysisBase.h"
 
-#include <string>
+
 #include <vector>
 
 
@@ -47,8 +47,10 @@ class RunModule : public virtual RunModuleBase {
         void MakePhotonCountVars ( ModuleConfig & config ) const;
         void BuildTruth          ( ModuleConfig & config ) const;
         bool FilterTrigger       ( ModuleConfig & config ) ;
+        bool FilterMET           ( ModuleConfig & config ) ;
         bool FilterEvent         ( ModuleConfig & config ) const;
         void WeightEvent         ( ModuleConfig & config ) const;
+
         bool FilterDataQuality   ( ModuleConfig & config ) const;
         bool FilterBlind         ( ModuleConfig & config ) const;
 
@@ -69,29 +71,32 @@ class RunModule : public virtual RunModuleBase {
         float _m_w;
         bool _isData;
 
-        bool _eval_mu_loose    ;
-        bool _eval_mu_medium   ;
-        bool _eval_mu_tight    ;
-        bool _eval_ph_tight    ;
-        bool _eval_ph_medium   ;
-        bool _eval_ph_loose    ;
-        bool _eval_el_tight    ;
-        bool _eval_el_medium   ;
-        bool _eval_el_loose    ;
-        bool _eval_el_veryloose;
-        bool _needs_nlo_weght ;
+        bool _eval_mu_loose    =false;
+        bool _eval_mu_medium   =false;
+        bool _eval_mu_tight    =false;
+        bool _eval_ph_tight    =false;
+        bool _eval_ph_medium   =false;
+        bool _eval_ph_loose    =false;
+        bool _eval_el_tight    =false;
+        bool _eval_el_medium   =false;
+        bool _eval_el_loose    =false;
+        bool _eval_el_veryloose=false;
+        bool _needs_nlo_weght  =false;
 
         std::map<int, std::vector<int> > _quality_map;
 
         std::vector<int> _muonTrigMatchBits;
         std::vector<int> _electronTrigMatchBits;
 
+        std::map<int, bool> metfilterResults;
         std::map<int, bool> triggerResults;
 
         TFile * _puweight_sample_file;
         TFile * _puweight_data_file;
         TH1F * _puweight_sample_hist;
         TH1D * _puweight_data_hist;
+
+        TChain * _input_tree;
 
 };
 
@@ -332,6 +337,7 @@ namespace OUT {
     float PUWeightUP10;
     float PUWeightDN5;
     float PUWeightDN10;
+
 };
 
 #endif

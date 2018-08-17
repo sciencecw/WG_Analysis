@@ -41,6 +41,7 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
                             const CmdOptions & options,
 			    std::vector<ModuleConfig> &configs ) {
 
+    _input_tree = chain;
     // *************************
     // initialize trees
     // *************************
@@ -581,17 +582,95 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
         if( mod_conf.GetName() == "FilterTrigger" ) { 
             std::map<std::string, std::string>::const_iterator eitr = mod_conf.GetInitData().find( "triggerBits" );
             if( eitr != mod_conf.GetInitData().end() ) {
-                std::cout << "Get trigger bits" << std::endl;
+                // get the mapping of trigger ID to the name
+                // This could be taken from the TrigInfoTree
                 std::vector<std::string> trigger_bit_list = Tokenize( eitr->second, "," );
                 for( std::vector<std::string>::const_iterator bitr = trigger_bit_list.begin(); bitr != trigger_bit_list.end(); ++bitr ) {
-                    std::cout << "Have trigger pair " << *bitr << std::endl;
                     std::vector<std::string> name_id_map = Tokenize( *bitr, ":" );
                     std::stringstream ss_id( name_id_map[0] );
+                    // convert the ID to an int
                     int trig_id;
                     ss_id >> trig_id;
-                    std::cout << "use trigger ID " << trig_id << std::endl;
+                    // make an entry in the output map
                     triggerResults[trig_id] = 0;
                     outtree->Branch(name_id_map[1].c_str(), &(triggerResults[trig_id]), (name_id_map[1]+"/O").c_str() );
+                }
+            }
+            eitr = mod_conf.GetInitData().find( "AuxTreeName" );
+            if( eitr != mod_conf.GetInitData().end() ) {
+                // if the trigger bits were provided, do not overwrite
+                if( triggerResults.size() ) {
+                    std::cout << "WARNING -- triggerBits were provided.  Will not get trigger info from the tree.  Please provide either triggerBits or AuxTreeName" << std::endl;
+                }
+                else {
+                    const std::string & trig_tree_name = eitr->second;
+                    TFile * fptr = _input_tree->GetFile();
+                    TTree * trigTree = dynamic_cast<TTree*>(fptr->Get(trig_tree_name.c_str()));
+                    if( !trigTree ) {
+                        std::cout << "Did not locate tree with name " + trig_tree_name + ". Will not store trigger results!" << std::endl;
+                    }
+                    else {
+                        Int_t   trigger_ids;
+                        Char_t  trigger_names;
+                        std::cout << trigTree->GetName() << std::endl;
+                        trigTree->SetBranchAddress("trigger_ids", &trigger_ids);
+                        trigTree->SetBranchAddress("trigger_names", &trigger_names);
+
+                        for( int tidx = 0; tidx < trigTree->GetEntries(); tidx++  ) {
+                            trigTree->GetEntry(tidx);
+                            triggerResults[trigger_ids] = 0;
+                            std::string tn( &trigger_names);
+                            outtree->Branch(tn.c_str(), &(triggerResults[trigger_ids]), (tn+"/O").c_str() );
+                        }
+                    }
+                }
+            }
+        }
+       if( mod_conf.GetName() == "FilterMET" ) {
+            // working on met filter. Basically copied from trigger code
+            std::map<std::string, std::string>::const_iterator eitr = mod_conf.GetInitData().find( "METFilterBits" );
+            if( eitr != mod_conf.GetInitData().end() ) {
+                // get the mapping of metfilter index to the name
+                // This could be taken from the FilterInfoTree
+                std::vector<std::string> metfilter_bit_list = Tokenize( eitr->second, "," );
+                for( std::vector<std::string>::const_iterator bitr = metfilter_bit_list.begin(); bitr != metfilter_bit_list.end(); ++bitr ) {
+                    std::vector<std::string> name_id_map = Tokenize( *bitr, ":" );
+                    std::stringstream ss_id( name_id_map[0] );
+                    // convert the ID to an int
+                    int metfilter_id;
+                    ss_id >> metfilter_id;
+                    // make an entry in the output map
+                    metfilterResults[metfilter_id] = 0;
+                    outtree->Branch(name_id_map[1].c_str(), &(metfilterResults[metfilter_id]), (name_id_map[1]+"/O").c_str() );
+                }
+            }
+            eitr = mod_conf.GetInitData().find( "METAuxTreeName" );
+            if( eitr != mod_conf.GetInitData().end() ) {
+                // if the metfilter bits were provided, do not overwrite
+                if( metfilterResults.size() ) {
+                    std::cout << "WARNING -- METFilterBits were provided.  Will not get metfilter info from the tree.  Please provide either metfilterBits or METAuxTreeName" << std::endl;
+                }
+                else {
+                    const std::string & metfilter_tree_name = eitr->second;
+                    TFile * fptr = _input_tree->GetFile();
+                    TTree * metfilterTree = dynamic_cast<TTree*>(fptr->Get(metfilter_tree_name.c_str()));
+                    if( !metfilterTree ) {
+                        std::cout << "Did not locate tree with name " + metfilter_tree_name + ". Will not store metfilter results!" << std::endl;
+                    }
+                    else {
+                        Int_t   filter_ids;
+                        Char_t  filter_names;
+                        std::cout << metfilterTree->GetName() << std::endl;
+                        metfilterTree->SetBranchAddress("filter_ids",   &filter_ids);
+                        metfilterTree->SetBranchAddress("filter_names", &filter_names);
+
+                        for( int tidx = 0; tidx < metfilterTree->GetEntries(); tidx++  ) {
+                            metfilterTree->GetEntry(tidx);
+                            metfilterResults[filter_ids] = 0;
+                            std::string tn( &filter_names);
+                            outtree->Branch(tn.c_str(), &(metfilterResults[filter_ids]), (tn+"/O").c_str() );
+                        }
+                    }
                 }
             }
         }
@@ -764,6 +843,10 @@ bool RunModule::ApplyModule( ModuleConfig & config ) {
     if( config.GetName() == "FilterTrigger" ) {
         keep_evt &= FilterTrigger( config );
     }
+    if( config.GetName() == "FilterMET" ){
+//        keep_evt &= FilterMET( config );
+         FilterMET( config );
+    }
     if( config.GetName() == "WeightEvent" ) {
         WeightEvent( config );
     }
@@ -803,7 +886,7 @@ void RunModule::FilterMuon( ModuleConfig & config ) {
         float eta = IN::mu_eta->at(idx);
 
         if( !config.PassFloat( "cut_pt", pt   ) ) continue;
-        if( !config.PassFloat( "cut_eta", eta ) ) continue;
+        if( !config.PassFloat( "cut_eta", fabs(eta) ) ) continue;
 
         bool isPfMu = IN::mu_isPf->at(idx);
         bool isGloMu = IN::mu_isGlobal->at(idx);
@@ -922,7 +1005,9 @@ void RunModule::FilterMuon( ModuleConfig & config ) {
 
 
         bool matchTrig = false;
-        if( mindr < 0.2 ) {
+        //if( mindr < 0.2 ) {
+        // change it to 0.1 according to the muon pog
+        if( mindr < 0.1 ){ 
             matchTrig = true;
         }
         OUT::mu_hasTrigMatch->push_back(matchTrig);
@@ -1906,6 +1991,7 @@ void RunModule::FilterJet( ModuleConfig & config ) const {
         float eta = IN::jet_eta->at(idx);
 
         if( !config.PassFloat( "cut_pt", pt ) ) continue;
+        if( !config.PassFloat( "cut_eta", fabs(eta)) ) continue;
 
         float nhf        = IN::jet_nhf->at(idx);
         float chf        = IN::jet_chf->at(idx);
@@ -1965,6 +2051,10 @@ void RunModule::FilterJet( ModuleConfig & config ) const {
             if( !config.PassFloat( "cut_jet_nemf_forward_tight", nemf ) ) pass_tight = false;
             if( !config.PassInt( "cut_jet_nmult_forward_tight", nmult ) ) pass_tight = false;
         }
+
+        if( !config.PassBool( "cut_tight", pass_tight) ) continue;
+        if( !config.PassBool( "cut_loose", pass_loose) ) continue;
+
         TLorentzVector jetlv;
         jetlv.SetPtEtaPhiE( IN::jet_pt->at(idx), 
                             IN::jet_eta->at(idx),
@@ -1989,6 +2079,8 @@ void RunModule::FilterJet( ModuleConfig & config ) const {
             }
         }
 
+        if( !config.PassFloat( "cut_muon_dr", min_mu_dr ) ) continue;
+
         float min_el_dr = 100.0;
         for( int elidx = 0; elidx < OUT::el_n; ++elidx ) {
 
@@ -2005,6 +2097,8 @@ void RunModule::FilterJet( ModuleConfig & config ) const {
                 min_el_dr = dr;
             }
         }
+
+        if( !config.PassFloat( "cut_electron_dr", min_el_dr ) ) continue;
 
         float min_ph_dr = 100.0;
         for( int phidx = 0; phidx < OUT::ph_n; ++phidx ) {
@@ -2072,24 +2166,18 @@ bool RunModule::FilterEvent( ModuleConfig & config ) const {
 bool RunModule::FilterTrigger( ModuleConfig & config ) {
 
     std::vector<int> passed_ids;
+    // for each configured trigger, get its decision and store the result 
+    // in the output branch
     for( std::map<int, bool>::iterator itr = triggerResults.begin();
             itr != triggerResults.end() ; ++itr ) {
-        //std::cout << "Check if ID " << (itr->first) << " passed " << std::endl;
-        //std::cout << "Passing IDS = ";
-        //for( std::vector<int>::const_iterator titr = IN::passedTriggers->begin(); titr != IN::passedTriggers->end(); ++titr ) {
-        //    std::cout << *titr << " ";
-        //}
-        //std::cout << std::endl;
 
         if( std::find( IN::passedTriggers->begin(), IN::passedTriggers->end(), itr->first ) 
                 != IN::passedTriggers->end() ) {
             itr->second = true;
             passed_ids.push_back( itr->first );
-            //std::cout << "Passed" << std::endl;
         }
         else {
             itr->second = false;
-            //std::cout << "FAiled" << std::endl;
         }
     }
 
@@ -2099,6 +2187,33 @@ bool RunModule::FilterTrigger( ModuleConfig & config ) {
 
     return keep_event;
     
+}
+
+bool RunModule::FilterMET( ModuleConfig & config ) {
+
+    std::vector<int> passed_ids;
+    // for each configured metfilter, get its decision and store the result
+    // in the output branch
+    for( std::map<int, bool>::iterator itr = metfilterResults.begin();
+            itr != metfilterResults.end() ; ++itr ) {
+
+        if( std::find( IN::passedFilters->begin(), IN::passedFilters->end(), itr->first )
+                != IN::passedFilters->end() ) {
+            itr->second = true;
+            passed_ids.push_back( itr->first );
+        }
+        else {
+            itr->second = false;
+        }
+    }
+
+    bool keep_event = true;
+
+
+    if( !config.PassAnyIntVector( "cut_metfilter_bits", passed_ids ) ) keep_event = false;
+
+    return keep_event;
+
 }
 
 void RunModule::BuildEventVars( ModuleConfig & config ) const {
