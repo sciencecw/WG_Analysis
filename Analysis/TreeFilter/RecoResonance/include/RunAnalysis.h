@@ -71,17 +71,17 @@ class RunModule : public virtual RunModuleBase {
         float _m_w;
         bool _isData;
 
-        bool _eval_mu_loose    =false;
-        bool _eval_mu_medium   =false;
-        bool _eval_mu_tight    =false;
-        bool _eval_ph_tight    =false;
-        bool _eval_ph_medium   =false;
-        bool _eval_ph_loose    =false;
-        bool _eval_el_tight    =false;
-        bool _eval_el_medium   =false;
-        bool _eval_el_loose    =false;
-        bool _eval_el_veryloose=false;
-        bool _needs_nlo_weght  =false;
+        bool _eval_mu_loose    ;
+        bool _eval_mu_medium   ;
+        bool _eval_mu_tight    ;
+        bool _eval_ph_tight    ;
+        bool _eval_ph_medium   ;
+        bool _eval_ph_loose    ;
+        bool _eval_el_tight    ;
+        bool _eval_el_medium   ;
+        bool _eval_el_loose    ;
+        bool _eval_el_veryloose;
+        bool _needs_nlo_weght  ;
 
         std::map<int, std::vector<int> > _quality_map;
 

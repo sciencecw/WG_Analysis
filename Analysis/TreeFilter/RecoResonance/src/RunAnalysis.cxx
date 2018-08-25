@@ -3799,4 +3799,15 @@ bool RunModule::HasTruthMatch( const TLorentzVector & objlv, const std::vector<i
 RunModule::RunModule() {
     _m_w = 80.385;
     _isData = false;
+    _eval_mu_loose    =false;
+    _eval_mu_medium   =false;
+    _eval_mu_tight    =false;
+    _eval_ph_tight    =false;
+    _eval_ph_medium   =false;
+    _eval_ph_loose    =false;
+    _eval_el_tight    =false;
+    _eval_el_medium   =false;
+    _eval_el_loose    =false;
+    _eval_el_veryloose=false;
+    _needs_nlo_weght  =false;
 }
