@@ -29,10 +29,10 @@ def config_analysis( alg_list, args ) :
     # There is no restriction on the naming or inputs to these funtions
     alg_list.append( build_photon( do_cutflow=True, do_hists=True ) )
 
-    filter_event = Filter('FilterEvent')
-    filter_event.cut_nPho = ' > 0 '
-
-    alg_list.append( filter_event )
+#    filter_event = Filter('FilterEvent')
+#    filter_event.cut_nPho = ' > 0 '
+#
+#    alg_list.append( filter_event )
 
 def build_photon( do_cutflow=False, do_hists=False ) :
 

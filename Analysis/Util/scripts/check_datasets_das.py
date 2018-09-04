@@ -2,6 +2,7 @@ import os
 import json
 import re
 from argparse import ArgumentParser
+from collections import defaultdict
 #works if you setup CMSSW_5_3_22_patch1 first
 
 from check_dataset_completion import get_dataset_counts
@@ -13,10 +14,13 @@ parser.add_argument( '--mcOnly', dest='mcOnly',  default=False, action='store_tr
 parser.add_argument( '--dataOnly', dest='dataOnly',  default=False, action='store_true', help='only process data samples (check DATA_SAMPLES list)' )
 parser.add_argument( '--dataEras', dest='dataEras',  default=None, help='List of data eras to expect, should be a list of single letters.  This should be provided if you want to have correct event counting' )
 parser.add_argument( '--sampleKey', dest='sampleKey',  default=None, help='Filter samples based on this key' )
+parser.add_argument( '--nodas', dest='nodas',  default=False,action='store_true', help='skip inquiring das' )
+parser.add_argument( '--notree', dest='notree',  default=False,action='store_true', help='skip reading tree' )
 
 options = parser.parse_args()
 
-BASE_DIR   = '/store/user/jkunkle'
+BASE_DIR   = '/eos/cms/store/user/friccita/WGammaNtuples/RawNtuples'
+BASE_DIR  = '/store/user/yofeng/WGamma/'
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 DATA_SAMPLES = ['SingleElectron', 'SingleMuon']
 #DATA_SAMPLES = ['SingleElectron']
@@ -32,7 +36,7 @@ def main() :
 
 
     print 'MAKE A GRID PROXY'
-    os.system( 'voms-proxy-init -voms cms' )
+    if not options.nodas: os.system( 'voms-proxy-init -voms cms -rfc' )
 
     found_samples = []
     for sampdir in os.listdir( BASE_DIR  ) :
@@ -52,7 +56,7 @@ def main() :
             if subdir == options.version :
                 found_samples.append( sampdir )
 
-    das_events = {}
+    das_events = defaultdict(list)
 
     print '******************************************'
     print ' Getting DAS events'
@@ -79,9 +83,10 @@ def main() :
 
             json_name = '%s_step1.json' %( samp )
 
-            print 'python %s/das_client.py --query=%s --format=json --limit=0 ' %( SCRIPT_DIR, query )
+            print 'dasgoclient --query=%s --format=json --limit=0 ' %(  query )
+            if not options.nodas: os.system('cd /cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_25/src/;eval `scramv1 runtime -sh`;cd -')
+            if not options.nodas: os.system( 'dasgoclient --query=%s --format=json --limit=0 >& %s' %(query, json_name ) )
 
-            os.system( 'python %s/das_client.py --query=%s --format=json --limit=0 >& %s' %( SCRIPT_DIR, query, json_name ) )
             
 
             ofile = open(  json_name )
@@ -125,14 +130,14 @@ def main() :
                         continue
                     else :
                         if nevents_das > 0 :
-                            print 'Found multiple MC campaigns that match! Using only the first'
-                            continue
+                           print 'Found multiple MC campaigns that match!'
 
 
 
                 json_name = '%s_step2_%d.json' %( samp, idx )
                 
-                os.system( 'python %s/das_client.py --query=%s --format=json >& %s' %( SCRIPT_DIR, subdata['dataset'][0]['name'], json_name ) )
+                print 'dasgoclient --query=%s --format=json >& %s' %(  subdata['dataset'][0]['name'], json_name ) 
+                if not options.nodas: os.system( 'dasgoclient --query=%s --format=json >& %s' %(  subdata['dataset'][0]['name'], json_name ) )
                 
                 ofile = open(  json_name )
 
@@ -144,32 +149,47 @@ def main() :
                     print 'Could not locate data!'
                     continue
 
-                for dataset in data['data'][0]['dataset'] :
+                for d in data['data']:
+                  for dataset in d['dataset'] :
 
                     if 'nevents' in dataset :
-                        nevents_das += dataset['nevents']
+                        nevents_das = dataset['nevents'] 
+                        das_events[samp] .append( nevents_das)
                         break
 
-        das_events[samp] = nevents_das
 
 
     print '******************************************'
     print ' Getting Local events'
     print '******************************************'
     local_events = {}
-    for samp in found_samples :
+    if options.notree:
+        ofile = open("treecount.json")
+    
+        local_events=json.load(ofile )
+    
+        ofile.close()
+    else:	
+        for samp in found_samples :
 
-        #tree_counts, hist_counts = get_dataset_counts( '%s/%s/%s' %( BASE_DIR, samp, options.version ), FILE_KEY, treeName=TREE_NAME, vetoes='failed' )
-        tree_counts, hist_counts = get_dataset_counts( '%s/%s/%s' %( BASE_DIR, samp, options.version ), FILE_KEY, treeName=TREE_NAME)
+            #tree_counts, hist_counts = get_dataset_counts( '%s/%s/%s' %( BASE_DIR, samp, options.version ), FILE_KEY, treeName=TREE_NAME, vetoes='failed' )
+            tree_counts, hist_counts = get_dataset_counts( '%s/%s/%s' %( BASE_DIR, samp, options.version ), FILE_KEY, treeName=TREE_NAME)
 
-        local_events[samp] = tree_counts
+            local_events[samp] = tree_counts
+    
+        ofile = open("treecount.json",'w')
+    
+        json.dump( local_events, ofile )
+    
+        ofile.close()
 
     print '******************************************'
     print ' Results '
     print '******************************************'
     for samp in found_samples :
-
-        print '%s : Orignal = %d events, filtered = %d events.  \033[1mDifference = %d\033[0m' %( samp, das_events[samp], local_events[samp],das_events[samp]-local_events[samp] )
+        print local_events[samp], das_events[samp]
+        mindiff = min([s-local_events[samp] for s in das_events[samp] if s -local_events[samp]>=0])
+        print '%s : Orignal = %d events, filtered = %d events.  \033[1mDifference = %d\033[0m' %( samp, mindiff+local_events[samp], local_events[samp],mindiff)
 
 
 

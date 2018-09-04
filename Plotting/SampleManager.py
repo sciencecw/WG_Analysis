@@ -1,4 +1,5 @@
 import os
+import pdb
 import sys
 import math
 import re
@@ -112,6 +113,7 @@ class Sample :
         self.hist.Scale( self.scale )
         print 'Scale %s by %f' %( self.name, self.scale )
         if self.isData :
+            print self.name, " is DATA!!"
             self.hist.SetMarkerStyle( 20 )
             self.hist.SetMarkerSize( 1.15 )
             self.hist.SetStats(0)
@@ -235,6 +237,12 @@ class DrawConfig :
 
     def reverseRatio(self) :
         return self.hist_config.get('reverseratio', False)
+
+    def binomunc(self) :
+        return self.hist_config.get('binomunc', False)
+
+    def get_drawhist(self) :
+        return self.hist_config.get('drawhist', False)
 
     def get_ylabel(self ) :
         #FIX
@@ -936,7 +944,7 @@ class SampleManager :
         return newsample
 
     #--------------------------------
-    def create_ratio_sample( self, name, num_sample, den_sample, color=ROOT.kBlack, reverseratio=False ) :
+    def create_ratio_sample( self, name, num_sample, den_sample, color=ROOT.kBlack, reverseratio=False ,binomunc = False) :
 
         if name in self.get_sample_names() :
             print 'Sample %s already exists!  Will not create!' %name
@@ -957,16 +965,29 @@ class SampleManager :
             den_sample = den_sample_list[0]
 
         if reverseratio:
-           ratio_hist = den_sample.hist.Clone( name )
-           ratio_hist.Divide( num_sample.hist )
-        else:
-           ratio_hist = num_sample.hist.Clone( name )
-           ratio_hist.Divide( den_sample.hist )
+            tmp_sample = den_sample 
+            den_sample = num_sample
+            num_sample = tmp_sample
+			
+        ratio_hist = num_sample.hist.Clone( name )
+        ratio_hist.Divide( den_sample.hist )
+        if binomunc:
+            for i in range(1,num_sample.hist.GetNbinsX()+1):
+                 den_num = den_sample.hist.GetBinContent(i)
+                 eff_ratio = ratio_hist.GetBinContent(i)
+                 if den_num>0:	
+                     eff = num_sample.hist.GetBinContent(i)/den_sample.hist.GetBinContent(i)
+                     assert abs(eff_ratio-eff)/eff<0.00001, "ratio off: %f %f" %(eff_ratio, eff)
+                     err  = math.sqrt(eff*(1-eff)/den_num)
+                 else:
+                     err = 0
+                 ratio_hist.SetBinError(i,err)
 
 
-        ratio_hist.SetMarkerStyle(20)
+        ratio_hist.SetMarkerStyle(47)
         ratio_hist.SetMarkerSize(1.1)
-        #ratio_hist.SetNdivisions(509, True )
+        # better axis division display
+        #ratio_hist.SetNdivisions(509 )
         ratio_hist.SetStats(0)
         ratio_hist.SetTitle('')
 
@@ -2916,7 +2937,8 @@ class SampleManager :
                         if rname not in self.get_sample_names() :
                             break
                 reverseratio = draw_config.reverseRatio()
-                rsamp = self.create_ratio_sample( rname, num_sample = draw_config.hist_configs.keys()[0], den_sample=hist_name, color=rcolor, reverseratio=reverseratio)
+                binomunc = draw_config.binomunc()
+                rsamp = self.create_ratio_sample( rname, num_sample = draw_config.hist_configs.keys()[0], den_sample=hist_name, color=rcolor, reverseratio=reverseratio,binomunc=binomunc)
                 rsamp.legend_entry = hist_config.get('legend_entry', None )
 
         return created_samples
@@ -3537,14 +3559,14 @@ class SampleManager :
                 if ratiosamp.isSignal :
                     drawopt += 'HIST'
 
-                if doratio == True or doratio == 1 :
-                    ratiosamp.hist.GetYaxis().SetTitleSize(0.10)
+                if   doratio == True or doratio == 1 :
+                    ratiosamp.hist.GetYaxis().SetTitleSize(0.08)
                     ratiosamp.hist.GetYaxis().SetTitleOffset(0.6)
-                    ratiosamp.hist.GetYaxis().SetLabelSize(0.12)
-                    ratiosamp.hist.GetXaxis().SetLabelSize(0.12)
+                    ratiosamp.hist.GetYaxis().SetLabelSize(0.08)
+                    ratiosamp.hist.GetXaxis().SetLabelSize(0.09)
                     ratiosamp.hist.GetXaxis().SetTitleSize(0.12)
-                    ratiosamp.hist.GetXaxis().SetTitleOffset(1.0)
-                elif doratio==2 :
+                    ratiosamp.hist.GetXaxis().SetTitleOffset(0.8)
+                elif doratio: #doratio==2 :
                     ratiosamp.hist.GetYaxis().SetTitleSize(0.06)
                     ratiosamp.hist.GetYaxis().SetTitleOffset(0.8)
                     ratiosamp.hist.GetYaxis().SetLabelSize(0.06)
@@ -3553,8 +3575,8 @@ class SampleManager :
                     ratiosamp.hist.GetXaxis().SetTitleOffset(1.0)
 
                 ratiosamp.hist.SetStats(0)
-                ratiosamp.hist.SetMarkerStyle(20)
-                ratiosamp.hist.SetMarkerSize(1.1)
+                ratiosamp.hist.SetMarkerStyle(1)
+                ratiosamp.hist.SetMarkerSize(0.1)
                 ratiosamp.hist.SetTitle('')
                 ratiosamp.hist.GetYaxis().CenterTitle()
                 ratiosamp.hist.GetYaxis().SetNdivisions(506, True)
@@ -3726,8 +3748,9 @@ class SampleManager :
 
         # draw the data
         for dsamp in self.get_samples( name=datahists, isActive=True ):
-            dsamp.hist.SetMarkerStyle(20)
+            print "draw data:", dsamp.name
             if normalize :
+            #dsamp.hist.SetMarkerStyle(8)
                 dsamp.hist.DrawNormalized('PE same')
             else :
                 dsamp.hist.Draw('PE same')
@@ -3849,6 +3872,7 @@ class SampleManager :
             self.curr_canvases['top'].SetLogy()
 
     def DrawSameCanvas(self, canvas, samples, draw_config, drawHist=False ) :
+        #pdb.set_trace()
 
         canvas.cd()
 
@@ -3859,6 +3883,7 @@ class SampleManager :
         ymax = draw_config.get_ymax()
         ymax_scale = draw_config.get_ymax_scale()
         normalize = draw_config.get_normalize()
+        drawhist = draw_config.get_drawhist()
 
         calcymax = 0
         calcymin = 0.5
@@ -3897,7 +3922,7 @@ class SampleManager :
             if first :
                 drawcmd = ''
                 first = False
-            if draw_samp is not None and draw_samp.isSignal  :
+            if draw_samp is not None and not draw_samp.isSignal and drawhist:
                 drawcmd+='hist'
 
             
@@ -3907,12 +3932,18 @@ class SampleManager :
                 if not draw_config.doRatio()  :
                     draw_samp.hist.GetXaxis().SetTitle( draw_config.get_xlabel() )
 
+                draw_samp.hist.GetYaxis().SetTitleOffset(1.1)
+                draw_samp.hist.GetYaxis().SetTitleSize(0.045)
+                draw_samp.hist.GetYaxis().SetLabelSize(0.03)
                 draw_samp.hist.SetLineColor( hist_config['color'] )
                 draw_samp.hist.SetLineWidth( 2 )
-                draw_samp.hist.SetMarkerSize( 1.1 )
-                draw_samp.hist.SetMarkerStyle( 20 )
+                draw_samp.hist.SetMarkerSize( 0 )
+                draw_samp.hist.SetMarkerStyle( 7 )
                 draw_samp.hist.SetMarkerColor(hist_config['color'])
                 draw_samp.hist.SetStats(0)
+                if draw_samp.isSignal  :
+                    draw_samp.hist.SetMarkerSize( 1 )
+                    draw_samp.hist.SetMarkerStyle(20)
 
                 if normalize and draw_samp.hist.Integral() != 0  :
                     draw_samp.hist.Scale(1.0/draw_samp.hist.Integral())
@@ -3926,10 +3957,10 @@ class SampleManager :
         assert len(selections) == len(reqsamples), 'selections and samples must have same length'
 
         if 'colors' in hist_config :
-            if len(hist_config['colors']) != len( selections ) :
+            if len(hist_config['colors']) < len( selections ) :
                 print 'Size of colors input does not match size of vars input!'
-
-                hist_config['colors'] = [ self.get_samples(name=s)[0].color for s in reqsamples ]
+                reqnum = len(hist_config['colors']) - len( selections ) 
+                hist_config['colors'].extend([ self.get_samples(name=s)[0].color for s in reqsamples[reqnum:] ])
 
         if self.collect_commands :
             self.add_compare_config( varexp, selections, reqsamples, histpars, hist_config=hist_config, label_config=label_config, legend_config=legend_config)
@@ -3937,13 +3968,15 @@ class SampleManager :
 
         if not same :
             self.clear_all()
-
+	
+		# initialize DrawConfig
         config = DrawConfig( varexp, selections, histpars, samples=reqsamples, hist_config=hist_config, label_config=label_config, legend_config=legend_config )
         config.create_hist_configs()
 
         self.draw_commands.append(config)
         
         created_samples = self.MakeSameCanvas(config, preserve_hists=True, useModel=useModel, treeHist=treeHist, treeSelection=treeSelection )
+        print created_samples
         if not created_samples :
             print 'No histograms were created'
             return
@@ -3997,9 +4030,9 @@ class SampleManager :
             self.create_hist( newsamp, varexp, selection, histpars)
 
             if xlabel is not None :
-                samp.hist.GetXaxis().SetTitle( xlabel )
+                newsamp.hist.GetXaxis().SetTitle( xlabel )
             if ylabel is not None :
-                samp.hist.GetYaxis().SetTitle( ylabel )
+                newsamp.hist.GetYaxis().SetTitle( ylabel )
             
             created_samples.append(newsamp)
 
@@ -4270,7 +4303,7 @@ class SampleManager :
                 drawcmd += 'colz'
             ratio.hist.SetLineColor( color )
             ratio.hist.SetMarkerColor( color )
-            ratio.hist.SetMarkerStyle( 20 )
+            ratio.hist.SetMarkerStyle( 47)
             ratio.hist.SetMarkerSize( 1.2 )
             ratio.hist.Draw(drawcmd)
             self.add_decoration( ratio.hist )
