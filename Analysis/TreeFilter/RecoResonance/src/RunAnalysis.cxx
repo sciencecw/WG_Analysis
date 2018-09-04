@@ -107,6 +107,8 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     OUT::jet_IdTightLep                         = 0;
     
     OUT::m_lep_ph                               = 0;
+    OUT::m_lpp_best                             = 0;
+    OUT::m_lep_ph_ph                            = 0;
     OUT::m_lep_ph_comb_leadLep                  = 0;
     OUT::m_lep_ph_comb_sublLep                  = 0;
     OUT::m_lep_met_ph                           = 0;
@@ -344,6 +346,8 @@ void RunModule::initialize( TChain * chain, TTree * outtree, TFile *outfile,
     outtree->Branch("jet_IdTightLep", &OUT::jet_IdTightLep );
 
     outtree->Branch("m_lep_ph"        , &OUT::m_lep_ph        , "m_lep_ph/F"  );
+    outtree->Branch("m_lpp_best"        , &OUT::m_lpp_best        , "m_lpp_best/F"  );
+    outtree->Branch("m_lep_ph_ph"        , &OUT::m_lep_ph_ph        , "m_lep_ph_ph/F"  );
     outtree->Branch("m_lep_ph_comb_sublLep"        , &OUT::m_lep_ph_comb_sublLep);
     outtree->Branch("m_lep_ph_comb_leadLep"        , &OUT::m_lep_ph_comb_leadLep);
     outtree->Branch("m_lep_met_ph"        , &OUT::m_lep_met_ph        , "m_lep_met_ph/F"  );
@@ -844,8 +848,8 @@ bool RunModule::ApplyModule( ModuleConfig & config ) {
         keep_evt &= FilterTrigger( config );
     }
     if( config.GetName() == "FilterMET" ){
-//        keep_evt &= FilterMET( config );
-         FilterMET( config );
+        keep_evt &= FilterMET( config );
+//         FilterMET( config );
     }
     if( config.GetName() == "WeightEvent" ) {
         WeightEvent( config );
@@ -2220,6 +2224,8 @@ void RunModule::BuildEventVars( ModuleConfig & config ) const {
 
 
     OUT::m_lep_ph = 0;
+    OUT::m_lpp_best = 0;
+    OUT::m_lep_ph_ph = 0;
     OUT::m_lep_ph_comb_leadLep->clear();
     OUT::m_lep_ph_comb_sublLep->clear();
     OUT::m_lep_met_ph = 0;
@@ -2311,6 +2317,7 @@ void RunModule::BuildEventVars( ModuleConfig & config ) const {
         if( leptons.size() > 0 ) {
 
             OUT::m_lep_ph = ( leptons[0] + photons[0] ).M();
+            if (photons.size()>=2){OUT::m_lep_ph_ph = ( leptons[0] + photons[0]+photons[1] ).M();}
             OUT::m_lep_met_ph = ( leptons[0] + photons[0] + metlvOrig ).M();
             OUT::dphi_lep_ph = leptons[0].DeltaPhi(photons[0] );
             OUT::dr_lep_ph = leptons[0].DeltaR(photons[0] );
@@ -2347,13 +2354,24 @@ void RunModule::BuildEventVars( ModuleConfig & config ) const {
             OUT::mt_res = ( lep_trans + ph_trans + metlvOrig ).M();
             OUT::mt_lep_ph = ( lep_trans + ph_trans ).M();
 
+            // calculate the reco mass closest to Z mass from electrons and two leading photons
+            OUT::m_lpp_best = OUT::m_lep_ph_ph;
+            float minmzdiff = fabs(OUT::m_lpp_best-_m_z);
+
             for( std::vector<TLorentzVector>::const_iterator phitr = photons.begin();
                     phitr != photons.end(); ++phitr ) {
 
                 float mass = ( *phitr + leptons[0] ).M();
 
                 OUT::m_lep_ph_comb_leadLep->push_back( mass );
+
+                float mzdiff = fabs(mass-_m_z);
+                if (mzdiff<minmzdiff) {
+                    minmzdiff=mzdiff;
+                    OUT::m_lpp_best = mass;
+                }
             }
+            
 
             if( leptons.size() == 2 ) {
                 for( std::vector<TLorentzVector>::const_iterator phitr = photons.begin();
@@ -3798,6 +3816,7 @@ bool RunModule::HasTruthMatch( const TLorentzVector & objlv, const std::vector<i
 
 RunModule::RunModule() {
     _m_w = 80.385;
+    _m_z = 91.2;
     _isData = false;
     _eval_mu_loose    =false;
     _eval_mu_medium   =false;

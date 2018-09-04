@@ -208,6 +208,9 @@ def make_final_elg( alg_list, args) :
     filter_trig.cut_bits = ' == 60 '
     alg_list.append( filter_trig )
 
+    filtermet = filter_met()
+    filtermet.cut_metfilter_bits = ' ==1 & ==2 & ==7 & == 10 & ==12 & ==100 & ==101'
+    alg_list.append( filtermet )
 
     filter_event = Filter('FilterEvent')
     if eleOlap == 'False' :
@@ -256,6 +259,10 @@ def make_final_mug( alg_list, args) :
     filter_trig = filter_trigger()
     filter_trig.cut_bits = ' == 23 | == 31 '
     alg_list.append( filter_trig )
+
+    filtermet = filter_met()
+    filtermet.cut_metfilter_bits = ' ==1 & ==2 & ==7 & == 10 & ==12 & ==100 & ==101'
+    alg_list.append( filtermet )
 
     filter_event = Filter('FilterEvent')
     filter_event.cut_mu_pt30_n = ' == 1 '
@@ -344,6 +351,9 @@ def make_nofilt( alg_list, args ) :
         alg_list.append( filter_electron( el_pt = ' > 0 ' ) )
 
     alg_list.append( filter_photon( ph_pt = ' > 0 ', id_cut = 'medium'   )  )
+
+    alg_list.append( filter_trigger() )
+    alg_list.append( filter_met() )
                            
     alg_list.append( Filter( 'BuildEventVars' ) )
     alg_list.append( Filter( 'BuildTruth' ) )
@@ -353,9 +363,18 @@ def filter_trigger() :
 
     filter_trigger = Filter('FilterTrigger')
 
+    # this will store branches for only these triggers
     filter_trigger.add_var( 'triggerBits', '23:HLT_IsoMu24,31:HLT_IsoTkMu24,60:HLT_Ele27_eta2p1_WPTight_Gsf' )
+    # this will store branches for all triggers found in the provided tree
+    filter_trigger.add_var( 'AuxTreeName', 'UMDNTuple/TrigInfoTree' )
 
     return filter_trigger
+
+def filter_met() :
+    filter_met = Filter('FilterMET')
+  
+    filter_met.add_var( 'METAuxTreeName', 'UMDNTuple/FilterInfoTree')
+    return filter_met
 
 
 def filter_muon( mu_pt = ' > 25 ', do_cutflow=False, apply_corrections=False, do_hists=False, evalPID='tight' ) :
@@ -367,8 +386,9 @@ def filter_muon( mu_pt = ' > 25 ', do_cutflow=False, apply_corrections=False, do
         filt.add_var('evalPID', evalPID )
 
     filt.cut_pt           = mu_pt
-    filt.cut_eta       = ' < 2.5'
-    filt.cut_tight       = ' == True '
+    #filt.cut_eta       = ' < 2.5'
+    filt.cut_eta          = ' < 2.4'
+    filt.cut_tight        = ' == True '
     filt.add_var( 'triggerMatchBits', '23,31' )
 
     filt.cut_isPf_loose         = ' == True '
@@ -412,7 +432,7 @@ def filter_electron( el_pt = ' > 25 ', do_cutflow=False, do_hists=False, apply_c
     filt = Filter('FilterElectron')
 
     filt.cut_pt         = el_pt
-    #filt.cut_eta        = ' < 2.5'
+    filt.cut_eta        = ' < 2.5'
     filt.cut_abssceta       = ' <2.5 '
 
     #filt.cut_tight     = ' == True '
@@ -544,7 +564,7 @@ def filter_photon( ph_pt = ' > 15 ', id_cut='medium', ieta_cut=None, ele_veto='N
     filt = Filter('FilterPhoton')
 
     filt.cut_pt           = ph_pt
-    filt.cut_abseta       = ' < 2.5'
+    filt.cut_eta          = ' < 2.5'
     filt.cut_abseta_crack = ' > 1.44 & < 1.57 '
     filt.invert('cut_abseta_crack')
 
@@ -633,12 +653,14 @@ def filter_photon( ph_pt = ' > 15 ', id_cut='medium', ieta_cut=None, ele_veto='N
 
     return filt
 
-def filter_jet( jet_pt = ' > 30 ', do_hists=False ) :
+def filter_jet( jet_pt = ' > 30 ', jet_eta = '< 2.4', do_hists=False ) :
 
     filt = Filter( 'FilterJet' )
 
     filt.cut_pt = jet_pt
-    filt.cut_abseta = ' < 4.5 '
+    #filt.cut_abseta = ' < 4.5 '
+    filt.cut_eta = jet_eta
+    filt.cut_loose = ' == True '
 
     filt.cut_muon_dr    = ' > 0.4 '
     filt.cut_electron_dr    = ' > 0.4 '

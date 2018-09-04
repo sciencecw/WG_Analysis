@@ -69,6 +69,7 @@ class RunModule : public virtual RunModuleBase {
     private :
 
         float _m_w;
+        float _m_z;
         bool _isData;
 
         bool _eval_mu_loose    ;
@@ -164,6 +165,8 @@ namespace OUT {
     std::vector<Bool_t>  *jet_IdTightLep;
     
     float m_lep_ph;
+    float m_lpp_best;
+    float m_lep_ph_ph;
     std::vector<float> *m_lep_ph_comb_leadLep;
     std::vector<float> *m_lep_ph_comb_sublLep;
     float m_lep_met_ph;
