@@ -253,13 +253,6 @@ def config_samples(samples) :
                            isData=True,
                           )
 
-    samples.AddSampleGroup(  'Wgamma', legend_name='W#gamma',
-                           #input_samples = ['WGToLNuG-amcatnloFXFXPhCut', 'WGToLNuG_PtG-130-amcatnloFXFXPhCut','WGToLNuG_PtG-500-amcatnloFXFXPhCut' ],
-                           input_samples = ['WGToLNuG-amcatnloFXFXPhCut', 'WGToLNuG_PtG-130-amcatnloFXFXPhCut','WGToLNuG_PtG-500-amcatnloFXFXPhCut' ],
-                           #input_samples = ['WGToLNuG_PtG-130-amcatnloFXFXPhCut','WGToLNuG_PtG-500-amcatnloFXFXPhCut' ],
-                           plotColor = ROOT.kRed-2,
-                           isActive=True,
-                          )
 
     samples.AddSampleGroup(  'Z+jets', legend_name='Z+Jets',
                            input_samples = ['DYJetsToLL_M-50'],
@@ -269,8 +262,16 @@ def config_samples(samples) :
     samples.AddSampleGroup(  'Zgamma', legend_name='Z#gamma',
                            input_samples = ['ZGTo2LG'],
                            plotColor = ROOT.kRed-8,
+                           isActive = False,
                           )
 
+    samples.AddSampleGroup(  'Wgamma', legend_name='W#gamma',
+                           #input_samples = ['WGToLNuG-amcatnloFXFXPhCut', 'WGToLNuG_PtG-130-amcatnloFXFXPhCut','WGToLNuG_PtG-500-amcatnloFXFXPhCut' ],
+                           input_samples = ['WGToLNuG-amcatnloFXFXPhCut', 'WGToLNuG_PtG-130-amcatnloFXFXPhCut','WGToLNuG_PtG-500-amcatnloFXFXPhCut' ],
+                           #input_samples = ['WGToLNuG_PtG-130-amcatnloFXFXPhCut','WGToLNuG_PtG-500-amcatnloFXFXPhCut' ],
+                           plotColor = ROOT.kRed-2,
+                           isActive=False,
+                          )
 
 
     samples.AddSampleGroup(  'WgammaLO', legend_name='W#gamma LO',
@@ -294,13 +295,13 @@ def config_samples(samples) :
                                             'WJetsToLNu_HT-2500ToInf',
                            ],
                            plotColor = ROOT.kBlue-2,
-                           #isActive=False,
+                           isActive=False,
                           )
 ##>>
     samples.AddSampleGroup( 'TTG', legend_name='t#bar{t}#gamma',
                            input_samples = ['TTGJets'],
                            plotColor = ROOT.kAzure+1,
-                           #isActive=False,
+                           isActive=False,
                           )
 
     samples.AddSampleGroup( 'GJets', legend_name='#gamma + jets',
@@ -312,7 +313,7 @@ def config_samples(samples) :
                                            'GJets_HT-600ToInf',
                            ],
                            plotColor = ROOT.kOrange,
-                           #isActive=False,
+                           isActive=False,
                           )
 
     samples.AddSampleGroup( 'GammaGamma', legend_name='#gamma#gamma',
@@ -320,6 +321,7 @@ def config_samples(samples) :
                                            'DiPhoton',
                            ],
                            plotColor = ROOT.kYellow,
+                           isActive=False,
                           )
 
 
@@ -340,7 +342,7 @@ def config_samples(samples) :
     samples.AddSampleGroup( 'AllTop', legend_name='t#bar{t}',
                            input_samples = ['TTbar_DiLep', 'TTbar_SingleLep'],
                            plotColor = ROOT.kGreen+3,
-                           isActive=True,
+                           isActive=False,
                           )
 
     samples.AddSampleGroup( 'Others', legend_name='Others',
@@ -360,6 +362,14 @@ def config_samples(samples) :
     samples.AddSampleGroup( 'JetBackground', legend_name='Jet Background',
                            input_samples = ['Wjets', 'TTbar_SingleLep'],
                            isActive=False,
+                          )
+    samples.AddSampleGroup( 'OtherEleFakeBackground', legend_name='Other Electron Fakes',
+                           input_samples = [ 'Zgamma', 'TTbar_DiLep'],
+                           plotColor=ROOT.kRed-7,
+                          )
+    samples.AddSampleGroup( 'NonEleFake', legend_name='Non-electron Fakes',
+                           input_samples = ['Wgamma','Wjets', 'TTbar_SingleLep','TTG','DiPhoton'],
+                           plotColor=ROOT.kOrange+1,
                           )
     samples.AddSampleGroup( 'EleFakeBackground', 
                            input_samples = ['Z+jets', 'Zgamma', 'TTbar_DiLep'],

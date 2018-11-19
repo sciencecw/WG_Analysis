@@ -24,6 +24,8 @@ p.add_argument('--outputDir',     default=None,  type=str ,        dest='outputD
 p.add_argument('--readHists',     default=False,action='store_true',   dest='readHists',         help='read histograms from root files instead of trees')
 
 p.add_argument('--quiet',     default=False,action='store_true',   dest='quiet',         help='disable information messages')
+p.add_argument('--jupyt',     default=False,action='store_true',   dest='jupyt',         help='use setting for jupyter notebook')
+p.add_argument('--reload',     default=False,action='store_true',   dest='reld',         help='reload sample manager')
 
 options = p.parse_args()
 
@@ -35,11 +37,18 @@ import uuid
 import copy
 import imp
 import ROOT
+from ROOT import RooFit
 from array import array
-
+if options.reld:
+        import SampleManager;reload(SampleManager)
 from SampleManager import SampleManager
+if options.jupyt:
+    try:
+        from IPython.display import display, Math, Latex
+        import rootnotes
+    except ImportError: print "Fail to import jupyt modules"
+else: ROOT.gROOT.SetBatch(False)
 
-ROOT.gROOT.SetBatch(False)
 
 samples = None
 
@@ -56,19 +65,19 @@ def main() :
 
     if options.samplesConf is not None :
 
-        samples.ReadSamples( options.samplesConf )
+       samples.ReadSamples( options.samplesConf )
 
-        print 'Samples ready.\n'  
+       # print 'Samples ready.\n'  
 
-        print 'The draw syntax follows that of TTree.Draw.  Examples : '
-        
-        print 'samples.Draw(\'met_et\', \'EventWeight && passcut_ee==1\', \'(300, 0, 300)\'\n'
+       # print 'The draw syntax follows that of TTree.Draw.  Examples : '
+       # 
+       # print 'samples.Draw(\'met_et\', \'EventWeight && passcut_ee==1\', \'(300, 0, 300)\'\n'
 
-        print 'The first argument is a branch in the tree to draw'
-        print 'The second argument is a set of cuts and/or weights to apply'
-        print 'The third argument are the bin limits to use \n'
+       # print 'The first argument is a branch in the tree to draw'
+       # print 'The second argument is a set of cuts and/or weights to apply'
+       # print 'The third argument are the bin limits to use \n'
 
-        print 'To see all available branches do ListBranches()'
+       # print 'To see all available branches do ListBranches()'
 
 
 #---------------------------------------
