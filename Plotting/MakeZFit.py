@@ -83,7 +83,7 @@ fitrange2 = {-1 :((60,170),),    ## -1 default
              30 : ((75,170),),
               }
 fitrange3 = {-1 :((70,140),),}    ## -1 default; for two gaussians
-fitrange4 = {-1 :((60,170),),     ## -1 default; for expo bkgd
+fitrange4 = {-1 :((70,170),)*5,     ## -1 default; for expo bkgd
             #  0 :((75,180),),
             # 30 :((80,180),),
              }
@@ -134,16 +134,16 @@ def main() :
        print "STEP 2 SIMULTANEOUS FIT"
        bkgd=["expo","gaus"]
        doData, tbase = True, "_data"
-       ic = dict(bkgd=["expo","gaus"],sig="dcbp2",bkgd2="gauszg",ext="simul2")
+       ic = dict(bkgd=["expo","gaus"],sig="dcbp2",bkgd2="gauszg2",ext="simul2")
        #makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange1,basesel=baseeta,tag="all")
        #makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange2,
        #        basesel=baseeta,tag="all",ic = dict(bkgd="gaus"),maxtimes=20)
        makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
-               basesel=baseeta+passpix+ltmet,tag="regA"+tbase,ic = ic,maxtimes=50,doData=doData)
+               basesel=baseeta+passpix+ltmet,tag="regA"+tbase,ic = ic,maxtimes=150,doData=doData)
        makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
-               basesel=baseeta+failpix+ltmet,tag="regB"+tbase,ic = ic,maxtimes=50,doData=doData)
+               basesel=baseeta+failpix+ltmet,tag="regB"+tbase,ic = ic,maxtimes=150,doData=doData)
        makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
-               basesel=baseeta+failpix+gtmet,tag="regD"+tbase,ic = ic ,maxtimes=50,doData=doData)
+               basesel=baseeta+failpix+gtmet,tag="regD"+tbase,ic = ic ,maxtimes=150,doData=doData)
        if not doData:
            makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
                basesel=baseeta              ,tag="all",ic = ic,maxtimes=50)
@@ -184,7 +184,10 @@ def makevariableplots_simultaneous(samp,ptlist,fitrange,basesel="1",tag="",ic = 
                 tag=tag, ic = ic, xbins=(200,0,200), dobkgd =dobkgd, maxtimes = maxtimes, doData=doData)
         if donorm: make_normalization_comparison(fm,values,stackcount,ptrange,tag)
         for name,val in values.items():
-            if val.s>0:
+            if val is None: #for case of non-initiated variable
+                parmvals[name].append(-1)
+                parmerrs[name].append(-1) 
+            elif val.s>0: #check if the value is fitted
                 parmvals[name].append(val.n) #value
                 parmerrs[name].append(val.s) #uncertainty
             parmufloats[name].append(val)
@@ -242,7 +245,6 @@ def fitting_simultaneous(samples,fm, ptrange,fitranges=((50,180)),var="ph_pt[0]"
     #### NOTE NOTE fitting step
     corefitting_simultaneous(fm, ptrange,fitranges,
         tag=tag,ic = ic, maxtimes =maxtimes)
-
     c=fm.draw(" ",(1,1e6),logy=1,paramlayout=(0.55,0.9,0.82),subplot="pull", component=True)
     #c=fm.draw(" ",logy=0,paramlayout=(0.55,0.9,0.82),subplot="pull", component=True)
     c.SaveAs("temp/simult_postfit_mlepph_%s_%s_" %ptrange + tag+ ".pdf")
@@ -282,14 +284,27 @@ def corefitting_simultaneous(fm, ptrange,fitranges=((50,180)),
         c=fm.draw(" ",(1,1e6),logy=1,paramlayout=(0.55,0.9,.82), component = True)
         c.SaveAs("temp/simult_prefit_mlepph_%s_%s_" %ptrange + tag+ ".pdf")
         c.SaveAs("temp/simult_prefit_mlepph_%s_%s_" %ptrange + tag+ ".png")
+        chi = fm.getchisquare()
+        print "\nCHI ORIGINAL: ", chi
         for fr in fitranges:
+            fr = tuple(round(x+random.normalvariate(0,5)) for x in fr)
+            print fr
+            fr = (max(50,min(90,fr[0])), max(100,min(195,fr[1])))
+            print fr
+
+
             print "NOW FITTING mass range %g to %g" %fr + " for pT bin of %g,%g" %ptrange
             froo_dcb = fm.run_fit(fr)
             print "FINISH fitting range %g to %g"%fr + " for pT bin of %g,%g" %ptrange
             fm.fitresult.Print()
+            fm.frame.Print()
+            ## draw result
+            c=fm.draw(" ",(1,1e6),logy=1,paramlayout=(0.55,0.9,0.82),subplot="pull", component=True)
+            c.SaveAs("temp/simult_postfit_mlepph_%s_%s_try%s%s.pdf" %(ptrange +(itry, tag)) )
+            c.SaveAs("temp/simult_postfit_mlepph_%s_%s_try%s%s.png" %(ptrange +(itry, tag)) )
             chi = fm.getchisquare()
             print "\nCHI: ", chi
-            if chi<5 or (itry>maxtimes/2 and chi<bestchi*1.1):
+            if chi<itry or (itry>maxtimes/2 and chi<bestchi*1.5):
                 print "\n *** FINISH TRIALS AT %i-TH TRY W/ CHI2 OF %g *** \n" %(itry, chi)
                 return 
             bestchi = min(bestchi,chi)

@@ -115,6 +115,7 @@ class FitManager :
         self.fitrange = None
         self.loaded = 0
         self.curr_decorations = []
+        self.frame=self.subframe=None
 
         # copy input arguments
         self.func_name = fname
@@ -421,7 +422,7 @@ class FitManager :
     def get_parameter_values(self):
         plist = {}
         for name, parm in self.get_parameters():
-            plist[name] = ufloat(parm.getVal(),parm.getError())
+                plist[name] = ufloat(parm.getVal(),parm.getError()) if parm else None
         return plist
 
 
@@ -556,6 +557,26 @@ class FitManager :
         self.hcorr.Draw("COLZ")
         return self.curr_canvases["corr"]
         
+    @f_Obsolete ## for testing purposes: doesn't seem to work
+    def updatedraw(self,subplot=""):
+        if subplot:
+            if "top" in self.curr_canvases:
+                self.curr_canvases["top"].cd()
+            else: 
+                print "cannot update"
+                return
+        elif self.canvas:
+            self.canvas.cd()
+        else: return
+        self.frame.Draw()
+        if subplot:
+            self.curr_canvases["bottom"].cd()
+            self.subframe.Draw()
+            return self.curr_canvases["base"]
+        else:
+            return self.canvas
+
+        
 
     def draw(self,title=" ",yrange=None,subplot="",component=False,**kw):
         """ 
@@ -577,27 +598,35 @@ class FitManager :
 
         # make frame
         self.frame = self.xvardata.frame(RooFit.Title(title)) 
+        print "initalised frame"
+        self.frame.Print()
         # plot data histogram
         if component: 
             hlist = [h for h in self.datahistlist.values() if h!= self.datahist]
-            for h in hlist: h.plotOn(self.frame,RooFit.DataError(ROOT.RooAbsData.SumW2),
+            for h in hlist: 
+                h.plotOn(self.frame,RooFit.DataError(ROOT.RooAbsData.SumW2),
                     RooFit.DrawOption("B"),RooFit.DataError(ROOT.RooAbsData.None),
                         RooFit.XErrorSize(0),RooFit.FillColor(ROOT.kBlue-10))
+                print "PLOTONN: ", h
         self.datahist.plotOn(self.frame,RooFit.DataError(ROOT.RooAbsData.SumW2))
 
         # plotting fitted function
         if self.func_pdf:
             #plotparm   = [self.frame,RooFit.NormRange('myrange')]
             plotparm   = [self.frame,]
-            if  self.pdfplotrange and self.fitrange:
-                plotparm.append(RooFit.Range(*self.fitrange))
-                plotparm.append(RooFit.NormRange("myrange"))
+            #if  self.pdfplotrange and self.fitrange:
+            #    plotparm.append(RooFit.Range(*self.fitrange))
+            #if True: ## FIXME
+            plotparm+=[RooFit.NormRange("runfit"),RooFit.Range("runfit")]
             if component == True:
                 component = self.components
             if isinstance(component,list):
                 for i,comp in enumerate(map(RooFit.Components,component)):
                     self.func_pdf.plotOn(*(plotparm+FitManager.LineDefs[i+1]+[comp,]))
+                    print "PLOTONN2: ", i, comp, plotparm+FitManager.LineDefs[i+1]+[comp,]
             self.func_pdf.plotOn(*(plotparm+FitManager.LineDefs[0]))
+            print "plotparm"
+            print plotparm
             pmlayout = kw.get("paramlayout",(0.65,0.9,0.8))
             ## toggle off parameters with None in layout
             if  pmlayout: 
@@ -623,6 +652,7 @@ class FitManager :
             self.ratio_formatting()
             ROOT.gPad.SetTicks(1,1)
             chi  =self.getchisquare()
+            print "Printed Chi: ",chi
             # print chi-sq
             self.latex = ROOT.TLatex()
             self.latex.SetTextSize(0.1) 
@@ -638,11 +668,13 @@ class FitManager :
             self.line.SetLineStyle(3)
             self.line.SetLineWidth(2)
             self.line.Draw()
+            self.subframe.addObject(self.line)
             return self.curr_canvases["base"]
         return self.canvas
 
     def getchisquare(self,dof = None):
         if dof is None:
+            #return self.frame.chiSquare("simul2",6) #FIXME: dof
             return self.frame.chiSquare(6) #FIXME: dof
 
     def draw_label(self,**kw):
@@ -834,7 +866,7 @@ class FitManager :
             self.fact(exprstr1)
             self.fact(exprstr2)
             if reparam == 2: # also parametrize shift of mass
-                exprstr3 = "expr::mass_real('dcb_mass+dcb_mass_shift',dcb_mass,dcb_mass_shift[0,-10,10])") ##FIXME later
+                exprstr3 = "expr::mass_real('dcb_mass+dcb_mass_shift',dcb_mass,dcb_mass_shift[0,-10,10])" ##FIXME later
                 self.fact(exprstr3)
                 self.fact("DoubleCB::dcbp2%s(x,mass_real,dcb_sigma,"
                                    "dcb_alpha1,scaled_power1, dcb_alpha2, scaled_power2)" %pdflabel)
@@ -922,8 +954,12 @@ class FitManager :
         factstr3 = ""
         if bkgd2 is not None:
             name[2] = "bkgd2"
+            if "gaus" in bkgd2: valsar3  = list( icparm.get("gauszg"))
+            if bkgd2=="gauszg2": # also parametrize shift of mass
+                exprstr3 = "expr:zgmean_real('gauszg_mean+dcb_mass_shift',gauszg_mean[%g],dcb_mass_shift)" %valsar3[1][1]
+                self.fact(exprstr3)
+                valsar3[1]= ('zgmean_real',)
             if "gaus" in bkgd2:
-                valsar3  = icparm.get(bkgd2)
                 factstr3 = self.make_factory_string("Gaussian", name[2], valsar3)
 
         ## step 4: extended pdf
