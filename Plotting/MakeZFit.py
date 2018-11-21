@@ -7,6 +7,7 @@ import numpy as np
 import os
 import uuid
 import math
+import random
 import pickle
 #import selection_defs as defs
 from array import array
@@ -53,11 +54,13 @@ failpix = '&& ph_hasPixSeed[0]==1'
 ltmet = '&&met_pt<25'
 gtmet = '&&met_pt>25'
 phpt50 = "&&ph_pt[0]>50"
-unblind = "ph_hasPixSeed[0]==1 || met_pt<25"
-weight = "PUWeight*NLOWeight"
+UNBLIND = "ph_hasPixSeed[0]==1 || met_pt<25"
+#weight = "PUWeight*NLOWeight"
+weight = "NLOWeight"
 
 
 fitrange = {0   :((40,195),(70,150)),
+            -1  :((40,195),(75,170)),
             30  :((40,195),(70,170)),
             40  :((40,195),(70,170)),
             50  :((40,195),(70,170)),
@@ -80,9 +83,9 @@ fitrange2 = {-1 :((60,170),),    ## -1 default
              30 : ((75,170),),
               }
 fitrange3 = {-1 :((70,140),),}    ## -1 default; for two gaussians
-fitrange4 = {-1 :((60,180),),     ## -1 default; for expo bkgd
-              0 :((75,180),),
-             30 :((80,180),),
+fitrange4 = {-1 :((60,170),),     ## -1 default; for expo bkgd
+            #  0 :((75,180),),
+            # 30 :((80,180),),
              }
 fitrange5 = {-1 :((70,100),),    ## -1 default; for zgamma fits
               0 :((50,95),),
@@ -114,7 +117,9 @@ def main() :
        sampManElG.get_samples(name="DYJetsToLL_M-50")[0].scale=1.
        #sampManElG.closure( samp, sel_base_el,'EB', plot_var = 'm_lep_ph',varbins=[20,30,40,50,70,90,110,150,160], mode=1)
        #fitting(sampManElG,(50,80))
-       makevariableplots(sampManElG,[0,30,40,50,60,80,1000],fitrange,basesel=baseeta,tag="all")
+       makevariableplots(sampManElG,[0,0.7,1.0,1.479,3],fitrange,basesel=base+"&&ph_pt[0]>80", tag="etaptgt80",var="abs(ph_sc_eta[0])")
+       makevariableplots(sampManElG,[0,0.7,1.0,1.479,3],fitrange,basesel=base+"&&ph_pt[0]<=80",tag="etaptlt80",var="abs(ph_sc_eta[0])")
+       #makevariableplots(sampManElG,[0,30,40,50,60,80,1000],fitrange,basesel=baseeta,tag="all")
        #makevariableplots(sampManElG,[0,30,40,50,60,80,1000],fitrange,basesel=baseeta+passpix+ltmet,tag="regA")
        #makevariableplots(sampManElG,[0,30,40,50,60,80,1000],fitrange,basesel=baseeta+failpix+ltmet,tag="regB")
        #makevariableplots(sampManElG,[0,30,40,50,60,80,1000],fitrange,basesel=baseeta+passpix+gtmet,tag="regS")
@@ -127,51 +132,57 @@ def main() :
                basesel=baseeta,tag="zgamma",ic = dict(bkgd="gauszg",ext='simulzg'),dobkgd=False,donorm=False)
     elif options.step == 2:
        print "STEP 2 SIMULTANEOUS FIT"
+       bkgd=["expo","gaus"]
+       doData, tbase = True, "_data"
+       ic = dict(bkgd=["expo","gaus"],sig="dcbp2",bkgd2="gauszg",ext="simul2")
        #makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange1,basesel=baseeta,tag="all")
-       makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
-               basesel=baseeta,tag="all",ic = dict(bkgd="expo"),maxtimes=20)
        #makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange2,
        #        basesel=baseeta,tag="all",ic = dict(bkgd="gaus"),maxtimes=20)
+       makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
+               basesel=baseeta+passpix+ltmet,tag="regA"+tbase,ic = ic,maxtimes=50,doData=doData)
+       makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
+               basesel=baseeta+failpix+ltmet,tag="regB"+tbase,ic = ic,maxtimes=50,doData=doData)
+       makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
+               basesel=baseeta+failpix+gtmet,tag="regD"+tbase,ic = ic ,maxtimes=50,doData=doData)
+       if not doData:
+           makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
+               basesel=baseeta              ,tag="all",ic = ic,maxtimes=50)
+           makevariableplots_simultaneous(sampManElG,[0,30,40,50,60,80,1000],fitrange4,
+               basesel=baseeta+passpix+gtmet,tag="regS",ic = ic,maxtimes=50)
     #f1.Write()
     #f1.Close()
     return
 
-class Xpoints:
-    def __init__(self):
-        self.xpoints, self.xerrs = [],[]
+def get_param(filename, ptlist=None):
+    js = json.loads(open(filename).read())
+    assert ptlist==js['ptlist']
+    parm = js['parm']
+    print "imported parmameters: "; pprint(parm)
+    return parm
 
-    def append(self,ptrange):
-        self.xpoints.append((ptrange[1]+ptrange[0])/2)
-        self.xerrs  .append((ptrange[1]-ptrange[0])/2)
-
-    def output(self):
-        if len(xerrs)>1:
-            self.xpoints[-1] = xpoints[-2] + 2*xerrs[-2]
-            self.xerrs[-1]   = xerrs[-2]
-        return self.xpoints, self.xerrs
-
-def makevariableplots_simultaneous(samp,ptlist,fitrange,basesel="1",tag="",ic = None, dobkgd=True, donorm=True, maxtimes=5):
+def makevariableplots_simultaneous(samp,ptlist,fitrange,basesel="1",tag="",ic = None, dobkgd=True, donorm=True, maxtimes=5, doData=False):
+    """ extended pdf fit """
     if ic is None: ic = dict(sig="dcbp",bkgd="gaus", ext="simul")
-    parmnames = FitManager.ParamDCB
+    if "icparm" not in ic: ic["icparm"] = dict()
     parmufloats, parmvals, parmerrs = defaultdict(list),defaultdict(list),defaultdict(list)
-    js1 = json.loads(open("data/dcbparms.txt").read())
-    print "original: ", ptlist, " replaced by: ", js1['ptlist']
-    ptlist, parm = js1['ptlist'], js1['parm']
-    print "ptlist: ", ptlist
-    print "parm: "; pprint(parm)
-    xp = Xpoints()
+    parmnames = FitManager.ParamDCB
+    parmnames2 = ["gauszg_mean","gauszg_sig"]
+    parm ,parm2= get_param("data/dcbparms.txt",ptlist), get_param("data/zgparms.txt",ptlist)
     fm = FitManager("dcbexpo", xvardata = (0,200,"GeV"))
     iconddcb = {pt:[(n,parm[n][ipt]) for n in parmnames] for ipt,pt in enumerate(ptlist[:-1])}
+    icondgzg = {pt:[(n,parm2[n][ipt]) for n in parmnames2] for ipt,pt in enumerate(ptlist[:-1])}
     print "iconddcb"; pprint (iconddcb)
+    print "icondgzg"; pprint (icondgzg)
     for ptrange in zip(ptlist[:-1],ptlist[1:]):
         ptrange = tuple(ptrange)
-        xp.append(ptrange)
-        ic['iconddcb'] = [("x",20,200)]+iconddcb[ptrange[0]] # FIXME: move up a fx level
+        #xp.append(ptrange)
+        ic['icparm']['dcbp'] = [("x",20,200)]+iconddcb[ptrange[0]] # FIXME: move up a fx level
+        ic['icparm']['gauszg'] = [("x",20,200)]+icondgzg[ptrange[0]] # FIXME: move up a fx level
         ### fitting step
         ptfitrange = fitrange.get(ptrange[0],fitrange[-1]) # get default if entry doesnt exist
         values, stackcount = fitting_simultaneous(samp, fm, ptrange, ptfitrange, basesel=basesel,
-                tag=tag, ic = ic, xbins=(200,0,200), dobkgd =dobkgd, maxtimes = maxtimes)
-        if donorm: make_normalization_comparison(values,stackcount,ptrange,tag)
+                tag=tag, ic = ic, xbins=(200,0,200), dobkgd =dobkgd, maxtimes = maxtimes, doData=doData)
+        if donorm: make_normalization_comparison(fm,values,stackcount,ptrange,tag)
         for name,val in values.items():
             if val.s>0:
                 parmvals[name].append(val.n) #value
@@ -185,35 +196,11 @@ def makevariableplots_simultaneous(samp,ptlist,fitrange,basesel="1",tag="",ic = 
     with open('data/temp/parms_%s.txt' %tag,'w') as outfile:
         json.dump(data,outfile)
 
-def corefitting_simultaneous(fm, ptrange,fitranges=((50,180)),
-            tag="", ic=None, maxtimes =5):
-    chi=200
-    for itry in range(maxtimes):
-        print "*** TRIAL %i ***" %itry
-        print
-        # setup fit manager
-        if chi >10 or fm.func_pdf is None: froo_dcb = fm.setup_fit(**ic) # pass down initial condition settings
-        c=fm.draw(" ",(1,1e6),logy=1,paramlayout=(0.55,0.9,.82), component = True)
-        c.SaveAs("temp/simult_prefit_mlepph_%s_%s_" %ptrange + tag+ ".pdf")
-        c.SaveAs("temp/simult_prefit_mlepph_%s_%s_" %ptrange + tag+ ".png")
-        for fr in fitranges:
-            print "NOW FITTING mass range %g to %g" %fr + " for pT bin of %g,%g" %ptrange
-            froo_dcb = fm.run_fit(fr)
-            print "FINISH fitting range %g to %g"%fr + " for pT bin of %g,%g" %ptrange
-            fm.fitresult.Print()
-            chi = fm.getchisquare()
-            print "\nCHI: ", chi
-            if chi<10:
-                print "\n *** FINISH TRIALS AT %i-TH TRY W/ CHI2 OF %g *** \n" %(itry, chi)
-                return 
-
 def fitting_simultaneous(samples,fm, ptrange,fitranges=((50,180)),var="ph_pt[0]",
                         basesel = "1",tag="", ic = None,
-                        maxtimes =5, xbins  =(200,0,200), dobkgd=True):
+                        maxtimes =5, xbins  =(200,0,200), dobkgd=True, doData = False):
     """ Simulatnous fit of signal and background distribution """
     """ icond : input initial condition or choose the preset """
-    ## TODO: is any change necessary?
-    #froo_dcb = fm.setup_fit(iconddcb=iconddcb, sig = sig)
     if ic is None: ic = dict(iconddcb = None, sig = "dcbp", bkgd = "gaus", ext = 'simul')
     if dobkgd:
         samples.deactivate_sample(["Z+jets"])
@@ -222,19 +209,39 @@ def fitting_simultaneous(samples,fm, ptrange,fitranges=((50,180)),var="ph_pt[0]"
         h1 = samples.get_samples(name='__AllStack__')[0].hist.Clone()
         fm.addhist(h1,"bkgdhist_pt_%s_%s" %ptrange,bkgd = "nonefake")
         samples.activate_sample(["Z+jets"])
-    samples.Draw("m_lep_ph","%s&&%s>%g&&%s<%g" %(basesel,var,ptrange[0],var,ptrange[1]),
-            xbins, { "weight": weight ,"logy":1,"ymin":10,'ymax':1e6})
-    samples.SaveStack("thstack_mlepph_%s_%s.pdf" %ptrange,outputDir = "temp/", canname ="top")
-    samples.SaveStack("thstack_mlepph_%s_%s.png" %ptrange,outputDir = "temp/", canname ="top")
-    h1 = samples.get_samples(name='__AllStack__')[0].hist.Clone()
-    regulate(h1,10)
+    if doData:
+        samples.Draw("m_lep_ph","%s&&%s>%g&&%s<%g" %(basesel,var,ptrange[0],var,ptrange[1]),
+                xbins, { "weight": weight ,"logy":1,"ymin":10,'ymax':1e6, "unblind":UNBLIND})
+        samples.SaveStack("thstack_mlepph_data_%s_%s_"%ptrange+tag+".pdf" ,outputDir = "temp/", canname ="top")
+        samples.SaveStack("thstack_mlepph_data_%s_%s_"%ptrange+tag+".png" ,outputDir = "temp/", canname ="top")
+        if not dobkgd:
+            h0 = samples.get_samples(name='__AllStack__')[0].hist.Clone()
+            fm.addhist(h0,"mchist_pt_%s_%s" %ptrange, bkgd="allmc")
+        h1 = samples.get_samples(name='SingleElectron')[0].hist.Clone()
+    else:
+        samples.Draw("m_lep_ph","%s&&%s>%g&&%s<%g" %(basesel,var,ptrange[0],var,ptrange[1]),
+                xbins, { "weight": weight ,"logy":1,"ymin":10,'ymax':1e6})
+        samples.SaveStack("thstack_mlepph_%s_%s_"%ptrange+tag+".pdf" ,outputDir = "temp/", canname ="top")
+        samples.SaveStack("thstack_mlepph_%s_%s_"%ptrange+tag+".png" ,outputDir = "temp/", canname ="top")
+        h1 = samples.get_samples(name='__AllStack__')[0].hist.Clone()
+        regulate(h1,10)
     fm.addhist(h1,"datahist_pt_%s_%s" %ptrange)
 
     ###NOTE NOTE fitting step
-    corefitting_simultaneous(fm, ptrange,fitranges,
-        tag=tag,ic = ic, maxtimes =maxtimes)
     samples.print_stack_count(fitranges[-1])
     stackcount = samples.get_stack_count(fitranges[-1])
+    f = lambda x,y: (x,round(y[0]),0,round(y[0]*4))
+    ic['icparm']['simul2']  = [ f("Nsig", stackcount["Z+jets"]),
+                                f("Nbkg", stackcount["NonEleFake"]),
+                                f("Nzg" , stackcount["OtherEleFakeBackground"]),
+    #ic['icparm']['simul2']  = [ ("Nsig",stackcount["Z+jets"][0],                  0,  stackcount["Z+jets"][0]*4,),
+    #                 ("Nbkg" , stackcount["NonEleFake"][0],                 0,  stackcount["NonEleFake"][0]*4 ),
+    #                 ("Nzg", stackcount["OtherEleFakeBackground"][0],     0,  stackcount["OtherEleFakeBackground"][0]*4 ),
+                     #("Nzg" , stackcount["NonEleFake"][0]*random.normalvariate(1,0.1),                 0,  stackcount["NonEleFake"][0]*4 ),
+                   ]
+    #### NOTE NOTE fitting step
+    corefitting_simultaneous(fm, ptrange,fitranges,
+        tag=tag,ic = ic, maxtimes =maxtimes)
 
     c=fm.draw(" ",(1,1e6),logy=1,paramlayout=(0.55,0.9,0.82),subplot="pull", component=True)
     #c=fm.draw(" ",logy=0,paramlayout=(0.55,0.9,0.82),subplot="pull", component=True)
@@ -256,18 +263,55 @@ def fitting_simultaneous(samples,fm, ptrange,fitranges=((50,180)),var="ph_pt[0]"
     pprint(stackcount)
     return values, stackcount
 
+def corefitting_simultaneous(fm, ptrange,fitranges=((50,180)),
+            tag="", ic=None, maxtimes =5):
+    """ 
+        Helper function of fitting_simultaneous
+        Provide Core Fitting functionality
+        Hard-coded retries and break out of loops using return
+    """
+    bestchi = 1000000
+    chi=200
+    for itry in range(maxtimes):
+        print "*** TRIAL %i ***" %itry
+        print
+        ##### setup fit manager #####
+        # replace lists in ic with alteratives at each try
+        iclocal = {key:item[itry%len(item)] if isinstance(item, list) else item for key,item in ic.iteritems()}
+        if chi >5 or fm.func_pdf is None: froo_dcb = fm.setup_fit(**iclocal) # pass down initial condition settings
+        c=fm.draw(" ",(1,1e6),logy=1,paramlayout=(0.55,0.9,.82), component = True)
+        c.SaveAs("temp/simult_prefit_mlepph_%s_%s_" %ptrange + tag+ ".pdf")
+        c.SaveAs("temp/simult_prefit_mlepph_%s_%s_" %ptrange + tag+ ".png")
+        for fr in fitranges:
+            print "NOW FITTING mass range %g to %g" %fr + " for pT bin of %g,%g" %ptrange
+            froo_dcb = fm.run_fit(fr)
+            print "FINISH fitting range %g to %g"%fr + " for pT bin of %g,%g" %ptrange
+            fm.fitresult.Print()
+            chi = fm.getchisquare()
+            print "\nCHI: ", chi
+            if chi<5 or (itry>maxtimes/2 and chi<bestchi*1.1):
+                print "\n *** FINISH TRIALS AT %i-TH TRY W/ CHI2 OF %g *** \n" %(itry, chi)
+                return 
+            bestchi = min(bestchi,chi)
+            print "\nbestchi: ",bestchi
 
-def make_normalization_comparison(values,stackcount,ptrange,tag):
+def make_normalization_comparison(fm,values,stackcount,ptrange,tag):
     ## make normalization comparison plot
-    h1 = ROOT.TH1F("hpt1%g%g"%ptrange, "photon pt %g to %g" %ptrange,5,0,5)
-    h2 = ROOT.TH1F("hpt2%g%g"%ptrange, "photon pt %g to %g" %ptrange,5,0,5)
+    fm.create_standard_ratio_canvas("_norm",500,500)
+    h1 = ROOT.TH1F("hpt1%g%g"%ptrange, "photon pt %g to %g" %ptrange,4,0,4)
+    h2 = ROOT.TH1F("hpt2%g%g"%ptrange, "photon pt %g to %g" %ptrange,4,0,4)
     h1x,h2x = h1.GetXaxis(), h2.GetXaxis(); i=1
     for name in stackcount:
         h1x.SetBinLabel  (i,name)
         sethbin(h1,i,stackcount[name]);
         i+=1
-    sethbin(h2,1,values['Nsig'])
-    sethbin(h2,2,values['Nbkg'])
+    #sethbin(h2,1,values.get('Nsig'))
+    #sethbin(h2,2,values.get('Nbkg'))
+    #sethbin(h2,3,values.get('Nzg'))
+    hvalues = [values.get(s) for s in ['Nsig',"Nbkg","Nzg"]]
+    for i in range(3):
+        sethbin(h2,i+1,hvalues[i])
+    sethbin(h2,4,sum([v for v in hvalues if v]))
     h2x.SetBinLabel  (1,"N_{s}/Zee")
     h2x.SetBinLabel  (2,"N_{b}/Non-ee")
     h2x.SetBinLabel  (3,"Z#gamma")
@@ -276,22 +320,46 @@ def make_normalization_comparison(values,stackcount,ptrange,tag):
     setlinestyle(h1)
     setlinestyle(h2, color = ROOT.kViolet, width=4)
 
-    h2.SetMaximum(300*max(map(lambda x: x.GetMaximum(),[h1,h2])))
     minvalue = [s[0] for s in stackcount.values()]+[values['Nsig'].n,values['Nbkg'].n]
     print "MINVALUES: ",minvalue
     minvalue = max(min(minvalue),10)
     print "MINVAL: ",minvalue
-    h2.SetMinimum(0.1*minvalue)
     #h2.SetMinimum(0.1*min(map(lambda x:max(1, x.GetMinimum()),[h1,h2]))) #doesnt work
     leg = ROOT.TLegend(0.55,0.7,0.9,0.9)
     leg.AddEntry(h1, "# MC", "PL")
     leg.AddEntry(h2, "Predicted", "PL")
+    hratio = h2.Clone()
+    hratio.Divide(h1)
+    h2.SetMaximum(300*max(map(lambda x: x.GetMaximum(),[h1,h2])))
+    h2.SetMinimum(0.1*minvalue)
 
-    c = ROOT.TCanvas("cparam", "parameters",500,500)
+    #c = ROOT.TCanvas("cparam", "parameters",500,500)
+    c=fm.curr_canvases['top_norm']
+    c.cd()
     c.SetLogy(1)
     h2.Draw('e ')
     h1.Draw('e same')
     leg.Draw()
+    c=fm.curr_canvases['bottom_norm']
+    c.cd()
+    hratio.Draw()
+    hratio.SetTitle(" ")
+    xAxs = hratio.GetXaxis()
+    yAxs = hratio.GetYaxis()
+    xAxs.SetTitleSize(0.085)
+    xAxs.SetLabelSize(0.09)
+    xAxs.SetTitleOffset(0.9)
+    yAxs.SetTitleSize(0.08)
+    yAxs.SetLabelSize(0.08)
+    yAxs.SetTitleOffset(0.45)
+    x=hratio.GetXaxis()
+    xlow =  x.GetXmin()
+    xhigh = x.GetXmax()
+    line = ROOT.TLine(xlow,1,xhigh,1)
+    line.SetLineStyle(3)
+    line.SetLineWidth(2)
+    line.Draw()
+    c=fm.curr_canvases['base_norm']
     c.SaveAs("temp/simult_normalizations_%s_%s_" %ptrange+tag+".pdf")
     c.SaveAs("temp/simult_normalizations_%s_%s_" %ptrange+tag+".png")
     return
@@ -307,6 +375,7 @@ def make_normalization_comparison(values,stackcount,ptrange,tag):
 
 
 def sethbin(h,i,value):
+    if value is None: return
     if isinstance(value,tuple):
         value = ufloat(*value)
     h.SetBinContent(i,value.n)
@@ -339,7 +408,7 @@ def addline(graph,y):
     oneline.SetLineColor(ROOT.kRed)
     return oneline
 
-def makevariableplots(samp,ptlist,fitrange,basesel="1",tag=""):
+def makevariableplots(samp,ptlist,fitrange,basesel="1",tag="",var="ph_pt[0]"):
     parmnames = FitManager.ParamDCB
     parmvals = {name:[] for name in parmnames}
     parmerrs = {name:[] for name in parmnames}
@@ -350,7 +419,7 @@ def makevariableplots(samp,ptlist,fitrange,basesel="1",tag=""):
         xpoints.append((ptrange[1]+ptrange[0])/2)
         xerrs  .append((ptrange[1]-ptrange[0])/2)
         ### NOTE NOTE fitting step  NOTE NOTE
-        parmdict = fitting(samp,fm,ptrange,fitrange[ptrange[0]],basesel=basesel,tag=tag)
+        parmdict = fitting(samp,fm,ptrange,fitrange.get(ptrange[0],fitrange[-1]),basesel=basesel,tag=tag,var=var)
         for name,val in parmdict.items():
             parmvals[name].append(val.n) #value
             parmerrs[name].append(val.s) #uncertainty
@@ -406,6 +475,7 @@ def fitting(samples,fm, ptrange,fitranges=((50,180)),var="ph_pt[0]",basesel = "1
     h1 = samples.get_samples(name='__AllStack__')[0].hist.Clone()
     regulate(h1)
     #h1.Scale(1./h1.Integral())
+    ptrange = tuple(map(lambda x: str(x).replace('.','p'), ptrange))
     fm.addhist(h1,"datahist_pt_%s_%s" %ptrange)
     # setup fit manager
     c=fm.draw(" ",(1,1e6),logy=1,paramlayout=(0.55,0.9,.82))
@@ -424,6 +494,20 @@ def fitting(samples,fm, ptrange,fitranges=((50,180)),var="ph_pt[0]",basesel = "1
     c.SaveAs("temp/correlations_%s_%s_" %ptrange+tag+".png")
     values = fm.get_parameter_values()
     return values
+
+class Xpoints:
+    def __init__(self):
+        self.xpoints, self.xerrs = [],[]
+
+    def append(self,ptrange):
+        self.xpoints.append((ptrange[1]+ptrange[0])/2)
+        self.xerrs  .append((ptrange[1]-ptrange[0])/2)
+
+    def output(self):
+        if len(xerrs)>1:
+            self.xpoints[-1] = xpoints[-2] + 2*xerrs[-2]
+            self.xerrs[-1]   = xerrs[-2]
+        return self.xpoints, self.xerrs
 
 main()
 

@@ -1,4 +1,4 @@
-OUTPUTMAIN=~/Plots/Resonance/Plots_2018_01_22
+OUTPUTMAIN=~//efake/WG_Analysis/Plotting/Plots
 
 DIR_MUG=/data/users/jkunkle/Resonances/LepGamma_mug_2018_01_21
 DIR_ELG=/data/users/jkunkle/Resonances/LepGamma_elg_2018_01_21
@@ -22,8 +22,14 @@ plots :
 	python MakePlots.py --baseDirMu ${DIR_MU} --baseDirEl ${DIR_EL} --baseDirMuG ${DIR_MUG} --baseDirElG ${DIR_ELG}  --baseDirMuGNoId ${DIR_MUGNoId} --baseDirElGNoId ${DIR_ELGNoId} --baseDirMuMu ${DIR_MUMU} --baseDirElEl ${DIR_ELEL} --baseDirNoFilt ${DIR_SIGTruth} --makeSR --outputDir ${OUTPUTMAIN}/Plots
 
 efake : 
-	#python MakeWJetsWS.py --baseDirMuGNoId ${DIR_MUGNoId} --baseDirElGNoId ${DIR_ELGNoId} --doClosure  --outputDir ${OUTPUTMAIN}/WJetsWS
-	python MakeEFake.py --baseDirMuG ${DIR_MUG} --baseDirElG ${DIR_ELG} --outputDir ${OUTPUTMAIN}/WJetsWS
+	python MakeEFake.py --baseDirMuG ${DIR_MUG} --baseDirElG ${DIR_ELG} --outputDir ${OUTPUTMAIN}/efake
+
+zfit :
+	python MakeZFit.py --baseDirElG /data/users/kakw/Resonances/LepGamma_elg_newblind_2018_09_23_beta/ --outputDir ${OUTPUTMAIN}/zfit
+
+varhist:
+	python MakeVarHist.py --baseDirElG /data/users/kakw/Resonances/LepGamma_elg_newblind_2018_09_23_beta/ --outputDir ${OUTPUTMAIN}/zfit
+
 
 sefake : 
 	python MakeEFake.py --baseDirMuG ${DIR_MUG} --baseDirElG ${DIR_ELG} --outputDir ${OUTPUTMAIN}/WJetsWS --data 1
